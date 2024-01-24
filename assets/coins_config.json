@@ -134,10 +134,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -184,10 +180,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -490,10 +482,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -611,10 +599,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -799,11 +787,6 @@
                 "url": "elec-seeder-two.artbytecoin.org:50012",
                 "protocol": "SSL",
                 "ws_url": "elec-seeder-two.artbytecoin.org:50013"
-            },
-            {
-                "url": "electrumx-three.artbyte.live:50012",
-                "protocol": "SSL",
-                "ws_url": "electrumx-three.artbyte.live:50013"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -842,10 +825,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -893,10 +872,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -1279,10 +1254,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -1501,10 +1472,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -1557,10 +1524,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -1650,10 +1617,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -1955,10 +1918,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -2005,10 +1964,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -2156,10 +2111,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -2346,10 +2297,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -2709,10 +2656,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -2863,10 +2806,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -2914,10 +2853,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -2964,10 +2899,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -3176,10 +3107,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -3226,10 +3153,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -3343,10 +3266,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -3547,10 +3470,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -4206,10 +4125,6 @@
             {
                 "url": "bbk-one.ewm-cx.net:50001",
                 "protocol": "TCP"
-            },
-            {
-                "url": "bbk-two.ewm-cx.net:50001",
-                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -4249,10 +4164,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -4414,10 +4325,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -4510,10 +4417,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -4558,16 +4461,6 @@
             "type": "UTXO"
         },
         "electrum": [
-            {
-                "url": "bitchair.io:50001",
-                "protocol": "TCP",
-                "ws_url": "bitchair.io:50004",
-                "contact": [
-                    {
-                        "discord": "c4pt#7855"
-                    }
-                ]
-            },
             {
                 "url": "bitexplorer.io:50001",
                 "protocol": "TCP",
@@ -4710,10 +4603,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -4915,10 +4804,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -4931,49 +4816,6 @@
         "token_address_url": "tokentxns?a=",
         "explorer_block_url": "block/",
         "binance_id": "BNB"
-    },
-    "BOLI": {
-        "coin": "BOLI",
-        "type": "UTXO",
-        "name": "Bolivarcoin",
-        "coinpaprika_id": "boli-bolivarcoin",
-        "coingecko_id": "bolivarcoin",
-        "livecoinwatch_id": "BOLI",
-        "explorer_url": "https://chainz.cryptoid.info/boli/",
-        "explorer_tx_url": "tx.dws?",
-        "explorer_address_url": "address.dws?",
-        "supported": [],
-        "active": false,
-        "is_testnet": false,
-        "currently_enabled": false,
-        "wallet_only": false,
-        "sign_message_prefix": "DarkCoin Signed Message:\n",
-        "fname": "Bolivarcoin",
-        "confpath": "USERHOME/.bolivarcoincore/bolivarcoin.conf",
-        "rpcport": 3563,
-        "pubtype": 85,
-        "p2shtype": 5,
-        "wiftype": 213,
-        "segwit": false,
-        "txfee": 10000,
-        "mm2": 1,
-        "required_confirmations": 3,
-        "avg_blocktime": 180,
-        "protocol": {
-            "type": "UTXO"
-        },
-        "derivation_path": "m/44'/278'",
-        "links": {
-            "github": "https://github.com/BOLI-Project/BolivarCoin",
-            "homepage": "https://bolis.info"
-        },
-        "electrum": [
-            {
-                "url": "electrum2.bolivarcoin.tech:23001",
-                "protocol": "TCP"
-            }
-        ],
-        "explorer_block_url": "block.dws?"
     },
     "BONE-ERC20": {
         "coin": "BONE-ERC20",
@@ -5143,10 +4985,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -5375,10 +5213,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -5723,7 +5557,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Bitcoin Signed Message:\n",
         "fname": "Bitcoin",
         "rpcport": 8332,
@@ -5976,10 +5810,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -6026,15 +5856,6 @@
         },
         "derivation_path": "m/44'/177'",
         "electrum": [
-            {
-                "url": "electrum1.btcz.rocks:50001",
-                "contact": [
-                    {
-                        "discord": "VandarGR#6065"
-                    }
-                ],
-                "ws_url": "electrum1.btcz.rocks:50004"
-            },
             {
                 "url": "electrum2.btcz.rocks:50001",
                 "contact": [
@@ -6083,10 +5904,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -6113,7 +5930,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "Bitweb",
         "rpcport": 1605,
         "pubtype": 33,
@@ -6300,10 +6117,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -6351,10 +6164,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -6498,7 +6307,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "BitCore",
         "rpcport": 9469,
         "pubtype": 3,
@@ -6623,10 +6432,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -6879,10 +6684,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -7094,10 +6895,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -7145,10 +6942,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -7282,7 +7075,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Canada eCoin Signed Message:\n",
         "fname": "Canada eCoin",
         "rpcport": 34330,
@@ -7323,12 +7116,6 @@
                 "protocol": "SSL",
                 "disable_cert_verification": true,
                 "ws_url": "miami.ecoincore.com:34335"
-            },
-            {
-                "url": "mumbai.ecoincore.com:34333",
-                "protocol": "SSL",
-                "disable_cert_verification": true,
-                "ws_url": "mumbai.ecoincore.com:34335"
             },
             {
                 "url": "oakland.ecoincore.com:34333",
@@ -7410,12 +7197,6 @@
                 "ws_url": "miami.ecoincore.com:34335"
             },
             {
-                "url": "mumbai.ecoincore.com:34333",
-                "protocol": "SSL",
-                "disable_cert_verification": true,
-                "ws_url": "mumbai.ecoincore.com:34335"
-            },
-            {
                 "url": "oakland.ecoincore.com:34333",
                 "protocol": "SSL",
                 "disable_cert_verification": true
@@ -7433,6 +7214,152 @@
             }
         ],
         "explorer_block_url": "block.dws?"
+    },
+    "CDS-AVX20": {
+        "coin": "CDS-AVX20",
+        "type": "AVX-20",
+        "name": "Crypto Development Services",
+        "coinpaprika_id": "cds-crypto-development-services",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://snowtrace.io/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Crypto Development Services",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 43114,
+        "required_confirmations": 3,
+        "avg_blocktime": 2.4,
+        "decimals": 8,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "AVAX",
+                "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5"
+            }
+        },
+        "derivation_path": "m/44'/9000'",
+        "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5",
+        "parent_coin": "AVAX",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "nodes": [
+            {
+                "url": "https://node.komodo.earth:8080/avalanche",
+                "gui_auth": true
+            },
+            {
+                "url": "https://api.avax.network/ext/bc/C/rpc"
+            },
+            {
+                "url": "https://avalanche.blockpi.network/v1/rpc/public"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "CDS-BEP20": {
+        "coin": "CDS-BEP20",
+        "type": "BEP-20",
+        "name": "Crypto Development Services",
+        "coinpaprika_id": "cds-crypto-development-services",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Crypto Development Services",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
+    "CDS-PLG20": {
+        "coin": "CDS-PLG20",
+        "type": "Matic",
+        "name": "Crypto Development Services",
+        "coinpaprika_id": "cds-crypto-development-services",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://polygonscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Crypto Development Services",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 137,
+        "decimals": 8,
+        "avg_blocktime": 1.8,
+        "required_confirmations": 20,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "MATIC",
+                "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5"
+            }
+        },
+        "derivation_path": "m/44'/966'",
+        "contract_address": "0x23f07a1C03e7C6D0C88e0E05E79B6E3511073fD5",
+        "parent_coin": "MATIC",
+        "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
+        "nodes": [
+            {
+                "url": "https://node.komodo.earth:8080/polygon",
+                "gui_auth": true
+            },
+            {
+                "url": "https://polygon-rpc.com"
+            },
+            {
+                "url": "https://polygon.blockpi.network/v1/rpc/public"
+            },
+            {
+                "url": "https://polygon.llamarpc.com"
+            }
+        ],
+        "explorer_block_url": "block/"
     },
     "CEL-ERC20": {
         "coin": "CEL-ERC20",
@@ -7646,10 +7573,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -7742,10 +7665,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -7821,6 +7740,54 @@
                 ]
             }
         ],
+        "explorer_block_url": "block/"
+    },
+    "CHTA-BEP20": {
+        "coin": "CHTA-BEP20",
+        "type": "BEP-20",
+        "name": "Cheetahcoin",
+        "coinpaprika_id": "chta-cheetahcoin",
+        "coingecko_id": "",
+        "livecoinwatch_id": "CHTA",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Cheetahcoin",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "decimals": 18,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xb096DF47073A39041D9ffeD5d4E1d1b0D5D6b8E7"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0xb096DF47073A39041D9ffeD5d4E1d1b0D5D6b8E7",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
         "explorer_block_url": "block/"
     },
     "CHIPS": {
@@ -8198,6 +8165,98 @@
         ],
         "explorer_block_url": "block/"
     },
+    "CLC": {
+        "coin": "CLC",
+        "type": "Smart Chain",
+        "name": "Collider Coin",
+        "coinpaprika_id": "clc-collider-coin",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://clc.explorer.dexstats.info/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Komodo Signed Message:\n",
+        "asset": "CLC",
+        "fname": "Collider Coin",
+        "rpcport": 31034,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "requires_notarization": false,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo",
+        "electrum": [
+            {
+                "url": "electrumx.cryptocollider.com:10001",
+                "contact": [
+                    {
+                        "email": "electrumx@cryptocollider.com"
+                    },
+                    {
+                        "discord": "collider#6160"
+                    }
+                ]
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "CLP-BEP20": {
+        "coin": "CLP-BEP20",
+        "type": "BEP-20",
+        "name": "Crypto Lover Productions",
+        "coinpaprika_id": "clp-crypto-lover-productions",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Crypto Lover Productions",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x3039e86d39A5BCF38E96D78fF93FD0aBe753212c"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0x3039e86d39A5BCF38E96D78fF93FD0aBe753212c",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
     "COMP-AVX20": {
         "coin": "COMP-AVX20",
         "type": "AVX-20",
@@ -8280,10 +8339,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -8760,10 +8815,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -8863,6 +8918,53 @@
         ],
         "explorer_block_url": "block/"
     },
+    "CST-BEP20": {
+        "coin": "CST-BEP20",
+        "type": "BEP-20",
+        "name": "Crypto Swap Token",
+        "coinpaprika_id": "cst-cryptoswaptoken",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Crypto Swap Token",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xcC4b3EA1F25c8772D390dA1DB507832aBE4a9740"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0xcC4b3EA1F25c8772D390dA1DB507832aBE4a9740",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
     "CUMMIES-BEP20": {
         "coin": "CUMMIES-BEP20",
         "type": "BEP-20",
@@ -8897,10 +8999,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -8988,7 +9086,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Cyberyen Signed Message:\n",
         "fname": "Cyberyen",
         "rpcport": 58382,
@@ -9255,10 +9353,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -9311,10 +9405,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -9868,7 +9962,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "DigiByte Signed Message:\n",
         "fname": "DigiByte",
         "rpcport": 14022,
@@ -10224,10 +10318,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -10397,10 +10487,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -10562,10 +10648,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -10831,10 +10913,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -10926,10 +11004,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -10977,10 +11051,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -11027,10 +11097,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -11418,10 +11484,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -11528,10 +11590,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -11912,10 +11970,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -12010,10 +12064,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -12205,10 +12255,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -12262,10 +12308,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/",
@@ -12828,10 +12874,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13000,10 +13042,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13101,10 +13139,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -13340,10 +13374,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13371,7 +13401,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "FujiCoin Signed Message:\n",
         "fname": "Fujicoin",
         "rpcport": 3776,
@@ -13552,10 +13582,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13603,10 +13629,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13653,10 +13675,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -13766,10 +13784,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -13796,7 +13810,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Feathercoin Signed Message:\n",
         "fname": "Feathercoin",
         "rpcport": 9337,
@@ -14080,10 +14094,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/",
@@ -14123,10 +14137,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -14241,10 +14251,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -14501,10 +14507,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -14604,10 +14610,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -14810,10 +14812,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -14861,10 +14859,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -15188,10 +15182,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -15239,10 +15229,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -15564,6 +15550,15 @@
                 ]
             },
             {
+                "url": "electrum.niftybakes.com:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "405566674448810005"
+                    }
+                ]
+            },
+            {
                 "url": "electrum.maxpuig.com:50002",
                 "protocol": "SSL",
                 "contact": [
@@ -15572,6 +15567,26 @@
                     }
                 ],
                 "ws_url": "electrum.maxpuig.com:50004"
+            },
+            {
+                "url": "fr.garlium.crapules.org:50002",
+                "protocol": "SSL",
+                "disable_cert_verification": true,
+                "contact": [
+                    {
+                        "discord": "orpheas#1503"
+                    }
+                ]
+            },
+            {
+                "url": "uk.garlium.crapules.org:50002",
+                "protocol": "SSL",
+                "disable_cert_verification": true,
+                "contact": [
+                    {
+                        "discord": "orpheas#1503"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block/"
@@ -15672,10 +15687,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -15751,6 +15762,18 @@
                 ]
             },
             {
+                "url": "electrum13.groestlcoin.org:50001",
+                "ws_url": "electrum13.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
                 "url": "electrum14.groestlcoin.org:50001",
                 "ws_url": "electrum14.groestlcoin.org:50004",
                 "contact": [
@@ -15789,6 +15812,18 @@
             {
                 "url": "electrum17.groestlcoin.org:50001",
                 "ws_url": "electrum17.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum18.groestlcoin.org:50001",
+                "ws_url": "electrum18.groestlcoin.org:50004",
                 "contact": [
                     {
                         "email": "jackielove4u@hotmail.com"
@@ -15895,6 +15930,18 @@
                 ]
             },
             {
+                "url": "electrum26.groestlcoin.org:50001",
+                "ws_url": "electrum26.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
                 "url": "electrum27.groestlcoin.org:50001",
                 "ws_url": "electrum27.groestlcoin.org:50004",
                 "contact": [
@@ -15909,6 +15956,78 @@
             {
                 "url": "electrum28.groestlcoin.org:50001",
                 "ws_url": "electrum28.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum29.groestlcoin.org:50001",
+                "ws_url": "electrum29.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum30.groestlcoin.org:50001",
+                "ws_url": "electrum30.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum31.groestlcoin.org:50001",
+                "ws_url": "electrum31.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum32.groestlcoin.org:50001",
+                "ws_url": "electrum32.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum33.groestlcoin.org:50001",
+                "ws_url": "electrum33.groestlcoin.org:50004",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ]
+            },
+            {
+                "url": "electrum34.groestlcoin.org:50001",
+                "ws_url": "electrum34.groestlcoin.org:50004",
                 "contact": [
                     {
                         "email": "jackielove4u@hotmail.com"
@@ -15981,18 +16100,6 @@
             {
                 "url": "electrum40.groestlcoin.org:50001",
                 "ws_url": "electrum40.groestlcoin.org:50004",
-                "contact": [
-                    {
-                        "email": "jackielove4u@hotmail.com"
-                    },
-                    {
-                        "discord": "jackielove4u#0412"
-                    }
-                ]
-            },
-            {
-                "url": "electrum9.groestlcoin.org:50001",
-                "ws_url": "electrum9.groestlcoin.org:50004",
                 "contact": [
                     {
                         "email": "jackielove4u@hotmail.com"
@@ -16262,10 +16369,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -16961,29 +17064,6 @@
         },
         "electrum": [
             {
-                "url": "il8p.electrumx.transcenders.name:50002",
-                "protocol": "SSL",
-                "disable_cert_verification": true,
-                "contact": [
-                    {
-                        "email": "coins@ewmci.com"
-                    },
-                    {
-                        "discord": "[CryptoStan]#9341"
-                    },
-                    {
-                        "twitter": "EwmciL"
-                    },
-                    {
-                        "reddit": "InfiniLooP"
-                    },
-                    {
-                        "github": "WikiMin3R"
-                    }
-                ],
-                "ws_url": "il8p.electrumx.transcenders.name:50003"
-            },
-            {
                 "url": "il9p.electrumx.transcenders.name:50002",
                 "protocol": "SSL",
                 "disable_cert_verification": true,
@@ -17105,10 +17185,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -17320,10 +17396,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -17431,10 +17503,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -17541,10 +17609,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -17591,10 +17655,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -17693,10 +17753,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -17797,10 +17853,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -18002,10 +18054,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -18268,10 +18316,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -18432,10 +18476,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -19381,10 +19421,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -19589,10 +19625,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -19640,10 +19672,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -19962,10 +19990,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -20097,7 +20121,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "LBRYcrd Signed Message:\n",
         "fname": "LBRY Credits",
         "rpcport": 9245,
@@ -20225,7 +20249,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Litecoin Signed Message:\n",
         "fname": "Litecoin Cash",
         "rpcport": 62457,
@@ -20667,10 +20691,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -20723,10 +20743,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -20906,10 +20926,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -21023,10 +21039,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -21104,7 +21116,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "Widecoin",
         "rpcport": 8552,
         "pubtype": 73,
@@ -21338,10 +21350,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -21390,10 +21398,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -21420,7 +21424,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Litecoin Signed Message:\n",
         "fname": "Litecoin",
         "rpcport": 9332,
@@ -21686,6 +21690,11 @@
                 "ws_url": "electrum7.getlynx.io:50004"
             },
             {
+                "url": "electrum8.getlynx.io:50002",
+                "protocol": "SSL",
+                "ws_url": "electrum8.getlynx.io:50004"
+            },
+            {
                 "url": "electrum9.getlynx.io:50002",
                 "protocol": "SSL",
                 "ws_url": "electrum9.getlynx.io:50004"
@@ -21793,10 +21802,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -21940,10 +21945,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -22189,10 +22190,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -22457,10 +22454,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -22846,10 +22839,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -22944,10 +22933,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -23268,10 +23253,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -23393,7 +23374,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Monacoin Signed Message:\n",
         "fname": "MonaCoin",
         "rpcport": 9402,
@@ -23649,10 +23630,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -23699,10 +23676,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -23779,6 +23752,54 @@
                 ]
             }
         ],
+        "explorer_block_url": "block/"
+    },
+    "NENG-BEP20": {
+        "coin": "NENG-BEP20",
+        "type": "BEP-20",
+        "name": "Nengcoin",
+        "coinpaprika_id": "neng-nengcoin",
+        "coingecko_id": "nengcoin",
+        "livecoinwatch_id": "NENG",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Nengcoin",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "decimals": 18,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0xaD2c0B5ee5424C6b6f9C06E4fEF3FD7CD9FF0264"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0xaD2c0B5ee5424C6b6f9C06E4fEF3FD7CD9FF0264",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
         "explorer_block_url": "block/"
     },
     "NEXO-ERC20": {
@@ -24057,7 +24078,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "Namecoin",
         "rpcport": 8336,
         "pubtype": 52,
@@ -24256,10 +24277,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -24501,6 +24518,54 @@
         "explorer_block_url": "block/",
         "forex_id": "NZD"
     },
+    "NYC-BEP20": {
+        "coin": "NYC-BEP20",
+        "type": "BEP-20",
+        "name": "NewYorkCoin",
+        "coinpaprika_id": "nyc-newyorkcoin",
+        "coingecko_id": "newyorkcoin",
+        "livecoinwatch_id": "NYC",
+        "explorer_url": "https://bscscan.com/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "NewYorkCoin",
+        "rpcport": 80,
+        "mm2": 1,
+        "chain_id": 56,
+        "decimals": 18,
+        "avg_blocktime": 3,
+        "required_confirmations": 3,
+        "protocol": {
+            "type": "ERC20",
+            "protocol_data": {
+                "platform": "BNB",
+                "contract_address": "0x6c015277B0f9b8c24B20BD8BbbD29FDb25738A69"
+            }
+        },
+        "derivation_path": "m/44'/714'",
+        "contract_address": "0x6c015277B0f9b8c24B20BD8BbbD29FDb25738A69",
+        "parent_coin": "BNB",
+        "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
+        "nodes": [
+            {
+                "url": "https://bsc1.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc2.cipig.net:18655"
+            },
+            {
+                "url": "https://bsc3.cipig.net:18655"
+            }
+        ],
+        "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
     "OCEAN-BEP20": {
         "coin": "OCEAN-BEP20",
         "type": "BEP-20",
@@ -24535,10 +24600,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -24860,10 +24921,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -24974,10 +25031,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -25120,10 +25173,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -25291,10 +25340,6 @@
             {
                 "url": "pink-one.ewm-cx.net:50001",
                 "protocol": "TCP"
-            },
-            {
-                "url": "pink-two.ewm-cx.net:50001",
-                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -25331,15 +25376,6 @@
             {
                 "url": "electrum01.chainster.org:50001",
                 "ws_url": "electrum01.chainster.org:50003",
-                "contact": [
-                    {
-                        "discord": "312541186793406465"
-                    }
-                ]
-            },
-            {
-                "url": "electrum02.chainster.org:50001",
-                "ws_url": "electrum02.chainster.org:50003",
                 "contact": [
                     {
                         "discord": "312541186793406465"
@@ -25864,10 +25900,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -26207,10 +26239,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -26761,10 +26789,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -28333,10 +28357,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -28558,10 +28578,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -28661,10 +28677,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -28712,10 +28724,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -28811,10 +28819,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -28933,10 +28937,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -29071,10 +29075,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -29422,7 +29422,7 @@
         "coinpaprika_id": "sum-sumcoin",
         "coingecko_id": "sumcoin",
         "livecoinwatch_id": "SUM",
-        "explorer_url": "https://sumcoinexplorer.com/",
+        "explorer_url": "https://sumexplorer.com/",
         "explorer_tx_url": "",
         "explorer_address_url": "",
         "supported": [],
@@ -29439,11 +29439,11 @@
         "wiftype": 187,
         "decimals": 6,
         "txfee": 0,
-        "dust": 10000,
+        "dust": 1000,
         "segwit": false,
         "bech32_hrp": "sum",
         "mm2": 1,
-        "required_confirmations": 2,
+        "required_confirmations": 3,
         "avg_blocktime": 60,
         "protocol": {
             "type": "UTXO"
@@ -29659,10 +29659,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -29780,10 +29776,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -29962,10 +29958,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -30012,10 +30004,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -30146,7 +30134,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Syscoin Signed Message:\n",
         "fname": "Syscoin",
         "rpcport": 8370,
@@ -30438,7 +30426,7 @@
         "active": false,
         "is_testnet": true,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "BTC Testnet",
         "rpcport": 18332,
         "pubtype": 111,
@@ -30837,10 +30825,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -30930,10 +30914,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -31101,10 +31081,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -31192,10 +31168,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -31243,10 +31215,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -31343,10 +31311,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -31508,10 +31472,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -31559,10 +31519,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -31728,10 +31684,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -31910,10 +31866,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -32392,10 +32344,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -32792,10 +32740,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -32847,10 +32791,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -33125,10 +33069,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -33285,10 +33225,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -33607,10 +33547,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -33872,10 +33808,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -34139,10 +34071,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -34312,7 +34240,35 @@
         "trezor_coin": "Komodo",
         "electrum": [
             {
+                "url": "electrum.grms.pw:17485",
+                "contact": [
+                    {
+                        "email": "contact@grms.pw"
+                    },
+                    {
+                        "discord": "miner113#7864"
+                    },
+                    {
+                        "github": "Miner113"
+                    }
+                ]
+            },
+            {
                 "url": "electrum1.grms.pw:17485",
+                "contact": [
+                    {
+                        "email": "contact@grms.pw"
+                    },
+                    {
+                        "discord": "miner113#7864"
+                    },
+                    {
+                        "github": "Miner113"
+                    }
+                ]
+            },
+            {
+                "url": "electrum2.grms.pw:17485",
                 "contact": [
                     {
                         "email": "contact@grms.pw"
@@ -34340,6 +34296,22 @@
                 ]
             },
             {
+                "url": "electrum.grms.pw:50002",
+                "protocol": "SSL",
+                "contact": [
+                    {
+                        "email": "contact@grms.pw"
+                    },
+                    {
+                        "discord": "miner113#7864"
+                    },
+                    {
+                        "github": "Miner113"
+                    }
+                ],
+                "ws_url": "electrum.grms.pw:50004"
+            },
+            {
                 "url": "electrum1.grms.pw:50002",
                 "protocol": "SSL",
                 "contact": [
@@ -34354,6 +34326,22 @@
                     }
                 ],
                 "ws_url": "electrum1.grms.pw:50004"
+            },
+            {
+                "url": "electrum2.grms.pw:50002",
+                "protocol": "SSL",
+                "contact": [
+                    {
+                        "email": "contact@grms.pw"
+                    },
+                    {
+                        "discord": "miner113#7864"
+                    },
+                    {
+                        "github": "Miner113"
+                    }
+                ],
+                "ws_url": "electrum2.grms.pw:50004"
             },
             {
                 "url": "electrum3.grms.pw:50002",
@@ -34437,7 +34425,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "sign_message_prefix": "Vertcoin Signed Message:\n",
         "fname": "Vertcoin",
         "rpcport": 5888,
@@ -34568,10 +34556,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -34905,10 +34889,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -34961,10 +34941,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -35116,10 +35096,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -35234,10 +35210,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -35398,10 +35370,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -35428,7 +35396,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "Myriad",
         "rpcport": 8332,
         "pubtype": 50,
@@ -35726,10 +35694,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -35955,10 +35919,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -36046,10 +36006,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -36265,10 +36221,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -36363,10 +36315,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -36485,10 +36433,10 @@
                 "gui_auth": true
             },
             {
-                "url": "https://rpc.fantom.network"
+                "url": "https://fantom.drpc.org"
             },
             {
-                "url": "https://rpc2.fantom.network"
+                "url": "https://fantom-pokt.nodies.app"
             }
         ],
         "explorer_block_url": "block/"
@@ -36622,10 +36570,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -36966,10 +36910,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -37017,11 +36957,6 @@
             {
                 "url": "207.180.252.200:50011",
                 "protocol": "TCP"
-            },
-            {
-                "url": "zeta-seed-d.zetacoin.network:50012",
-                "protocol": "SSL",
-                "ws_url": "zeta-seed-d.zetacoin.network:50013"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -37060,10 +36995,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -37496,10 +37427,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -39706,10 +39633,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -39817,10 +39740,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -39956,7 +39875,7 @@
         "active": false,
         "is_testnet": false,
         "currently_enabled": false,
-        "wallet_only": true,
+        "wallet_only": false,
         "fname": "Whive",
         "rpcport": 1867,
         "pubtype": 73,
@@ -40239,10 +40158,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -40498,10 +40413,6 @@
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
-            {
                 "url": "https://bsc1.cipig.net:18655"
             },
             {
@@ -40546,18 +40457,6 @@
             "type": "UTXO"
         },
         "electrum": [
-            {
-                "url": "electrum1.runebase.io:50001",
-                "protocol": "TCP",
-                "contact": [
-                    {
-                        "email": "support@runebase.io"
-                    },
-                    {
-                        "discord": "Bago#7842"
-                    }
-                ]
-            },
             {
                 "url": "electrum3.runebase.io:50001",
                 "protocol": "TCP",
@@ -40691,10 +40590,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
@@ -41229,10 +41124,6 @@
         "swap_contract_address": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "fallback_swap_contract": "0xeDc5b89Fe1f0382F9E4316069971D90a0951DB31",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/binance",
-                "gui_auth": true
-            },
             {
                 "url": "https://bsc1.cipig.net:18655"
             },
