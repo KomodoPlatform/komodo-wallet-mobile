@@ -41,7 +41,7 @@ We've made this repository public to showcase the incredible potential of the Ko
 Embrace financial freedom at your fingertips by downloading the Firo Wallet:
 
 - [iOS](https://testflight.apple.com/join/c2mOLEoC)
-- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
+- [Android](https://play.google.com/store/apps/details?id=org.firo.dex)
 
 ## Get Involved 🤝
 
@@ -98,7 +98,7 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ## Accessing the database
 
-    adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
+    adb exec-out run-as org.firo.dex cat /data/data/org.firo.dex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
 ## Localization

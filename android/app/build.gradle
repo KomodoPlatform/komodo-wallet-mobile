@@ -36,7 +36,7 @@ android {
 
 
     defaultConfig {
-        applicationId "com.komodoplatform.atomicdex"
+        applicationId "org.firo.dex"
         minSdkVersion 28
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
