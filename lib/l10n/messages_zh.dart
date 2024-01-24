@@ -966,7 +966,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "这是一个新时代！我们已正式将名称从“AtomicDEX”更改为“Komodo Wallet”"),
+            "这是一个新时代！我们已正式将名称从“AtomicDEX”更改为“Firo Wallet”"),
         "receive": MessageLookupByLibrary.simpleMessage("接收"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("接收"),
         "recommendSeedMessage":

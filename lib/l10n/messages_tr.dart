@@ -35,7 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${abbr} etkinleştirilmediği için ${abbr} adresine para gönderemezsiniz. Lütfen portföye gidiniz.";
 
   static m7(appName) =>
-      "Hayır ! Komodo Wallet, gözetimsiz bir cüzdandır. Özel kelimeleriniz, gizli kelimeleriniz ve PIN kodunuz dahil hiçbir hassas bilgiyi kaydetmiyoruz. Bu bilgiler sadece kullanıcının cihazında tutulmaktadır ve başka bir yere gitmez. Bu sayede koin ve tokenlerinizin tüm kontrolü sizdedir.";
+      "Hayır ! Firo Wallet, gözetimsiz bir cüzdandır. Özel kelimeleriniz, gizli kelimeleriniz ve PIN kodunuz dahil hiçbir hassas bilgiyi kaydetmiyoruz. Bu bilgiler sadece kullanıcının cihazında tutulmaktadır ve başka bir yere gitmez. Bu sayede koin ve tokenlerinizin tüm kontrolü sizdedir.";
 
   static m8(appName) =>
       "${appName}, hem Android hem de iPhone\'da mobil cihazlar için ve <a href=\"https://komodoplatform.com/\">Windows, Mac ve Linux işletim sistemlerinde</a> masaüstü için kullanılabilir.";
@@ -44,7 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Diğer DEX cüzdanlar genellikle aynı miktar koin ile tek bir alım satım emri vermeye izin verir, ara token kullanır, en önemlisi de tek bir blokzincirin koinlerinin alım satımına olanak sağlar.\n\n${appName} ise birbirinden farklı iki blokzincir ağı arasında ara token kullanmadan doğrudan takas yapmaya imkân sağlar. ${appName} \'te aynı miktar koin ile birden fazla alım satım emri verebilirsiniz. Mesela 0.1 BTC ile KMD, QTUM ve VRSC için ayrı ayrı alım emirleri verebilirsiniz ve bunlardan birinin tamamlanması halinde diğerleri kendiliğinden iptal olmuş olurlar.";
 
   static m10(appName) =>
-      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel Komodo Wallet\'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
+      "Her bir takasın tamamlanma sürecini etkileyen birkaç etken vardır. Takas edilen koinlerin bağlı olduğu blokzincirlerin blok çıkarım zamanları (Bitcoin en yavaşıdır) bunda etkilidir. Bunun yanında kullanıcılar, takas öncesinde güvenlik seçeneklerini özelleştirebilir. Mesela bir KMD takasına başlamadan evvel Firo Wallet\'da işlem için 3 onayın yeterli olduğu seçeneği işaretlediğinizde takas süresi <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">noterizasyon</a> eklenmeyeceğinden kısalacaktır.";
 
   static m11(appName) =>
       "${appName}\'te alım satım yaparken bilinmesi gereken iki tür işlem ücreti vardır.\n\n1. ${appName}, alıcı emirlerinden işlem başına yaklaşık olarak %0.13 (takriben 777\'nin 1\'i kadar, fakat bu da 0.0001\'den az olmamak kaydıyla) işlem ücreti alırken, yapıcı emirlerinden herhangi bir ücret alınmamaktadır.\n\n2. Hem yapıcı hem de alıcı emir sahiplerinin ödemesi gerekli olan ve takasın gerçekleştiği blokzincirlerin standart ağ işlem ücretleri.\n\nAğ işlem ücretleri, takas yapmak istediğiniz paritelerin kendi işleyişlerine göre değişiklik göstermektedir.";
@@ -232,7 +232,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m86(abbr) =>
       "${abbr} aktif değil. Lütfen aktifleştirip öyle deneyiniz.";
 
-  static m87(appName) => "Komodo Wallet\'ı hangi cihazlarda kullanabilirim ?";
+  static m87(appName) => "Firo Wallet\'ı hangi cihazlarda kullanabilirim ?";
 
   static m88(appName) =>
       "${appName}\'te alım satım yapmanın diğer DEX\'lerdekinden ne gibi farkları vardır ?";
@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m89(appName) =>
       "${appName}\'te işlem ücretleri nasıl hesaplanmaktadır ?";
 
-  static m90(appName) => "Komodo Wallet\'ın arkasında kimler var ?";
+  static m90(appName) => "Firo Wallet\'ın arkasında kimler var ?";
 
   static m91(appName) =>
       "${appName} üzerinde kendi beyaz etiketli değişimimi geliştirmem mümkün mü?";
@@ -302,7 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m115(version) =>
       "Güncel ${version} sürümü mevcut. Lütfen güncelleyiniz.";
 
-  static m116(appName) => "Komodo Wallet güncellemeleri";
+  static m116(appName) => "Firo Wallet güncellemeleri";
 
   static m117(coinAbbr) => "${coinAbbr} koinini etkinleştiremedik.";
 
@@ -310,7 +310,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${coinAbbr} koinini etkinleştiremedik.\nLütfen uygulamayı yeniden başlatıp tekrar deneyiniz.";
 
   static m119(appName) =>
-      "Komodo Wallet mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
+      "Firo Wallet mobil yerleşik üçüncü nesil DEX işlevselliği ve daha fazla özellikleri ile yeni nesil bir çoklu koin cüzdanıdır.";
 
   static m120(appName) =>
       "${appName}\'in kameraya erişimi engellenmiş.\nQR kod taramasını yapabilmek için lütfen telefon ayarlarınızdan kamera erişimine izin veriniz.";
@@ -377,7 +377,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "answer_2": m9,
         "answer_3": m10,
         "answer_4": MessageLookupByLibrary.simpleMessage(
-            "Evet, takas boyunca uygulamanız açık ve internetinizin de (anlık kesintilerde bir sıkıntı yoktur) bağlı olması gerekmektedir. Aksi halde; eğer yapıcı emri (maker) veren siz iseniz takasın iptal olma durumu, alıcı emri (taker) veren iseniz de koinlerinizi kaybetme riski ortaya çıkar. Komodo Wallet protokolünde takası yapan her iki tarafın da işlem boyunca çevrimiçi olması ve takasın başarılı olması için gereklidir."),
+            "Evet, takas boyunca uygulamanız açık ve internetinizin de (anlık kesintilerde bir sıkıntı yoktur) bağlı olması gerekmektedir. Aksi halde; eğer yapıcı emri (maker) veren siz iseniz takasın iptal olma durumu, alıcı emri (taker) veren iseniz de koinlerinizi kaybetme riski ortaya çıkar. Firo Wallet protokolünde takası yapan her iki tarafın da işlem boyunca çevrimiçi olması ve takasın başarılı olması için gereklidir."),
         "answer_5": m11,
         "answer_6": m12,
         "answer_7": m13,
@@ -1170,7 +1170,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "Bu yeni bir dönem! \'AtomicDEX\' olan ismimizi resmi olarak \'Komodo Wallet\' olarak değiştirdik."),
+            "Bu yeni bir dönem! \'AtomicDEX\' olan ismimizi resmi olarak \'Firo Wallet\' olarak değiştirdik."),
         "receive": MessageLookupByLibrary.simpleMessage("AL"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Al"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(
