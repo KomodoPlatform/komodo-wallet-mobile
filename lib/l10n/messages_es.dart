@@ -41,7 +41,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${appName} está disponible para dispositivos móviles en Android y iPhone, y para computadoras de escritorio en <a href=\"https://firo.org/\">sistemas operativos Windows, Mac y Linux</a>.";
 
   static m9(appName) =>
-      "Por lo general, otros DEX solo le permiten intercambiar monedas digitales que se basan en una sola red blockchain y solo permiten realizar un solo pedido con los mismos fondos.\n\n${appName} le permite intercambiar de forma nativa en blockchains diferentes. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0.1 BTC por KMD, QTUM o VRSC: el primer pedido que se ejecuta automáticamente cancela todos los demás pedidos.";
+      "Por lo general, otros DEX solo le permiten intercambiar monedas digitales que se basan en una sola red blockchain y solo permiten realizar un solo pedido con los mismos fondos.\n\n${appName} le permite intercambiar de forma nativa en blockchains diferentes. También puede realizar varios pedidos con los mismos fondos. Por ejemplo, puede vender 0.1 BTC por FIRO, QTUM o VRSC: el primer pedido que se ejecuta automáticamente cancela todos los demás pedidos.";
 
   static m10(appName) =>
       "Varios factores determinan el tiempo de procesamiento de cada intercambio. El tiempo de procesar una transacción depende de cada red (Bitcoin suele ser la más lenta). Además, el usuario puede personalizar las preferencias de seguridad. Por ejemplo, puede pedirle a ${appName} que considere una transacción KMD procesada despues de solo 3 confirmaciones, lo que hace que el tiempo de intercambio sea más corto en comparación con la espera de una <a href=\"https://firo.org/\">notarization</a>.";
