@@ -69,7 +69,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       flex: 5,
                       child: SvgPicture.asset(
                         'assets/branding/svg/mark_and_text_vertical_white.svg',
-                        color: Colors.white,
+                        // color: Colors.white,
                       ),
                     ),
                     Padding(
