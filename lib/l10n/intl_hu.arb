@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Teljesen! További részletekért olvassa el <a href=\"https://developers.komodoplatform.com/\">fejlesztői dokumentációnkat</a>, vagy forduljon hozzánk partnerségi kérdéseivel. Konkrét technikai kérdése van? A {appName} fejlesztői közössége mindig készen áll a segítségére!",
+    "answer_9": "Teljesen! További részletekért olvassa el <a href=\"https://firo.org/\">fejlesztői dokumentációnkat</a>, vagy forduljon hozzánk partnerségi kérdéseivel. Konkrét technikai kérdése van? A {appName} fejlesztői közössége mindig készen áll a segítségére!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [

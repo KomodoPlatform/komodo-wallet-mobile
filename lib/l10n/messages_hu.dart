@@ -60,7 +60,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Az ${appName}-t az ${appCompanyShort} csapata fejleszti. Az ${appCompanyShort} az egyik legelismertebb blokkláncprojekt, amely olyan innovatív megoldásokon dolgozik, mint az atomic swap, a Delayed Proof of Work és az interoperábilis multi-chain architektúra.";
 
   static m15(appName) =>
-      "Teljesen! További részletekért olvassa el <a href=\"https://developers.komodoplatform.com/\">fejlesztői dokumentációnkat</a>, vagy forduljon hozzánk partnerségi kérdéseivel. Konkrét technikai kérdése van? A ${appName} fejlesztői közössége mindig készen áll a segítségére!";
+      "Teljesen! További részletekért olvassa el <a href=\"https://firo.org/\">fejlesztői dokumentációnkat</a>, vagy forduljon hozzánk partnerségi kérdéseivel. Konkrét technikai kérdése van? A ${appName} fejlesztői közössége mindig készen áll a segítségére!";
 
   static m16(coinName1, coinName2) => "${coinName1}/${coinName2} alapján";
 

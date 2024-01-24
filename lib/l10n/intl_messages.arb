@@ -616,7 +616,7 @@
       "appName": {}
     }
   },
-  "answer_9": "Absolutely! You can read our <a href=\"https://developers.komodoplatform.com/\">developer documentation</a> for more details or contact us with your partnership inquiries. Have a specific technical question? The {appName} developer community is always ready to help!",
+  "answer_9": "Absolutely! You can read our <a href=\"https://firo.org/\">developer documentation</a> for more details or contact us with your partnership inquiries. Have a specific technical question? The {appName} developer community is always ready to help!",
   "@answer_9": {
     "type": "text",
     "placeholders_order": [
