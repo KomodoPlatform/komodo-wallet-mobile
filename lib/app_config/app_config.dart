@@ -166,12 +166,12 @@ class AppConfig {
   // support channels (showed on help page)
   List<SupportChannel> supportChannels = [
     SupportChannel(
-      title: 'DISCORD',
-      subtitle: 'Komodo #support',
-      link: 'https://komodoplatform.com/discord',
+      title: 'COMMUNITY',
+      subtitle: 'Community #support',
+      link: 'https://firo.org/community/social/',
       icon: SizedBox(
         width: 60,
-        child: Image.asset('assets/discord_logo.png'),
+        child: Image.asset('assets/branding/logo_app.png'),
       ),
     ),
   ];

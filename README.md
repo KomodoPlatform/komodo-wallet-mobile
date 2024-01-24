@@ -47,7 +47,7 @@ Embrace financial freedom at your fingertips by downloading the Firo Wallet:
 
 We welcome developers, designers, and testers' contributions to our open-source project. If you'd like to contribute, please review the [contribution guidelines](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md).
 
-For any questions about the Firo Wallet or the exchange, join our lively [Discord Support channel](https://komodoplatform.com/discord). Official team members are identifiable by the "Komodo Team" role.
+For any questions about the Firo Wallet or the exchange, join our lively [Discord Support channel](https://firo.org/community/social/). Official team members are identifiable by the "Komodo Team" role.
 
 # NB (Forkers/contributors)
 
