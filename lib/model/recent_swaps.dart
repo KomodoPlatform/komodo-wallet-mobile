@@ -225,7 +225,7 @@ class SwapEEL {
   });
 
   factory SwapEEL.fromJson(Map<String, dynamic> json) => SwapEEL(
-        data: json['data'] == null ? null : SwapEF.fromJson(json['data']),
+        data: json['data'] is Map ? SwapEF.fromJson(json['data']) : null,
         type: json['type'] ?? '',
       );
 
