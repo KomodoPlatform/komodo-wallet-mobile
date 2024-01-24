@@ -390,8 +390,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Your phone is in battery saving mode. Please disable this mode or do NOT put the application to the background, otherwise, the app might be killed by OS and swap failed."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Exchange rate"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("Built on Komodo"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Built on Komodo"),
+        "builtFiro": MessageLookupByLibrary.simpleMessage("Built on Firo"),
+        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Built on Firo"),
         "buy": MessageLookupByLibrary.simpleMessage("Buy"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Convert to Maker if not matched"),
@@ -547,7 +547,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Only use custom fees if you know what you are doing!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW security"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Firo dPoW security"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Decrypting wallet"),
@@ -1122,8 +1122,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseRestart": MessageLookupByLibrary.simpleMessage(
             "Please restart the app to try again, or press the button below."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
-        "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Powered by Komodo"),
+        "poweredOnKmd": MessageLookupByLibrary.simpleMessage("Powered by Firo"),
         "price": MessageLookupByLibrary.simpleMessage("price"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Private Key"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Private Keys"),

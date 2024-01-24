@@ -853,8 +853,7 @@ class AppLocalizations {
           name: 'notEnoughtBalanceForFee');
   String get noInternet =>
       Intl.message('No Internet Connection', name: 'noInternet');
-  String get builtKomodo =>
-      Intl.message('Built on Komodo', name: 'builtKomodo');
+  String get builtFiro => Intl.message('Built on Firo', name: 'builtFiro');
   String get pleaseAddCoin =>
       Intl.message('Please Add A Coin', name: 'pleaseAddCoin');
   String get internetRestored =>
@@ -1012,9 +1011,9 @@ class AppLocalizations {
   String get tagETC => Intl.message('ETC', name: 'tagETC');
   String get tagSBCH => Intl.message('SBCH', name: 'tagSBCH');
   String get tagUBQ => Intl.message('UBQ', name: 'tagUBQ');
-  String get builtOnKmd => Intl.message('Built on Komodo', name: 'builtOnKmd');
+  String get builtOnKmd => Intl.message('Built on Firo', name: 'builtOnKmd');
   String get poweredOnKmd =>
-      Intl.message('Powered by Komodo', name: 'poweredOnKmd');
+      Intl.message('Powered by Firo', name: 'poweredOnKmd');
 
   String errorNotEnoughGas(String gas) =>
       Intl.message('Not enough gas - use at least $gas Gwei',
@@ -1448,7 +1447,7 @@ class AppLocalizations {
       Intl.message('OFF', name: 'protectionCtrlOff');
   String get protectionCtrlConfirmations =>
       Intl.message('Confirmations', name: 'protectionCtrlConfirmations');
-  String get dPow => Intl.message('Komodo dPoW security', name: 'dPow');
+  String get dPow => Intl.message('Firo dPoW security', name: 'dPow');
   String get protectionCtrlCustom =>
       Intl.message('Use custom protection settings',
           name: 'protectionCtrlCustom');

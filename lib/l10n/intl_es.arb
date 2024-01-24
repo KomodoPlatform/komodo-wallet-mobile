@@ -2313,8 +2313,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Construido en Komodo",
-    "@builtKomodo": {
+    "builtFiro": "Construido en Firo",
+    "@builtFiro": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2817,13 +2817,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Construido en Komodo",
+    "builtOnKmd": "Construido en Firo",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Desarrollado por Komodo",
+    "poweredOnKmd": "Desarrollado por Firo",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4099,7 +4099,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Seguridad de Komodo dPoW",
+    "dPow": "Seguridad de Firo dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

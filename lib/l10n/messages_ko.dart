@@ -373,8 +373,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "batterySavingWarning": MessageLookupByLibrary.simpleMessage(
             "전화기가 배터리 절약 모드로 되어 있습니다. 이 모드를 비활성화하거나 애플리케이션을 백그라운드에 두지 마세요. 그렇지 않으면 OS에 의해 애플리케이션이 중지되고 스왑에 실패할 수 있습니다."),
         "bestAvailableRate": MessageLookupByLibrary.simpleMessage("비율 바꾸기"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("Komodo로 만들어짐"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Komodo로 만들어짐"),
+        "builtFiro": MessageLookupByLibrary.simpleMessage("Firo로 만들어짐"),
+        "builtOnKmd": MessageLookupByLibrary.simpleMessage("Firo로 만들어짐"),
         "buy": MessageLookupByLibrary.simpleMessage("구매"),
         "buyOrderType":
             MessageLookupByLibrary.simpleMessage("일치하지 않을 경우 제조사로 변환"),
@@ -510,7 +510,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "당신이 무엇을 하고 있는지 알고 있는 경우에만 관세비용을 사용하세요!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW 보안"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Firo dPoW 보안"),
         "date": MessageLookupByLibrary.simpleMessage("날짜"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("지갑 해석 중"),
         "delete": MessageLookupByLibrary.simpleMessage("삭제"),
@@ -1016,7 +1016,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseRestart": MessageLookupByLibrary.simpleMessage(
             "다시하기 위해서 앱을 다시 시작하거나, 밑에 버튼을 눌러 주세요."),
         "portfolio": MessageLookupByLibrary.simpleMessage("포티폴리오"),
-        "poweredOnKmd": MessageLookupByLibrary.simpleMessage("Komodo의해 구동됨"),
+        "poweredOnKmd": MessageLookupByLibrary.simpleMessage("Firo의해 구동됨"),
         "price": MessageLookupByLibrary.simpleMessage("가격"),
         "privateKey": MessageLookupByLibrary.simpleMessage("개인 키"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("개인 키들"),

@@ -2333,8 +2333,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Построено на Komodo",
-    "@builtKomodo": {
+    "builtFiro": "Построено на Firo",
+    "@builtFiro": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2837,13 +2837,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Построено на Komodo",
+    "builtOnKmd": "Построено на Firo",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Разработано Komodo",
+    "poweredOnKmd": "Разработано Firo",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4129,7 +4129,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Защита Komodo dPoW",
+    "dPow": "Защита Firo dPoW",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

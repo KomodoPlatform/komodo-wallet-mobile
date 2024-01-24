@@ -46,7 +46,7 @@ class AppConfig {
 
   String get appName => 'Firo Wallet';
   String get appCompanyLong => 'Firo';
-  String get appCompanyShort => 'Komodo';
+  String get appCompanyShort => 'Firo';
 
   List<String> get defaultCoins => ['FIRO', 'BTC-segwit', 'KMD'];
   List<String> get coinsFiat => ['BTC-segwit', 'FIRO'];

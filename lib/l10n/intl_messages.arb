@@ -2346,8 +2346,8 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "builtKomodo": "Built on Komodo",
-  "@builtKomodo": {
+  "builtFiro": "Built on Firo",
+  "@builtFiro": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
@@ -2850,13 +2850,13 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "builtOnKmd": "Built on Komodo",
+  "builtOnKmd": "Built on Firo",
   "@builtOnKmd": {
     "type": "text",
     "placeholders_order": [],
     "placeholders": {}
   },
-  "poweredOnKmd": "Powered by Komodo",
+  "poweredOnKmd": "Powered by Firo",
   "@poweredOnKmd": {
     "type": "text",
     "placeholders_order": [],
@@ -4142,7 +4142,7 @@
     "placeholders_order": [],
     "placeholders": {}
   },
-  "dPow": "Komodo dPoW security",
+  "dPow": "Firo dPoW security",
   "@dPow": {
     "type": "text",
     "placeholders_order": [],

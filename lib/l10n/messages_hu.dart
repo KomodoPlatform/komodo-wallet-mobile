@@ -399,10 +399,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "A telefon akkumulátor-takarékos üzemmódban van. Kérjük, kapcsolja ki ezt az üzemmódot, vagy NE tegye az alkalmazást a háttérbe, különben az alkalmazást az operációs rendszer megölheti, és a csere sikertelen lesz."),
         "bestAvailableRate": MessageLookupByLibrary.simpleMessage(
             "A rendelkezésrre álló legjobb ár"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage(
-            "Komodo rendszerrel fejlesztve"),
-        "builtOnKmd": MessageLookupByLibrary.simpleMessage(
-            "Komodo rendszerrel fejlesztve"),
+        "builtFiro":
+            MessageLookupByLibrary.simpleMessage("Firo rendszerrel fejlesztve"),
+        "builtOnKmd":
+            MessageLookupByLibrary.simpleMessage("Firo rendszerrel fejlesztve"),
         "buy": MessageLookupByLibrary.simpleMessage("Vétel"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Átalakítás vevővé, ha nem egyezik"),
@@ -567,7 +567,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Csak akkor használjon egyéni díjakat, ha tudja, mit csinál!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW biztonság"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Firo dPoW biztonság"),
         "date": MessageLookupByLibrary.simpleMessage("Dátum"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Pénztárca dekódolása"),
@@ -1169,7 +1169,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Kérjük, indítsa újra az alkalmazást, vagy nyomja meg az alábbi gombot."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolió"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Komodo által működtetett"),
+            MessageLookupByLibrary.simpleMessage("Firo által működtetett"),
         "price": MessageLookupByLibrary.simpleMessage("ár"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Privát kulcs"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Privát kulcsok"),
