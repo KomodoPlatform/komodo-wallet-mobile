@@ -239,7 +239,7 @@ class AppLocalizations {
       ' to consider a KMD transaction as final after just 3 confirmations'
       ' which makes the swap time shorter compared to waiting'
       ' for a <a href="'
-      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
+      'https://firo.org'
       '">notarization</a>.',
       name: 'answer_3',
       args: [appName]);

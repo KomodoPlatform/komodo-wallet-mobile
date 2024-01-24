@@ -37,13 +37,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "不${appName}是非托管应用。我们不会存储任何敏感数据，包括您的私钥、助记词或PIN。此数据仅存储在用户的设备上，不会转移。您的资产只由您掌控。";
 
   static m8(appName) =>
-      "${appName} 适用于 Android 和 iPhone 上的移动设备，以及 <a href=\"https://komodoplatform.com/\">Windows、Mac 和 Linux 操作系统</a> 上的桌面设备。";
+      "${appName} 适用于 Android 和 iPhone 上的移动设备，以及 <a href=\"https://firo.org/\">Windows、Mac 和 Linux 操作系统</a> 上的桌面设备。";
 
   static m9(appName) =>
       "其他DEX（去中心化交易所）通常只允许您使用代理代币交易基于单个区块链网络的资产，并且只能用一个基金下一个订单。\n但用${appName}您可以在两个不同的区块链网络之间进行交易，且无需代理代币。您还可以用一个基金下多个订单。例如，您可以用KMD、QTUM或VRSC兑0.1 BTC，第一个订单成交后自动取消其他所有订单";
 
   static m10(appName) =>
-      "几个因素决定了每次交易的处理时间。交易资产的区块时间取决于各自的网络（比特币通常是最慢的）。此外，用户可以自定义安全偏好。例如，您可以要求${appName}在确认KMD交易为最终交易前确认3次，这使得交易时间短于等待公证的<a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">时间</a>.";
+      "几个因素决定了每次交易的处理时间。交易资产的区块时间取决于各自的网络（比特币通常是最慢的）。此外，用户可以自定义安全偏好。例如，您可以要求${appName}在确认KMD交易为最终交易前确认3次，这使得交易时间短于等待公证的<a href=\"https://firo.org/\">时间</a>.";
 
   static m11(appName) =>
       "在｛appName｝上进行交易时，需要考虑两种费用。\n1.｛appName｝收取约0.13%（交易量的1/777，但不低于0.0001）作为吃单交易的交易费用，挂单交易不收费。\n2.在进行原子交换交易时，无论挂单还是吃单，都需要向相关区块链支付常规的网络费用\n网络费用具体取决于你选择的交易对，不同交易对费用可能大大不同。";

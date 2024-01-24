@@ -39,13 +39,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nem! Az ${appName} nem felügyeleti joggal rendelkezik. Soha nem tárolunk semmilyen érzékeny adatot, beleértve az Ön privát kulcsait, magvas kifejezéseit vagy PIN-kódját. Ezeket az adatokat csak a felhasználó készülékén tároljuk, és soha nem hagyják el azt. Ön teljes mértékben ura az eszközeinek.";
 
   static m8(appName) =>
-      "Az ${appName} mobilra Androidon és iPhone-on, asztali számítógépen pedig <a href=\"https://komodoplatform.com/\">Windows, Mac és Linux operációs rendszeren</a> érhető el.";
+      "Az ${appName} mobilra Androidon és iPhone-on, asztali számítógépen pedig <a href=\"https://firo.org/\">Windows, Mac és Linux operációs rendszeren</a> érhető el.";
 
   static m9(appName) =>
       "Más DEX-ek általában csak olyan eszközökkel lehet kereskedni, amelyek egyetlen blokklánc-hálózaton alapulnak, proxy tokeneket használnak, és csak egyetlen megbízás leadását teszik lehetővé ugyanazokkal az eszközökkel.\n\nAz ${appName} lehetővé teszi, hogy natívan, proxy tokenek nélkül kereskedhessen két különböző blokklánc hálózaton. Több megbízást is adhat ugyanazokkal az alapokkal. Például 0,1 BTC-t adhatsz el KMD, QTUM vagy VRSC ellenében - az első teljesített megbízás automatikusan törli az összes többi megbízást.";
 
   static m10(appName) =>
-      "Az egyes swapok feldolgozási idejét több tényező határozza meg. A kereskedett eszközök blokkolási ideje az egyes hálózatoktól függ (a Bitcoin jellemzően a leglassabb) Ezen kívül a felhasználó testre szabhatja a biztonsági beállításokat. Például kérheti az ${appName}-t, hogy egy KMD tranzakciót már 3 megerősítés után véglegesnek tekintsen, ami rövidebbé teszi a csereidőt, mintha <a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">jegyesítésre</a> kellene várni.";
+      "Az egyes swapok feldolgozási idejét több tényező határozza meg. A kereskedett eszközök blokkolási ideje az egyes hálózatoktól függ (a Bitcoin jellemzően a leglassabb) Ezen kívül a felhasználó testre szabhatja a biztonsági beállításokat. Például kérheti az ${appName}-t, hogy egy KMD tranzakciót már 3 megerősítés után véglegesnek tekintsen, ami rövidebbé teszi a csereidőt, mintha <a href=\"https://firo.org/\">jegyesítésre</a> kellene várni.";
 
   static m11(appName) =>
       "Két díjkategóriát kell figyelembe venni a ${appName}-on történő kereskedés során.\n\n 1. Az ${appName} körülbelül 0,13%-ot (a kereskedési volumen 1/777-ét, de nem kevesebb, mint 0,0001) számít fel kereskedési díjként a taker megbízásokért, a maker megbízásoknak pedig nulla a díja.\n\n 2. Mind a makereknek, mind a takeereknek normál hálózati díjakat kell fizetniük az érintett blokkláncoknak, amikor atomi swap tranzakciókat hajtanak végre.\n\n A hálózati díjak a kiválasztott kereskedési párostól függően nagymértékben eltérhetnek.";
