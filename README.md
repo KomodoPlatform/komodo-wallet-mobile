@@ -8,7 +8,7 @@
 ![Discord](https://img.shields.io/discord/412898016371015680)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
-![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/firoorg?style=social)
 
 Welcome to the Firo Wallet open-source repository! This cutting-edge project is brought to you by Firo, providing a mighty non-custodial wallet and decentralised exchange all in one mobile app. Take control of your cryptocurrencies and trade seamlessly on your mobile phone or tablet with Firo Wallet!
 
