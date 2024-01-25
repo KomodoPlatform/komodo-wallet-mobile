@@ -2345,8 +2345,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "基于Komodo",
-    "@builtKomodo": {
+    "builtPirate": "基于Pirate",
+    "@builtPirate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "基于Komodo",
+    "builtOnKmd": "基于Pirate",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "由Komodo支持",
+    "poweredOnKmd": "由Pirate支持",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW安全",
+    "dPow": "Pirate dPoW安全",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

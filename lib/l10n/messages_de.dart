@@ -406,10 +406,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Ihr  Handy ist im Energissparmodus. Bitte deaktivieren Sie diesen Modus oder gehen Sie mit der App NICHT im Hintergrundmodus. Andernfalls könnte die App durch das Betriebssystem beendet werden und der Swap schlägt fehl."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Wechselkurs"),
-        "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Auf Komodo aufgebaut"),
+        "builtPirate":
+            MessageLookupByLibrary.simpleMessage("Auf Pirate aufgebaut"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Auf Komodo aufgebaut"),
+            MessageLookupByLibrary.simpleMessage("Auf Pirate aufgebaut"),
         "buy": MessageLookupByLibrary.simpleMessage("Kaufen"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "In Maker-Auftrag umwandeln, wenn kein match stattgefunden hat"),
@@ -574,7 +574,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "Individuelle Gebühr nur nutzen, wenn Sie wissen was darunter zu verstehen ist!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW Sicherheit"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Pirate dPoW Sicherheit"),
         "date": MessageLookupByLibrary.simpleMessage("Datum"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Wallet entschlüsseln"),
@@ -1180,7 +1180,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bitte starten Sie die App neu, um es erneut zu versuchen, oder drücken Sie die Schaltfläche unten."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Unterstützt von Komodo"),
+            MessageLookupByLibrary.simpleMessage("Unterstützt von Pirate"),
         "price": MessageLookupByLibrary.simpleMessage("Preis"),
         "privateKey":
             MessageLookupByLibrary.simpleMessage("Privater Schlüssel"),

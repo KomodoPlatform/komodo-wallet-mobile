@@ -45,7 +45,7 @@ class AppConfig {
 
   String get appName => 'Pirate Wallet';
   String get appCompanyLong => 'Pirate';
-  String get appCompanyShort => 'Komodo';
+  String get appCompanyShort => 'Pirate';
 
   List<String> get defaultCoins => ['ARRR', 'BTC-segwit', 'KMD'];
   List<String> get coinsFiat => ['BTC-segwit', 'ARRR'];
@@ -180,7 +180,7 @@ class AppConfig {
   bool get isFeedEnabled => false;
   String get feedProviderSourceUrl => 'https://komodo.earth/messages';
   NewsSource get defaultNewsSource => NewsSource(
-        name: 'Komodo #official-news',
+        name: 'Pirate #official-news',
         url:
             'https://discord.com/channels/412898016371015680/412915799251222539',
         pic:

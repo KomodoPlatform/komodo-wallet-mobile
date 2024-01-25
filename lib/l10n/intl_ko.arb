@@ -2345,8 +2345,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Komodo로 만들어짐",
-    "@builtKomodo": {
+    "builtPirate": "Pirate로 만들어짐",
+    "@builtPirate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Komodo로 만들어짐",
+    "builtOnKmd": "Pirate로 만들어짐",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Komodo의해 구동됨",
+    "poweredOnKmd": "Pirate의해 구동됨",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW 보안",
+    "dPow": "Pirate dPoW 보안",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

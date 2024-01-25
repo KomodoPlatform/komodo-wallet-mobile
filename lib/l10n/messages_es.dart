@@ -380,10 +380,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "Su teléfono está en modo de ahorro de batería. Deshabilite este modo o NO ponga la aplicación en segundo plano, de lo contrario, el sistema operativo podría eliminar la aplicación y fallar el intercambio."),
         "bestAvailableRate":
             MessageLookupByLibrary.simpleMessage("Tipo de cambio"),
-        "builtKomodo":
-            MessageLookupByLibrary.simpleMessage("Construido en Komodo"),
+        "builtPirate":
+            MessageLookupByLibrary.simpleMessage("Construido en Pirate"),
         "builtOnKmd":
-            MessageLookupByLibrary.simpleMessage("Construido en Komodo"),
+            MessageLookupByLibrary.simpleMessage("Construido en Pirate"),
         "buy": MessageLookupByLibrary.simpleMessage("Comprar"),
         "buyOrderType": MessageLookupByLibrary.simpleMessage(
             "Convertir a Vendedor si no coincide"),
@@ -547,7 +547,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "¡Solo use tarifas personalizadas si sabe lo que está haciendo!"),
         "customSeedWarning": m28,
         "dPow":
-            MessageLookupByLibrary.simpleMessage("Seguridad de Komodo dPoW"),
+            MessageLookupByLibrary.simpleMessage("Seguridad de Pirate dPoW"),
         "date": MessageLookupByLibrary.simpleMessage("Fecha"),
         "decryptingWallet":
             MessageLookupByLibrary.simpleMessage("Billetera de descifrado"),
@@ -1143,7 +1143,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Reinicie la aplicación para volver a intentarlo o presione el botón a continuación."),
         "portfolio": MessageLookupByLibrary.simpleMessage("Portfolio"),
         "poweredOnKmd":
-            MessageLookupByLibrary.simpleMessage("Desarrollado por Komodo"),
+            MessageLookupByLibrary.simpleMessage("Desarrollado por Pirate"),
         "price": MessageLookupByLibrary.simpleMessage("price"),
         "privateKey": MessageLookupByLibrary.simpleMessage("Llave Privada"),
         "privateKeys": MessageLookupByLibrary.simpleMessage("Llaves Privadas"),

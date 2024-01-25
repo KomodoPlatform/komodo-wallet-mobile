@@ -2345,8 +2345,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "コモドに建てられた",
-    "@builtKomodo": {
+    "builtPirate": "コモドに建てられた",
+    "@builtPirate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW セキュリティ",
+    "dPow": "Pirate dPoW セキュリティ",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

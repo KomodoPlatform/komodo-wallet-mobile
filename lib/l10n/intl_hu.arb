@@ -2345,8 +2345,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Komodo rendszerrel fejlesztve",
-    "@builtKomodo": {
+    "builtPirate": "Pirate rendszerrel fejlesztve",
+    "@builtPirate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2849,13 +2849,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Komodo rendszerrel fejlesztve",
+    "builtOnKmd": "Pirate rendszerrel fejlesztve",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Komodo által működtetett",
+    "poweredOnKmd": "Pirate által működtetett",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4141,7 +4141,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW biztonság",
+    "dPow": "Pirate dPoW biztonság",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],

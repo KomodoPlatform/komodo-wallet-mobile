@@ -371,7 +371,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "batterySavingWarning": MessageLookupByLibrary.simpleMessage(
             "お使いの携帯電話はバッテリー節約モードになっています。このモードを無効にするか、アプリケーションをバックグラウンドにしないでください。そうしないと、アプリが OS によって強制終了され、スワップが失敗する可能性があります。"),
         "bestAvailableRate": MessageLookupByLibrary.simpleMessage("為替レート"),
-        "builtKomodo": MessageLookupByLibrary.simpleMessage("コモドに建てられた"),
+        "builtPirate": MessageLookupByLibrary.simpleMessage("コモドに建てられた"),
         "builtOnKmd": MessageLookupByLibrary.simpleMessage("コモドに建てられた"),
         "buy": MessageLookupByLibrary.simpleMessage("買う"),
         "buyOrderType":
@@ -514,7 +514,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "customFeeWarning": MessageLookupByLibrary.simpleMessage(
             "あなたが何をしているのかを知っている場合にのみ、カスタム料金を使用してください!"),
         "customSeedWarning": m28,
-        "dPow": MessageLookupByLibrary.simpleMessage("Komodo dPoW セキュリティ"),
+        "dPow": MessageLookupByLibrary.simpleMessage("Pirate dPoW セキュリティ"),
         "date": MessageLookupByLibrary.simpleMessage("日にち"),
         "decryptingWallet": MessageLookupByLibrary.simpleMessage("ウォレットの復号化"),
         "delete": MessageLookupByLibrary.simpleMessage("消去"),

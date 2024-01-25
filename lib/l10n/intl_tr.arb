@@ -2333,8 +2333,8 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtKomodo": "Komodo Üzerinde Yapılmıştır",
-    "@builtKomodo": {
+    "builtPirate": "Pirate Üzerinde Yapılmıştır",
+    "@builtPirate": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
@@ -2837,13 +2837,13 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "builtOnKmd": "Komodo Üzerinde Yapılmıştır",
+    "builtOnKmd": "Pirate Üzerinde Yapılmıştır",
     "@builtOnKmd": {
         "type": "text",
         "placeholders_order": [],
         "placeholders": {}
     },
-    "poweredOnKmd": "Komodo tarafından geliştirilmiştir",
+    "poweredOnKmd": "Pirate tarafından geliştirilmiştir",
     "@poweredOnKmd": {
         "type": "text",
         "placeholders_order": [],
@@ -4129,7 +4129,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "dPow": "Komodo dPoW Koruması",
+    "dPow": "Pirate dPoW Koruması",
     "@dPow": {
         "type": "text",
         "placeholders_order": [],
