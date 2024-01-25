@@ -40,7 +40,7 @@ We've made this repository public to showcase the incredible potential of the Ko
 Embrace financial freedom at your fingertips by downloading the Pirate Wallet:
 
 - [iOS](https://testflight.apple.com/join/c2mOLEoC)
-- [Android](https://play.google.com/store/apps/details?id=com.komodoplatform.atomicdex)
+- [Android](https://play.google.com/store/apps/details?id=com.piratechain.dex)
 
 ## Get Involved 🤝
 
@@ -97,7 +97,7 @@ See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-S
 
 ## Accessing the database
 
-    adb exec-out run-as com.komodoplatform.atomicdex cat /data/data/com.komodoplatform.atomicdex/app_flutter/AtomicDEX.db > AtomicDEX.db
+    adb exec-out run-as com.piratechain.dex cat /data/data/com.piratechain.dex/app_flutter/AtomicDEX.db > AtomicDEX.db
     sqlite3 AtomicDEX.db
 
 ## Localization

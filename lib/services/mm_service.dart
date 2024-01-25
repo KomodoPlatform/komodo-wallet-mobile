@@ -83,8 +83,8 @@ class MMService {
   int metricsLM;
 
   /// Channel to native code.
-  static MethodChannel nativeC = MethodChannel(
-      Platform.isAndroid ? 'com.komodoplatform.atomicdex/nativeC' : 'mm2');
+  static MethodChannel nativeC =
+      MethodChannel(Platform.isAndroid ? 'com.piratechain.dex/nativeC' : 'mm2');
 
   /// Log entries streamed from native code.
   /// MM log is coming that way on iOS.
