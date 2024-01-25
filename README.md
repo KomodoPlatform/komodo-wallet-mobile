@@ -5,7 +5,6 @@
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
 ![GitHub last commit](https://img.shields.io/github/last-commit/komodoplatform/atomicdex-mobile)
 ![GitHub top language](https://img.shields.io/github/languages/top/komodoplatform/atomicdex-mobile)
-![Discord](https://img.shields.io/discord/412898016371015680)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/komodoplatform/atomicdex-mobile)
 ![GitHub repo size](https://img.shields.io/github/repo-size/komodoplatform/atomicdex-mobile)
 ![Twitter Follow](https://img.shields.io/twitter/follow/komodoplatform?style=social)

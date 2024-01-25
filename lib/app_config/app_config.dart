@@ -166,7 +166,7 @@ class AppConfig {
   List<SupportChannel> supportChannels = [
     SupportChannel(
       title: 'DISCORD',
-      subtitle: 'Komodo #support',
+      subtitle: 'Pirate #support',
       link: 'https://piratechain.com/discord',
       icon: SizedBox(
         width: 60,
