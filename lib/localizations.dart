@@ -302,7 +302,7 @@ class AppLocalizations {
       args: [appName]);
   String answer_9(String appName) => Intl.message(
       'Absolutely! You can read our'
-      ' <a href="https://developers.komodoplatform.com/">'
+      ' <a href="https://piratechain.com/faq/">'
       'developer documentation</a> for more'
       ' details or contact us with your partnership inquiries. Have a specific'
       ' technical question? The $appName developer community'

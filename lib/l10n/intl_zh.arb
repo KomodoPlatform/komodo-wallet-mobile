@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "绝对地！您可以阅读我们的<a href=\"https://developers.komodoplatform.com/\">开发者文档</a>了解更多详细信息，或者联系我们咨询您的合作伙伴关系。有具体的技术问题吗？ {appName} 开发者社区随时准备提供帮助！",
+    "answer_9": "绝对地！您可以阅读我们的<a href=\"https://piratechain.com/faq/\">开发者文档</a>了解更多详细信息，或者联系我们咨询您的合作伙伴关系。有具体的技术问题吗？ {appName} 开发者社区随时准备提供帮助！",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [

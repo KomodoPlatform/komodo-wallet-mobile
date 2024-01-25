@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "Absolument! Vous pouvez lire notre <a href=\"https://developers.komodoplatform.com/\">documentation pour les développeurs</a> pour plus de détails ou nous contacter pour vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs {appName} est toujours prête à vous aider !",
+    "answer_9": "Absolument! Vous pouvez lire notre <a href=\"https://piratechain.com/faq/\">documentation pour les développeurs</a> pour plus de détails ou nous contacter pour vos demandes de partenariat. Vous avez une question technique spécifique ? La communauté de développeurs {appName} est toujours prête à vous aider !",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [

@@ -615,7 +615,7 @@
             "appName": {}
         }
     },
-    "answer_9": "전적으로! 자세한 내용은 <a href=\"https://developers.komodoplatform.com/\">개발자 문서</a>를 참조하거나 파트너십 문의 사항이 있는 경우 문의해 주세요. 특정 기술 질문이 있습니까? {appName} 개발자 커뮤니티는 항상 도울 준비가 되어 있습니다!",
+    "answer_9": "전적으로! 자세한 내용은 <a href=\"https://piratechain.com/faq/\">개발자 문서</a>를 참조하거나 파트너십 문의 사항이 있는 경우 문의해 주세요. 특정 기술 질문이 있습니까? {appName} 개발자 커뮤니티는 항상 도울 준비가 되어 있습니다!",
     "@answer_9": {
         "type": "text",
         "placeholders_order": [

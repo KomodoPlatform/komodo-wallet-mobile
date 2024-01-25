@@ -58,7 +58,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "${appName} は ${appCompanyShort} チームによって開発されました。 ${appCompanyShort} は、アトミック スワップ、Delayed Proof of Work、相互運用可能なマルチチェーン アーキテクチャなどの革新的なソリューションに取り組んでいる、最も確立されたブロックチェーン プロジェクトの 1 つです。";
 
   static m15(appName) =>
-      "絶対！詳細については、<a href=\"https://developers.komodoplatform.com/\">開発者向けドキュメント</a>をご覧いただくか、パートナーシップに関するお問い合わせでご連絡ください。特定の技術的な質問がありますか? ${appName} 開発者コミュニティはいつでもお手伝いいたします。";
+      "絶対！詳細については、<a href=\"https://piratechain.com/faq/\">開発者向けドキュメント</a>をご覧いただくか、パートナーシップに関するお問い合わせでご連絡ください。特定の技術的な質問がありますか? ${appName} 開発者コミュニティはいつでもお手伝いいたします。";
 
   static m16(coinName1, coinName2) => "${coinName1}/${coinName2} に基づく";
 
