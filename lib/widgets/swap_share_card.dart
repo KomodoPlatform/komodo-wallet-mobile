@@ -240,7 +240,7 @@ class SwapShareCard extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Download Komodo Wallet on komodoplatform.com',
+                                'Download Pirate Wallet on komodoplatform.com',
                                 style: TextStyle(fontSize: 6),
                               ),
                             ],

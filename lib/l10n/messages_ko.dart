@@ -1043,7 +1043,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "새로운 시대입니다! \'AtomicDEX\'에서 \'Komodo Wallet\'으로 공식 명칭을 변경하였습니다."),
+            "새로운 시대입니다! \'AtomicDEX\'에서 \'Pirate Wallet\'으로 공식 명칭을 변경하였습니다."),
         "receive": MessageLookupByLibrary.simpleMessage("받기"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("받기"),
         "recommendSeedMessage":

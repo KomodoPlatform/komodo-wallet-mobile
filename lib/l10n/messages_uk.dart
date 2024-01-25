@@ -1194,7 +1194,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "question_8": m90,
         "question_9": m91,
         "rebrandingAnnouncement": MessageLookupByLibrary.simpleMessage(
-            "Це нова ера! Ми офіційно змінили назву з \"AtomicDEX\" на \"Komodo Wallet\""),
+            "Це нова ера! Ми офіційно змінили назву з \"AtomicDEX\" на \"Pirate Wallet\""),
         "receive": MessageLookupByLibrary.simpleMessage("ОТРИМАТИ"),
         "receiveLower": MessageLookupByLibrary.simpleMessage("Отримати"),
         "recommendSeedMessage": MessageLookupByLibrary.simpleMessage(

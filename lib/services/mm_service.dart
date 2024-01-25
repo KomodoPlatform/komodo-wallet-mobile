@@ -348,7 +348,7 @@ class MMService {
     final String passphrase = await EncryptionTool().read('passphrase');
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    gui = 'Komodo Wallet ${packageInfo.version} $os';
+    gui = 'Pirate Wallet ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';
