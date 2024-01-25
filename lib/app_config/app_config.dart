@@ -167,7 +167,7 @@ class AppConfig {
   List<SupportChannel> supportChannels = [
     SupportChannel(
       title: 'COMMUNITY',
-      subtitle: 'Community #support',
+      subtitle: 'Firo #support',
       link: 'https://firo.org/community/social/',
       icon: SizedBox(
         width: 60,
