@@ -11,8 +11,7 @@ class AppConfig {
   int get maxCoinsEnabledAndroid => 50;
   int get maxCoinEnabledIOS => 20;
 
-  String get transactionWarningInfoUrl =>
-      'https://komodoplatform.com/en/blog/preventing-address-poisoning';
+  String get transactionWarningInfoUrl => 'https://piratechain.com/faq';
 
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
@@ -168,7 +167,7 @@ class AppConfig {
     SupportChannel(
       title: 'DISCORD',
       subtitle: 'Komodo #support',
-      link: 'https://komodoplatform.com/discord',
+      link: 'https://piratechain.com/discord',
       icon: SizedBox(
         width: 60,
         child: Image.asset('assets/discord_logo.png'),

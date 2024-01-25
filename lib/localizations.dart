@@ -239,7 +239,7 @@ class AppLocalizations {
       ' to consider a KMD transaction as final after just 3 confirmations'
       ' which makes the swap time shorter compared to waiting'
       ' for a <a href="'
-      'https://komodoplatform.com/security-delayed-proof-of-work-dpow/'
+      'https://piratechain.com/faq'
       '">notarization</a>.',
       name: 'answer_3',
       args: [appName]);
@@ -314,7 +314,7 @@ class AppLocalizations {
           name: 'question_10', args: [appName]);
   String answer_10(String appName) => Intl.message(
       '$appName is available for mobile on both Android and iPhone,'
-      ' and for desktop on <a href="https://komodoplatform.com/">'
+      ' and for desktop on <a href="https://piratechain.com/">'
       'Windows, Mac, and Linux operating systems</a>.',
       name: 'answer_10',
       args: [appName]);

@@ -503,7 +503,7 @@
         "placeholders_order": [],
         "placeholders": {}
     },
-    "answer_3": "几个因素决定了每次交易的处理时间。交易资产的区块时间取决于各自的网络（比特币通常是最慢的）。此外，用户可以自定义安全偏好。例如，您可以要求{appName}在确认KMD交易为最终交易前确认3次，这使得交易时间短于等待公证的<a href=\"https://komodoplatform.com/security-delayed-proof-of-work-dpow/\">时间</a>.",
+    "answer_3": "几个因素决定了每次交易的处理时间。交易资产的区块时间取决于各自的网络（比特币通常是最慢的）。此外，用户可以自定义安全偏好。例如，您可以要求{appName}在确认KMD交易为最终交易前确认3次，这使得交易时间短于等待公证的<a href=\"https://piratechain.com/faq/\">时间</a>.",
     "@answer_3": {
         "type": "text",
         "placeholders_order": [
@@ -635,7 +635,7 @@
             "appName": {}
         }
     },
-    "answer_10": "{appName} 适用于 Android 和 iPhone 上的移动设备，以及 <a href=\"https://komodoplatform.com/\">Windows、Mac 和 Linux 操作系统</a> 上的桌面设备。",
+    "answer_10": "{appName} 适用于 Android 和 iPhone 上的移动设备，以及 <a href=\"https://piratechain.com/\">Windows、Mac 和 Linux 操作系统</a> 上的桌面设备。",
     "@answer_10": {
         "type": "text",
         "placeholders_order": [
