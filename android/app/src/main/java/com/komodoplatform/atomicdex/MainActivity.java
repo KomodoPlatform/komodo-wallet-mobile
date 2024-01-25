@@ -249,13 +249,13 @@ public class MainActivity extends FlutterFragmentActivity {
   void getPaymentUri(Intent intent) {
     paymentUri = intent.getData();
   }
-  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2MainStatus in main.cpp
+  /// Corresponds to Java_com_piratechain_dex_MainActivity_nativeMm2MainStatus in main.cpp
   private native byte nativeMm2MainStatus();
 
-  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Main in main.cpp
+  /// Corresponds to Java_com_piratechain_dex_MainActivity_nativeMm2Main in main.cpp
   private native byte nativeMm2Main(String conf, JNILogListener listener);
 
-  /// Corresponds to Java_com_komodoplatform_atomicdex_MainActivity_nativeMm2Stop in main.cpp
+  /// Corresponds to Java_com_piratechain_dex_MainActivity_nativeMm2Stop in main.cpp
   private native byte nativeMm2Stop();
 
   @Override
