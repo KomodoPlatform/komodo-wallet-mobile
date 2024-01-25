@@ -126,7 +126,7 @@ SliderThemeData get _sliderThemeDataLight => SliderThemeData(
 ColorScheme get _colorScheme => const ColorScheme(
       primary: Color.fromRGBO(17, 2, 2, 1),
       primaryVariant: Color.fromRGBO(135, 135, 135, 1),
-      secondary: Color.fromRGBO(155, 28, 46, 1),
+      secondary: Color.fromRGBO(186, 42, 69, 1),
       secondaryVariant: Color.fromRGBO(124, 22, 36, 1),
       surface: Color.fromRGBO(135, 135, 135, 1),
       background: Color.fromRGBO(61, 57, 57, 1),

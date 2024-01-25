@@ -184,7 +184,7 @@ class _SwapConfirmationPageSimpleState
                   width: double.infinity,
                   color: Theme.of(context).brightness == Brightness.light
                       ? Colors.black.withOpacity(0.05)
-                      : Colors.white.withOpacity(0.15),
+                      : Colors.white.withOpacity(0.45),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -225,7 +225,7 @@ class _SwapConfirmationPageSimpleState
                         width: double.infinity,
                         color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black.withOpacity(0.05)
-                            : Colors.white.withOpacity(0.15),
+                            : Colors.white.withOpacity(0.45),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
