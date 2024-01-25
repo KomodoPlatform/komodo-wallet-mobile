@@ -337,7 +337,6 @@ String _getColor(String coin) {
     'SYS': '#0084C7',
     'TEL': '#1BD8FF',
     'TFT': '#80C7CF',
-    'THC': '#819F6F',
     'TKL': '#536E93',
     'TRC': '#096432',
     'TRX': '#F30031',
