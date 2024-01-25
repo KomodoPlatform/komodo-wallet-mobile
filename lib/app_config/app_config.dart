@@ -243,5 +243,5 @@ class AppConfig {
 
   /// We're using different rpc ports for different wallet packages
   /// in order to allow multiple wallets to run simultaneously.
-  int get rpcPort => 7783;
+  int get rpcPort => 7767;
 }
