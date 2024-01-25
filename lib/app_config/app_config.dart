@@ -45,7 +45,7 @@ class AppConfig {
   // Brand config below
 
   String get appName => 'Pirate Wallet';
-  String get appCompanyLong => 'Komodo Platform';
+  String get appCompanyLong => 'Pirate';
   String get appCompanyShort => 'Komodo';
 
   List<String> get defaultCoins => ['ARRR', 'BTC-segwit', 'KMD'];
