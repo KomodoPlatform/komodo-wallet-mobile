@@ -57,8 +57,8 @@ class _AppDrawerState extends State<AppDrawer> {
                     begin: Alignment.centerRight,
                     stops: <double>[0.01, 1],
                     colors: <Color>[
-                      Color.fromRGBO(98, 90, 229, 1),
-                      Color.fromRGBO(45, 184, 240, 1),
+                      Color.fromRGBO(242, 222, 153, 1),
+                      Color.fromRGBO(179, 140, 50, 1),
                     ],
                   ),
                 ),
