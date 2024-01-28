@@ -50,7 +50,7 @@ class _AddCoinFabState extends State<AddCoinFab> {
     bool hasCoinsToAdd = await _userHasInactiveCoins();
 
     if (_areCoinsLoading && hasCoinsToAdd) {
-      _showAddCoinPage(context, _areCoinsLoading);
+      showAddCoinPage(context, _areCoinsLoading);
     }
   }
 
@@ -72,65 +72,7 @@ class _AddCoinFabState extends State<AddCoinFab> {
   }
 
   void _onPressed(BuildContext context) {
-    _showAddCoinPage(context, _areCoinsLoading);
-  }
-
-  void _showAddCoinPage(BuildContext context, bool isLoading) {
-    if (mainBloc.networkStatus != NetworkStatus.Online) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          duration: const Duration(seconds: 2),
-          backgroundColor: Theme.of(context).errorColor,
-          content: Text(AppLocalizations.of(context).noInternet),
-        ),
-      );
-    } else {
-      final numCoinsEnabled = coinsBloc.coinBalance.length;
-      final maxCoinPerPlatform = Platform.isAndroid
-          ? appConfig.maxCoinsEnabledAndroid
-          : appConfig.maxCoinEnabledIOS;
-      if (numCoinsEnabled >= maxCoinPerPlatform) {
-        dialogBloc.closeDialog(context);
-        dialogBloc.dialog = showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomSimpleDialog(
-              title:
-                  Text(AppLocalizations.of(context).tooManyAssetsEnabledTitle),
-              children: [
-                Text(
-                  AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
-                      numCoinsEnabled.toString() +
-                      AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
-                      maxCoinPerPlatform.toString() +
-                      AppLocalizations.of(context).tooManyAssetsEnabledSpan3,
-                ),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => dialogBloc.closeDialog(context),
-                      child: Text(AppLocalizations.of(context).warningOkBtn),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          },
-        ).then((dynamic _) => dialogBloc.dialog = null);
-      } else {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          dialogBloc.closeDialog(context);
-          Navigator.push<dynamic>(
-            context,
-            MaterialPageRoute<dynamic>(
-              builder: (BuildContext context) => const SelectCoinsPage(),
-            ),
-          );
-        });
-      }
-    }
+    showAddCoinPage(context, _areCoinsLoading);
   }
 
   Future<bool> _userHasInactiveCoins() async {
@@ -143,5 +85,78 @@ class _AddCoinFabState extends State<AddCoinFab> {
   void dispose() {
     _coinSubscription?.cancel();
     super.dispose();
+  }
+}
+
+void showAddCoinPage(
+  BuildContext context,
+  bool isLoading, {
+  Set<String> autoSubmitCoins,
+  bool autoSubmit = false,
+}) {
+  final List<Coin> preSelectedCoins = coinsBloc.knownCoins.entries
+      .where(
+        (MapEntry<String, Coin> entry) =>
+            autoSubmitCoins?.contains(entry.key) ?? false,
+      )
+      .map((MapEntry<String, Coin> entry) => entry.value)
+      .toList();
+
+  if (mainBloc.networkStatus != NetworkStatus.Online) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 2),
+        backgroundColor: Theme.of(context).errorColor,
+        content: Text(AppLocalizations.of(context).noInternet),
+      ),
+    );
+  } else {
+    final numCoinsEnabled = coinsBloc.coinBalance.length;
+    final maxCoinPerPlatform = Platform.isAndroid
+        ? appConfig.maxCoinsEnabledAndroid
+        : appConfig.maxCoinEnabledIOS;
+    if (numCoinsEnabled >= maxCoinPerPlatform) {
+      dialogBloc.closeDialog(context);
+      dialogBloc.dialog = showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return CustomSimpleDialog(
+            title: Text(AppLocalizations.of(context).tooManyAssetsEnabledTitle),
+            children: [
+              Text(
+                AppLocalizations.of(context).tooManyAssetsEnabledSpan1 +
+                    numCoinsEnabled.toString() +
+                    AppLocalizations.of(context).tooManyAssetsEnabledSpan2 +
+                    maxCoinPerPlatform.toString() +
+                    AppLocalizations.of(context).tooManyAssetsEnabledSpan3,
+              ),
+              SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => dialogBloc.closeDialog(context),
+                    child: Text(AppLocalizations.of(context).warningOkBtn),
+                  ),
+                ],
+              ),
+            ],
+          );
+        },
+      ).then((dynamic _) => dialogBloc.dialog = null);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        dialogBloc.closeDialog(context);
+        Navigator.push<dynamic>(
+          context,
+          MaterialPageRoute<dynamic>(
+            builder: (BuildContext context) {
+              return SelectCoinsPage(
+                  autoSubmit: autoSubmit, coinsToAutoSubmit: preSelectedCoins);
+            },
+          ),
+        );
+      });
+    }
   }
 }

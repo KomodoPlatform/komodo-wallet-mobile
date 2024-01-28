@@ -47,7 +47,8 @@ class AppConfig {
   String get appCompanyLong => 'Pirate';
   String get appCompanyShort => 'Pirate';
 
-  List<String> get defaultCoins => ['ARRR', 'BTC-segwit', 'KMD'];
+  List<String> get defaultCoins => ['BTC-segwit', 'KMD'];
+  List<String> get defaultZHTLCCoins => ['ARRR'];
   List<String> get coinsFiat => ['BTC-segwit', 'ARRR'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
