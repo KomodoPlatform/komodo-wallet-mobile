@@ -11,7 +11,6 @@ import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
-import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
 import 'package:komodo_dex/services/db/database.dart';
@@ -86,10 +85,11 @@ class _CoinsPageState extends State<CoinsPage> {
     super.initState();
   }
 
-  // This is a hack to show the add coin dialog on first launch
-  // This function should not be awaited or used in any other place
-  // ignore: avoid_void_async
+  /// This is a hack to auto-submit ZHTLC coins via AddCoinPage on first launch
+  /// to start the ZHTLC activation flow.
   void _showAddCoinsOnFirstLaunch() async {
+    // Known coins are not available immediately after app launch, so wait for
+    // them before mapping the ZHTLC coin abbreviation to the Coin.
     while (coinsBloc.knownCoins == null && mounted) {
       await Future<void>.delayed(const Duration(milliseconds: 100));
     }
@@ -101,7 +101,6 @@ class _CoinsPageState extends State<CoinsPage> {
     }
 
     final Set<String> coinsToActivate = appConfig.defaultZHTLCCoins.toSet();
-
     final Set<String> activeCoins = coinsBloc.coinBalance
         .map((CoinBalance coinBalance) => coinBalance.coin.abbr)
         .toSet();
@@ -114,7 +113,6 @@ class _CoinsPageState extends State<CoinsPage> {
 
     showAddCoinPage(context, true,
         autoSubmitCoins: coinsToActivate, autoSubmit: true);
-
     await Db.setDefaultZHLTCCoinActivated(true);
   }
 
@@ -299,41 +297,6 @@ class _CoinsPageState extends State<CoinsPage> {
       stops: const <double>[0.01, 1],
       colors: colors,
     );
-  }
-
-  /// Shows a confirmation dialog for each coin which requires special
-  /// activation.
-  ///
-  /// Currently this is only for ZHTLC coins because their activation can take
-  /// a long time and the user must keep the app open.
-  Future<bool> _confirmSpecialActivations() async {
-    final isDeviceSupported = await _devicePermitsIntensiveWork(context);
-    if (!isDeviceSupported) return false;
-
-    final zhtlcActivationPrefs =
-        await ZCoinStatusWidget.showConfirmationDialog(context);
-    if (zhtlcActivationPrefs == null) return false;
-
-    // enum SyncType { newTransactions, fullSync, specifiedDate } is in z_coin_status_list_tile.dart
-    // Use zhtlcActivationPrefs as { 'zhtlcSyncType': SyncType, 'zhtlcSyncStartDate': DateTime }
-    await saveZhtlcActivationPrefs(zhtlcActivationPrefs);
-
-    return true;
-  }
-
-  /// *NOT IMPLEMENTED*
-  ///
-  /// Checks if the device is capable of performing intensive work required
-  /// for certain coin activations. Shows a dialog if the device is not
-  /// capable.
-  ///
-  /// Returns true if the device is capable of performing intensive work.
-  /// Returns false after showing a dialog if the device is not capable.
-  Future<bool> _devicePermitsIntensiveWork(BuildContext context) async {
-    // TODO: Ensure user has sufficient battery life, storage space, and
-    // has battery saver disabled.
-
-    return true;
   }
 }
 

@@ -1,29 +1,29 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:komodo_dex/model/coin_type.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_bloc.dart';
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_event.dart';
 import 'package:komodo_dex/packages/z_coin_activation/models/z_coin_activation_prefs.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
-
-import '../../../app_config/app_config.dart';
 import '../../../blocs/coins_bloc.dart';
 import '../../../blocs/dialog_bloc.dart';
 import '../../../blocs/settings_bloc.dart';
 import '../../../localizations.dart';
+import '../../../app_config/app_config.dart';
 import '../../../model/coin.dart';
-import '../../../widgets/custom_simple_dialog.dart';
-import '../../../widgets/primary_button.dart';
 import '../../authentification/lock_screen.dart';
 import '../../portfolio/activate/build_item_coin.dart';
 import '../../portfolio/activate/build_type_header.dart';
 import '../../portfolio/activate/search_filter.dart';
 import '../../portfolio/loading_coin.dart';
-import 'build_filter_coin.dart';
+import '../../../widgets/custom_simple_dialog.dart';
+import '../../../widgets/primary_button.dart';
 import 'build_selected_coins.dart';
+
+import 'build_filter_coin.dart';
 
 class SelectCoinsPage extends StatefulWidget {
   const SelectCoinsPage({this.autoSubmit, this.coinsToAutoSubmit});
@@ -164,11 +164,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
       _listViewItems = _buildListView();
     });
 
-    // This is used to pre-select coins when the auto-submitting a ZHTLC coin
-    // activation request. This is because the ZHTLC activation process
-    // requires tSync piratedex mobilehe user to keep the app open for a long time, so we want to
-    // present the user with the ZHTLC activation request dialog as soon as
-    // the app opens.
+    // Auto-submitting through this page allows for the ZHTLC activation
+    // flow to be triggered.
     if (widget.autoSubmit && widget.coinsToAutoSubmit != null) {
       for (final Coin coin in widget.coinsToAutoSubmit) {
         coinsBloc.setCoinBeforeActivation(coin, true);
