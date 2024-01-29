@@ -111,8 +111,12 @@ class _CoinsPageState extends State<CoinsPage> {
       return;
     }
 
-    showAddCoinPage(context, true,
-        autoSubmitCoins: coinsToActivate, autoSubmit: true);
+    showAddCoinPage(
+      context,
+      true,
+      autoSubmitCoins: coinsToActivate,
+      autoSubmit: true,
+    );
     await Db.setDefaultZHLTCCoinActivated(true);
   }
 
