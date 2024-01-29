@@ -155,11 +155,7 @@ class LogStorage {
   Future<List<File>> exportLogs() async {
     await deleteExportedArchives();
 
-    final logFiles = Directory(logFolderPath())
-        .listSync(followLinks: false, recursive: true)
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.log'))
-        .toList();
+    final logFiles = await getLogFiles();
 
     final compressedFiles = <File>[];
     final compressedSizes = <int>[];
@@ -168,7 +164,7 @@ class LogStorage {
     const compressionLevel = Deflate.DEFAULT_COMPRESSION;
     const maxSizeBytes = 24 * 1000 * 1000; // 24MB. Discord limit is 25MB.
 
-    for (var logFile in logFiles) {
+    for (final logFile in logFiles.values) {
       List<int> fileBytes = logFile.readAsBytesSync();
       final fileName = p.basename(logFile.path);
 
@@ -191,11 +187,11 @@ class LogStorage {
 
       compressedSizes.add(compressedBytes.length);
 
-      final isLastFile = logFile == logFiles.last;
+      final isLastFile = logFile == logFiles.values.last;
 
       if (wouldBeOverLimit || isLastFile) {
         final archiveFile = File(
-          '${logFolderPath()}/komodo_wallet_logs_archive_${compressedFiles.length}.g.zip',
+          '${logFolderPath()}/gleec_wallet_logs_archive_${compressedFiles.length}.gz',
         );
 
         final archiveBytes =
@@ -218,7 +214,7 @@ class LogStorage {
     final archives = Directory(logFolderPath())
         .listSync(followLinks: false, recursive: true)
         .whereType<File>()
-        .where((f) => f.path.endsWith('.g.zip'))
+        .where((f) => f.path.endsWith('.gz'))
         .toList();
 
     for (var archive in archives) {

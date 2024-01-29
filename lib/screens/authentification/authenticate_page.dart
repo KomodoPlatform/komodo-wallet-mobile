@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:komodo_dex/utils/log.dart';
+import 'package:komodo_dex/widgets/repeated_tap_detector.dart';
 import '../../blocs/authenticate_bloc.dart';
 import '../../blocs/wallet_bloc.dart';
 import '../../localizations.dart';
@@ -119,8 +121,9 @@ class BuildScreenAuthMultiWallets extends StatelessWidget {
             ),
           ),
           Align(
-              alignment: Alignment.centerRight,
-              child: const SelectLanguageButton()),
+            alignment: Alignment.centerRight,
+            child: const SelectLanguageButton(),
+          ),
           SizedBox(height: 16),
           IntrinsicHeight(
             child: Row(
@@ -251,13 +254,7 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
-                          height: 240,
-                          width: 240,
-                          child: Image.asset(Theme.of(context).brightness ==
-                                  Brightness.light
-                              ? 'assets/branding/mark_and_text_vertical_dark.png'
-                              : 'assets/branding/mark_and_text_vertical_light.png')),
+                      _FullAppLogo(),
                     ],
                   ),
                   Padding(
@@ -290,6 +287,45 @@ class _BuildScreenAuthState extends State<BuildScreenAuth> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _FullAppLogo extends StatelessWidget {
+  const _FullAppLogo({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return RepeatedTapDetector(
+      onRepeatedTap: () => _downloadLogs(context),
+      tapTriggerCount: 7,
+      child: SizedBox(
+          height: 240,
+          width: 240,
+          child: Image.asset(Theme.of(context).brightness == Brightness.light
+              ? 'assets/branding/mark_and_text_vertical_dark.png'
+              : 'assets/branding/mark_and_text_vertical_light.png')),
+    );
+  }
+
+  /// If the user taps the branding logo 7 times in a row, the app will
+  /// download the logs and share them via the system share sheet. This is so
+  /// that users can download logs even if they can't access the settings page.
+  /// E.g. if the app crashes on login.
+  void _downloadLogs(BuildContext context) {
+    Log.downloadLogs().catchError((e) {
+      _showSnackbar(context, e.toString());
+    });
+  }
+
+  void _showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
       ),
     );
   }

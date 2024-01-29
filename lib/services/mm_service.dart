@@ -64,9 +64,9 @@ class MMService {
   /// Our name and version
   String gui;
 
-  /// We're using the netid of 7777 currently
-  /// But it's possible in theory to connect the UI to MM running on a different netid
-  int netid = 7777;
+  /// We're using the netid of 8762 as part of the bracking changes in MM2
+  /// warrenting a new netid.
+  int netid = 8762;
 
   /// Effective memory used by the application, MiB
   /// As of now it is specific to iOS
@@ -318,19 +318,6 @@ class MMService {
     _directorySizeCache['$dirPath**$endsWith'] = size;
   }
 
-  List<dynamic> removeZhtlcCheckPointBlock(List<dynamic> coinsJson) {
-    return coinsJson.map((dynamic coinDynamic) {
-      Map<String, dynamic> coin = coinDynamic as Map<String, dynamic>;
-      if (coin.containsKey('protocol') &&
-          coin['protocol'].containsKey('type') &&
-          coin['protocol']['type'] == 'ZHTLC' &&
-          coin['protocol']['protocol_data'].containsKey('check_point_block')) {
-        coin['protocol']['protocol_data'].remove('check_point_block');
-      }
-      return coin;
-    }).toList();
-  }
-
   /// returns directory size in MB
   static double dirStatSync(String dirPath, {String endsWith = 'log'}) {
     int totalSize = 0;
@@ -373,7 +360,7 @@ class MMService {
       userhome: filesPath,
       passphrase: passphrase,
       rpcPassword: rpcPass,
-      coins: removeZhtlcCheckPointBlock(await readJsonCoinInit()),
+      coins: await readJsonCoinInit(),
       dbdir: filesPath,
       allowWeakPassword: false,
       rpcPort: appConfig.rpcPort,
@@ -456,18 +443,46 @@ class MMService {
   }
 
   Future<List<dynamic>> readJsonCoinInit() async {
+    List<dynamic> coinsJson;
+
     try {
-      return jsonDecode(await CoinUpdater().getCoins());
+      coinsJson = await jsonDecode(await CoinUpdater().getCoins());
+
+      coinsJson = coinsJson.map((dynamic coinDynamic) {
+        try {
+          if (coinDynamic is Map<String, dynamic>) {
+            coinDynamic = coinModifier(coinDynamic);
+          }
+        } catch (e) {
+          // Coin modification failed. This is not a critical error, so we can,
+          // but developers should be aware of it.
+          Log('mm_service', 'Coin modification failed. ${e.toString()}');
+        }
+        return coinDynamic;
+      }).toList();
     } catch (e) {
-      if (kDebugMode) {
-        Log('mm_service', 'readJsonCoinInit] $e');
-        printError('$e');
-        printError('Try to run `\$sh fetch_coins.sh`.'
-            ' See README.md for details.');
-        SystemChannels.platform.invokeMethod<dynamic>('SystemNavigator.pop');
-      }
+      Log('mm_service', 'Error loading coin config: ${e.toString()}');
+
       return [];
     }
+
+    return coinsJson;
+  }
+
+  /// A function to modify each loaded coin in the list of coins before it is
+  /// passed to MM.
+  Map<String, dynamic> coinModifier(Map<String, dynamic> coin) {
+    // Remove the check_point_block from ZHTLC coins because this is required
+    // if we want to activate ZHTLC coins and only sync from the current date.
+    // The check_point_block will be removed from the coin config repo in the
+    // future, so this is a temporary workaround.
+    if (coin.containsKey('protocol') &&
+        coin['protocol'].containsKey('type') &&
+        coin['protocol']['type'] == 'ZHTLC' &&
+        coin['protocol']['protocol_data'].containsKey('check_point_block')) {
+      coin['protocol']['protocol_data'].remove('check_point_block');
+    }
+    return coin;
   }
 
   Future<void> initCoinsAndLoad() async {

@@ -1,26 +1,28 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:intl/intl.dart';
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../localizations.dart';
 import '../../model/addressbook_provider.dart';
 import '../../model/backup.dart';
+import '../../model/export_import_list_item.dart';
 import '../../model/recent_swaps.dart';
 import '../../model/swap.dart';
 import '../../model/swap_provider.dart';
-import '../authentification/lock_screen.dart';
-import '../import-export/export_import_success.dart';
+import '../../services/db/database.dart';
 import '../../utils/encryption_tool.dart';
 import '../../utils/utils.dart';
 import '../../widgets/password_visibility_control.dart';
 import '../../widgets/primary_button.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:share/share.dart';
-import '../../model/export_import_list_item.dart';
-import '../../services/db/database.dart';
-import '../../localizations.dart';
+import '../authentification/lock_screen.dart';
 import '../import-export/export_import_list.dart';
+import '../import-export/export_import_success.dart';
 
 class ExportPage extends StatefulWidget {
   @override
@@ -355,8 +357,10 @@ class _ExportPageState extends State<ExportPage> {
     final encrypted = EncryptionTool().encryptData(_ctrlPass1.text, encoded);
     await tempFile.writeAsString(encrypted);
 
-    await Share.shareFiles([tempFile.path],
-        mimeTypes: ['application/octet-stream'], subject: 'atomicDEX_backup');
+    await Share.shareXFiles(
+      [XFile(tempFile.path, mimeType: 'application/octet-stream')],
+      subject: 'atomicDEX_backup',
+    );
     setState(() {
       _done = true;
     });

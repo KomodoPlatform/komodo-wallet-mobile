@@ -48,8 +48,8 @@ class AppConfig {
   String get appCompanyLong => 'Gleec';
   String get appCompanyShort => 'Gleec';
 
-  List<String> get defaultCoins => ['GLEEC', 'BTC', 'KMD'];
-  List<String> get coinsFiat => ['BTC', 'GLEEC'];
+  List<String> get defaultCoins => ['GLEEC', 'BTC-segwit', 'KMD'];
+  List<String> get coinsFiat => ['BTC-segwit', 'GLEEC'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
@@ -84,6 +84,14 @@ class AppConfig {
         'UST-PLG20',
         'XPM',
         'XVC-OLD',
+        'SXP-BEP20',
+        'VOTE2023',
+        'GALA-BEP20',
+        'SXP-ERC20',
+        'BBK',
+        'RDD',
+        'PINK',
+        'POT'
       ];
 
   List<String> get protocolSuffixes => [

@@ -2,10 +2,15 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:cross_file/cross_file.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/blocs/main_bloc.dart';
+import 'package:komodo_dex/model/swap_provider.dart';
 import 'package:komodo_dex/utils/log_storage.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../services/mm_service.dart';
 import '../utils/utils.dart';
@@ -109,6 +114,56 @@ class Log {
     await compute(_doMaintainInSeparateIsolate, params);
 
     await _updateLastClearedDate();
+  }
+
+  static Future<void> downloadLogs() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    final String os = Platform.operatingSystem;
+
+    final now = DateTime.now();
+
+    try {
+      if (swapMonitor.swaps.isEmpty) await swapMonitor.update();
+
+      await Log.appendRawLog('\n\n--- my recent swaps ---\n\n');
+
+      final recentSwaps = swapMonitor.swaps.where((swap) =>
+          swap.started != null &&
+          DateTime.fromMillisecondsSinceEpoch(swap.started.timestamp)
+                  .difference(now)
+                  .inDays
+                  .abs() <
+              7);
+
+      for (final swap in recentSwaps) {
+        await Log.appendRawLog('${swap.toJson}\n');
+      }
+
+      await Log.appendRawLog('\n\n--- / my recent swaps ---\n\n');
+      // TBD: Replace these with a pretty-printed metrics JSON
+      await Log.appendRawLog('Gleec Wallet ${packageInfo.version} $os\n');
+      await Log.appendRawLog(
+          'mm_version ${mmSe.mmVersion} mm_date ${mmSe.mmDate}\n');
+      await Log.appendRawLog('netid ${mmSe.netid}\n');
+    } catch (ex) {
+      Log('setting_page:723', ex);
+      await Log.appendRawLog('Error saving swaps for log export: $ex');
+    }
+
+    // Discord attachment size limit is about 25 MiB
+    final exportedLogFiles =
+        (await LogStorage().exportLogs()).map((f) => XFile(f.path)).toList();
+    if (exportedLogFiles.isEmpty) {
+      throw Exception('No logs to download');
+    }
+
+    mainBloc.isUrlLaucherIsOpen = true;
+
+    await Share.shareXFiles(
+      exportedLogFiles,
+      // mimeTypes: ['application/octet-stream'],
+      subject: 'Gleec Wallet Logs at ${DateTime.now().toIso8601String()}',
+    );
   }
 }
 
