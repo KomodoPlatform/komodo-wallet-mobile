@@ -83,8 +83,8 @@ class MMService {
   int metricsLM;
 
   /// Channel to native code.
-  static MethodChannel nativeC = MethodChannel(
-      Platform.isAndroid ? 'com.komodoplatform.atomicdex/nativeC' : 'mm2');
+  static MethodChannel nativeC =
+      MethodChannel(Platform.isAndroid ? 'org.firo.dex/nativeC' : 'mm2');
 
   /// Log entries streamed from native code.
   /// MM log is coming that way on iOS.
@@ -348,7 +348,7 @@ class MMService {
     final String passphrase = await EncryptionTool().read('passphrase');
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String os = Platform.isAndroid ? 'Android' : 'iOS';
-    gui = 'Komodo Wallet ${packageInfo.version} $os';
+    gui = 'Firo Wallet ${packageInfo.version} $os';
     if (Platform.isAndroid) {
       final buildTime = await nativeC.invokeMethod<int>('BUILD_TIME');
       gui += '; BT=${buildTime ~/ 1000}';

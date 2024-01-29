@@ -2,8 +2,8 @@
 <resources>
     <color
         name="background_color"
-        >#1e2a3a</color>
+        >#110202</color>
     <color
         name="icon_foreground_color"
-        >#1E2A3A</color>
+        >#110202</color>
 </resources>
