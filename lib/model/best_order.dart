@@ -12,8 +12,9 @@ class BestOrders {
     if (json['result'] == null) return bestOrders;
 
     final Market action = bestOrders.request.action;
-    final Map<String, dynamic> resultOrders = (json['result']
-        as Map<String, dynamic>)['orders'] as Map<String, dynamic>;
+    final Map<String, dynamic> result = json['result'];
+    final Map<String, dynamic> resultOrders =
+        result['orders'] as Map<String, dynamic>;
 
     resultOrders.forEach((String ticker, dynamic items) {
       bestOrders.result ??= {};
@@ -48,9 +49,13 @@ class BestOrder {
 
   factory BestOrder.fromJson(Map<String, dynamic> json) {
     final Map<String, dynamic> price = json['price'];
+    final Map<String, dynamic> address = json['address'];
+
+    // base_ max and min volume are used, as the base and rel coins are swapped
+    // for buy and sell orders, so the max volume is always the max volume of
+    // the base coin. The web wallet has a similar implementation.
     final Map<String, dynamic> maxVolume = json['base_max_volume'];
     final Map<String, dynamic> minVolume = json['base_min_volume'];
-    final Map<String, dynamic> address = json['address'];
 
     return BestOrder(
       price: fract2rat(price['fraction']) ?? Rational.parse(price['decimal']),
