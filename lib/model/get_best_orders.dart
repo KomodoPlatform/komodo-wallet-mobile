@@ -8,6 +8,7 @@ class GetBestOrders {
   GetBestOrders({
     this.userpass,
     this.method = 'best_orders',
+    this.mmrpc = '2.0',
     this.coin,
     this.volume,
     this.action,
@@ -15,6 +16,7 @@ class GetBestOrders {
 
   String userpass;
   String method;
+  String mmrpc;
   String coin;
   Rational volume;
   Market action;
@@ -22,11 +24,14 @@ class GetBestOrders {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'method': method,
         'userpass': userpass,
-        'coin': coin,
-        'volume': {
-          'numer': volume.numerator.toString(),
-          'denom': volume.denominator.toString(),
-        },
-        'action': action == Market.BUY ? 'buy' : 'sell',
+        'mmrpc': mmrpc,
+        'params': {
+          'coin': coin,
+          'action': action == Market.BUY ? 'buy' : 'sell',
+          'request_by': {
+            'type': 'volume',
+            'value': volume.toDecimalString(),
+          }
+        }
       };
 }
