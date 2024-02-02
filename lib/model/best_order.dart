@@ -12,11 +12,14 @@ class BestOrders {
     if (json['result'] == null) return bestOrders;
 
     final Market action = bestOrders.request.action;
+    final Map<String, dynamic> result = json['result'];
+    final Map<String, dynamic> resultOrders =
+        result['orders'] as Map<String, dynamic>;
 
-    json['result'].forEach((String ticker, dynamic items) {
+    resultOrders.forEach((String ticker, dynamic items) {
       bestOrders.result ??= {};
       final List<BestOrder> list = [];
-      for (dynamic item in items) {
+      for (final Map<String, dynamic> item in items) {
         item['action'] = action;
         item['other_coin'] =
             action == Market.SELL ? bestOrders.request.coin : ticker;
@@ -45,15 +48,24 @@ class BestOrder {
   });
 
   factory BestOrder.fromJson(Map<String, dynamic> json) {
+    final Map<String, dynamic> price = json['price'];
+    final Map<String, dynamic> address = json['address'];
+
+    // base_ max and min volume are used, as the base and rel coins are swapped
+    // for buy and sell orders, so the max volume is always the max volume of
+    // the base coin. The web wallet has a similar implementation.
+    final Map<String, dynamic> maxVolume = json['base_max_volume'];
+    final Map<String, dynamic> minVolume = json['base_min_volume'];
+
     return BestOrder(
-      price: fract2rat(json['price_fraction']) ?? Rational.parse(json['price']),
-      maxVolume: fract2rat(json['max_volume_fraction']) ??
-          Rational.parse(json['maxvolume']),
-      minVolume: fract2rat(json['min_volume_fraction']) ??
-          Rational.parse(json['min_volume']),
+      price: fract2rat(price['fraction']) ?? Rational.parse(price['decimal']),
+      maxVolume: fract2rat(maxVolume['fraction']) ??
+          Rational.parse(maxVolume['decimal']),
+      minVolume: fract2rat(minVolume['fraction']) ??
+          Rational.parse(minVolume['decimal']),
       coin: json['coin'],
       otherCoin: json['other_coin'],
-      address: json['address'],
+      address: address['address_data'],
       action: json['action'],
     );
   }
