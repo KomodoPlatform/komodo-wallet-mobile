@@ -191,7 +191,7 @@ class _SwapConfirmationPageSimpleState
                       Text(AppLocalizations.of(context).send,
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontWeight: FontWeight.w100,
+                                fontWeight: FontWeight.w300,
                               )),
                       SizedBox(height: 8),
                       AutoScrollText(
@@ -244,7 +244,7 @@ class _SwapConfirmationPageSimpleState
                                       color: Theme.of(context)
                                           .colorScheme
                                           .secondary,
-                                      fontWeight: FontWeight.w100,
+                                      fontWeight: FontWeight.w300,
                                     ))
                           ],
                         )),

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Komodo Wallet</string>
+	<string>Pirate Wallet</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -40,7 +40,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.komodoplatform.atomicdex.kmd</string>
+			<string>com.piratechain.dex.kmd</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>bitcoin</string>
@@ -50,7 +50,7 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.komodoplatform.atomicdex.kmd</string>
+			<string>com.piratechain.dex.kmd</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>ethereum</string>

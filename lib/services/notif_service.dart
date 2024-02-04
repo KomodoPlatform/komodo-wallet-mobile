@@ -59,7 +59,7 @@ class NotifService {
         NotificationDetails(
           android: AndroidNotificationDetails(
             'komodo_dex',
-            'Komodo DEX',
+            'Pirate DEX',
             importance: Importance.defaultImportance,
             priority: Priority.defaultPriority,
           ),

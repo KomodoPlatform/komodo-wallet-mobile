@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:komodo_dex/app_config/app_config.dart';
 import 'package:komodo_dex/blocs/authenticate_bloc.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_dialog.dart';
 import 'package:komodo_dex/packages/rebranding/rebranding_provider.dart';
@@ -12,6 +13,8 @@ import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_blo
 import 'package:komodo_dex/packages/z_coin_activation/bloc/z_coin_activation_state.dart';
 import 'package:komodo_dex/packages/z_coin_activation/widgets/z_coin_status_list_tile.dart';
 import 'package:komodo_dex/screens/portfolio/animated_asset_proportions_graph.dart';
+import 'package:komodo_dex/services/db/database.dart';
+import 'package:komodo_dex/utils/log.dart';
 import 'package:komodo_dex/widgets/animated_collapse.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +81,43 @@ class _CoinsPageState extends State<CoinsPage> {
       }
     });
 
+    _showAddCoinsOnFirstLaunch();
     super.initState();
+  }
+
+  /// This is a hack to auto-submit ZHTLC coins via AddCoinPage on first launch
+  /// to start the ZHTLC activation flow.
+  void _showAddCoinsOnFirstLaunch() async {
+    // Known coins are not available immediately after app launch, so wait for
+    // them before mapping the ZHTLC coin abbreviation to the Coin.
+    while (coinsBloc.knownCoins == null && mounted) {
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+    }
+
+    if (await Db.isDefaultZHTLCCoinActivated()) {
+      Log('coins_page:_showAddCoinsOnFirstLaunch',
+          'ZHTLC coin is already activated');
+      return;
+    }
+
+    final Set<String> coinsToActivate = appConfig.defaultZHTLCCoins.toSet();
+    final Set<String> activeCoins = coinsBloc.coinBalance
+        .map((CoinBalance coinBalance) => coinBalance.coin.abbr)
+        .toSet();
+    coinsToActivate.removeWhere((String coin) => activeCoins.contains(coin));
+
+    if (coinsToActivate.isEmpty) {
+      Log('coins_page:_showAddCoinsOnFirstLaunch', 'No ZHTLC coin to activate');
+      return;
+    }
+
+    showAddCoinPage(
+      context,
+      true,
+      autoSubmitCoins: coinsToActivate,
+      autoSubmit: true,
+    );
+    await Db.setDefaultZHLTCCoinActivated(true);
   }
 
   @override
@@ -252,8 +291,8 @@ class _CoinsPageState extends State<CoinsPage> {
         .clamp(0.0, 1.0);
 
     final colors = [
-      Color.fromRGBO(98, 90, 229, 1),
-      Color.fromRGBO(45, 184, 240, 1),
+      Color.fromRGBO(179, 140, 50, 1),
+      Color.fromRGBO(242, 222, 153, 1),
     ].map((color) => color.withOpacity((1 - progress).clamp(0.2, 1))).toList();
 
     return LinearGradient(

@@ -254,7 +254,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                   Text(AppLocalizations.of(context).sell,
                       style: Theme.of(context).textTheme.bodyText2.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
-                            fontWeight: FontWeight.w100,
+                            fontWeight: FontWeight.w300,
                           )),
                   Text(
                     '$amountSell ${swapBloc.sellCoinBalance.coin.abbr}',
@@ -313,7 +313,7 @@ class _SwapConfirmationPageState extends State<SwapConfirmationPage> {
                                 .copyWith(
                                   color:
                                       Theme.of(context).colorScheme.secondary,
-                                  fontWeight: FontWeight.w100,
+                                  fontWeight: FontWeight.w300,
                                 ))
                       ],
                     )),

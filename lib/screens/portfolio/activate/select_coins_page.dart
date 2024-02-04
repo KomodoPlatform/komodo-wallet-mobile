@@ -26,9 +26,13 @@ import 'build_selected_coins.dart';
 import 'build_filter_coin.dart';
 
 class SelectCoinsPage extends StatefulWidget {
-  const SelectCoinsPage({this.coinsToActivate});
+  /// If [autoSubmit] is true, then the page will automatically select the
+  /// coins in [coinsToAutoSubmit] and submit (click "Done" button)
+  /// when the page is loaded.
+  const SelectCoinsPage({this.autoSubmit, this.coinsToAutoSubmit});
 
-  final Function(List<Coin>) coinsToActivate;
+  final bool autoSubmit;
+  final List<Coin> coinsToAutoSubmit;
 
   @override
   _SelectCoinsPageState createState() => _SelectCoinsPageState();
@@ -147,7 +151,8 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
   }
 
   void _initCoinList() async {
-    for (CoinToActivate coinToActivate in coinsBloc.coinBeforeActivation) {
+    for (final CoinToActivate coinToActivate
+        in coinsBloc.coinBeforeActivation) {
       _currentCoins
           .removeWhere((Coin coin) => coin.abbr == coinToActivate.coin.abbr);
       _currentCoins.add(coinToActivate.coin);
@@ -162,6 +167,16 @@ class _SelectCoinsPageState extends State<SelectCoinsPage> {
     setState(() {
       _listViewItems = _buildListView();
     });
+
+    // Auto-submitting through this page allows for the ZHTLC activation
+    // flow to be triggered.
+    if (widget.autoSubmit && widget.coinsToAutoSubmit != null) {
+      for (final Coin coin in widget.coinsToAutoSubmit) {
+        coinsBloc.setCoinBeforeActivation(coin, true);
+      }
+
+      _pressDoneButton();
+    }
   }
 
   List<Widget> _buildListView() {

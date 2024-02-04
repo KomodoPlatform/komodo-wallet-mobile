@@ -11,8 +11,7 @@ class AppConfig {
   int get maxCoinsEnabledAndroid => 50;
   int get maxCoinEnabledIOS => 20;
 
-  String get transactionWarningInfoUrl =>
-      'https://komodoplatform.com/en/blog/preventing-address-poisoning';
+  String get transactionWarningInfoUrl => 'https://piratechain.com/faq';
 
   // number of decimal places for trade amount input fields
   int get tradeFormPrecision => 8;
@@ -44,12 +43,13 @@ class AppConfig {
 
   // Brand config below
 
-  String get appName => 'Komodo Wallet';
-  String get appCompanyLong => 'Komodo Platform';
-  String get appCompanyShort => 'Komodo';
+  String get appName => 'Pirate Wallet';
+  String get appCompanyLong => 'Pirate';
+  String get appCompanyShort => 'Pirate';
 
-  List<String> get defaultCoins => ['KMD', 'BTC-segwit'];
-  List<String> get coinsFiat => ['BTC-segwit', 'KMD'];
+  List<String> get defaultCoins => ['ARRR-BEP20', 'BTC-segwit', 'KMD'];
+  List<String> get defaultZHTLCCoins => ['ARRR'];
+  List<String> get coinsFiat => ['BTC-segwit', 'ARRR'];
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
@@ -167,8 +167,8 @@ class AppConfig {
   List<SupportChannel> supportChannels = [
     SupportChannel(
       title: 'DISCORD',
-      subtitle: 'Komodo #support',
-      link: 'https://komodoplatform.com/discord',
+      subtitle: 'Pirate #support',
+      link: 'https://piratechain.com/discord',
       icon: SizedBox(
         width: 60,
         child: Image.asset('assets/discord_logo.png'),
@@ -178,10 +178,10 @@ class AppConfig {
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/discord_feed_parser
-  bool get isFeedEnabled => true;
+  bool get isFeedEnabled => false;
   String get feedProviderSourceUrl => 'https://komodo.earth/messages';
   NewsSource get defaultNewsSource => NewsSource(
-        name: 'Komodo #official-news',
+        name: 'Pirate #official-news',
         url:
             'https://discord.com/channels/412898016371015680/412915799251222539',
         pic:
@@ -244,5 +244,5 @@ class AppConfig {
 
   /// We're using different rpc ports for different wallet packages
   /// in order to allow multiple wallets to run simultaneously.
-  int get rpcPort => 7783;
+  int get rpcPort => 7767;
 }

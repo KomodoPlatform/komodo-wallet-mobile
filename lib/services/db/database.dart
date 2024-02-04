@@ -56,7 +56,8 @@ class Db {
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
-          camo_session_started_at INTEGER
+          camo_session_started_at INTEGER,
+          default_zhltc_coin_activated BIT
         )
       ''';
     String _currentWalletTable([bool newValue = false]) => '''
@@ -70,7 +71,8 @@ class Db {
           is_camo_active BIT,
           camo_fraction INTEGER,
           camo_balance TEXT,
-          camo_session_started_at INTEGER
+          camo_session_started_at INTEGER,
+          default_zhltc_coin_activated BIT
         )
       ''';
     String _listOfCoinActivatedTable = '''
@@ -81,7 +83,7 @@ class Db {
       ''';
     final db = await openDatabase(
       path,
-      version: 3,
+      version: 4,
       onOpen: (Database db) {},
       onCreate: (Database db, int version) async {
         Log('database:35', 'initDB, onCreate version $version');
@@ -341,6 +343,7 @@ class Db {
       'camo_balance': walletSecuritySettings.camoBalance,
       'camo_session_started_at': walletSecuritySettings.camoSessionStartedAt,
       'switch_pin_log_out_on_exit': walletSecuritySettings.logOutOnExit ? 1 : 0,
+      'default_zhltc_coin_activated': 0,
     };
 
     return await db.insert('CurrentWallet ', row);
@@ -362,6 +365,38 @@ class Db {
     } else {
       return wallets[0];
     }
+  }
+
+  static Future<bool> isDefaultZHTLCCoinActivated() async {
+    final Database db = await Db.db;
+
+    final List<Map<String, dynamic>> maps = await db.query('CurrentWallet');
+
+    final List<bool> defaultZHLTCCoinActivated =
+        List<bool>.generate(maps.length, (int i) {
+      return maps[i]['default_zhltc_coin_activated'] == 1;
+    });
+    if (defaultZHLTCCoinActivated.isEmpty) {
+      return false;
+    } else {
+      return defaultZHLTCCoinActivated[0];
+    }
+  }
+
+  static Future<int> setDefaultZHLTCCoinActivated(bool value) async {
+    final Database db = await Db.db;
+
+    final Wallet currentWallet = await getCurrentWallet();
+    final Map<String, dynamic> row = <String, dynamic>{
+      'default_zhltc_coin_activated': value ? 1 : 0,
+    };
+
+    return db.update(
+      'CurrentWallet',
+      row,
+      where: 'id = ?',
+      whereArgs: [currentWallet.id],
+    );
   }
 
   static Future<void> deleteCurrentWallet() async {

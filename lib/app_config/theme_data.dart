@@ -124,12 +124,12 @@ SliderThemeData get _sliderThemeDataLight => SliderThemeData(
 
 // Color scheme dark adapted from current dev
 ColorScheme get _colorScheme => const ColorScheme(
-      primary: Color.fromRGBO(42, 54, 71, 1),
-      primaryVariant: Color.fromRGBO(28, 36, 48, 1),
-      secondary: Color.fromRGBO(57, 161, 238, 1),
-      secondaryVariant: Color.fromRGBO(57, 161, 238, 1),
-      surface: Color.fromRGBO(42, 54, 71, 1),
-      background: Color.fromRGBO(30, 42, 58, 1),
+      primary: Color.fromRGBO(30, 30, 30, 1),
+      primaryVariant: Color.fromRGBO(27, 27, 27, 1),
+      secondary: Color.fromRGBO(187, 150, 69, 1),
+      secondaryVariant: Color.fromRGBO(242, 222, 153, 1),
+      surface: Color.fromRGBO(90, 90, 90, 1),
+      background: Color.fromRGBO(20, 20, 20, 1),
       error: Color.fromRGBO(202, 78, 61, 1),
       onPrimary: Color.fromRGBO(255, 255, 255, 1),
       onSecondary: Color.fromRGBO(255, 255, 255, 1),
@@ -143,8 +143,8 @@ ColorScheme get _colorScheme => const ColorScheme(
 ColorScheme get _colorSchemeLight => const ColorScheme(
       primary: Color.fromRGBO(255, 255, 255, 1),
       primaryVariant: Color.fromRGBO(183, 187, 191, 1),
-      secondary: Color.fromRGBO(60, 201, 191, 1),
-      secondaryVariant: Color.fromRGBO(60, 201, 191, 1),
+      secondary: Color.fromRGBO(187, 150, 69, 1),
+      secondaryVariant: Color.fromRGBO(187, 150, 69, 1),
       surface: Color.fromRGBO(255, 255, 255, 1),
       background: Color.fromRGBO(245, 245, 245, 1),
       error: Color.fromRGBO(202, 78, 61, 1),
@@ -160,7 +160,7 @@ ColorScheme get _colorSchemeLight => const ColorScheme(
 // focus on colorScheme and on component themes
 
 ThemeData getThemeDark() => ThemeData(
-      fontFamily: 'Ubuntu',
+      fontFamily: 'Bai Jamjuree',
       colorScheme: _colorScheme,
       primaryColor: _colorScheme.primary,
       primaryColorDark: _colorScheme.primaryVariant,
@@ -188,7 +188,7 @@ ThemeData getThemeDark() => ThemeData(
     );
 
 ThemeData getThemeLight() => ThemeData(
-      fontFamily: 'Ubuntu',
+      fontFamily: 'Bai Jamjuree',
       colorScheme: _colorSchemeLight,
       primaryColor: _colorSchemeLight.primary,
       primaryColorDark: _colorSchemeLight.primaryVariant,

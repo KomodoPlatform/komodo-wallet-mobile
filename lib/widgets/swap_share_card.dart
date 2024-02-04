@@ -228,7 +228,7 @@ class SwapShareCard extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
                         child: GestureDetector(
                           onTap: () =>
-                              launchUrlString('https://komodoplatform.com'),
+                              launchUrlString('https://piratechain.com'),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -240,7 +240,7 @@ class SwapShareCard extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               const Text(
-                                'Download Komodo Wallet on komodoplatform.com',
+                                'Download Pirate Wallet on piratechain.com',
                                 style: TextStyle(fontSize: 6),
                               ),
                             ],
