@@ -332,11 +332,18 @@ class ConstructorProvider extends ChangeNotifier {
 
   BestOrder getTickerTopOrder(List<BestOrder> tickerOrdersList, Market type) {
     final List<BestOrder> sorted = List.from(tickerOrdersList);
+    // This code appears to remove orders placed by the current wallet
+    // so that the user doesn't trade with themselves
     sorted.removeWhere((BestOrder order) {
       final String coin =
           order.action == Market.SELL ? order.coin : order.otherCoin;
       final CoinBalance coinBalance = coinsBloc.getBalanceByAbbr(coin);
-      if (coinBalance == null) return false;
+
+      // ZHTLC address is null (Shielded), so we can't check it.
+      // This removes the protection against users taking their own maker orders
+      if (coinBalance == null || order.address == null) {
+        return false;
+      }
       return coinBalance.balance.address.toLowerCase() ==
           order.address.toLowerCase();
     });
