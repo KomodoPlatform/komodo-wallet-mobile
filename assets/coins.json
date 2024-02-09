@@ -1748,7 +1748,7 @@
     "mm2": 1,
     "sign_message_prefix": "DarkCoin Signed Message:\n",
     "required_confirmations": 3,
-    "avg_blocktime": 180,
+    "avg_blocktime": 90,
     "protocol": {
       "type": "UTXO"
     },
@@ -9001,6 +9001,7 @@
     "p2shtype": 13,
     "wiftype": 212,
     "txfee": 100000,
+    "dust": 5460,
     "mm2": 1,
     "required_confirmations": 5,
     "avg_blocktime": 60,
@@ -9989,6 +9990,27 @@
     }
   },
   {
+    "coin": "RTB",
+    "sign_message_prefix": "Komodo Signed Message:\n",
+    "asset": "RTB",
+    "fname": "RideTheBullCoin",
+    "rpcport": 29403,
+    "txversion": 4,
+    "overwintered": 1,
+    "mm2": 1,
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "derivation_path": "m/44'/141'",
+    "trezor_coin": "Komodo",
+    "links": {
+      "github": "https://github.com/RTBCoin",
+      "homepage": "https://ridethebullcoin.com"
+    }
+  },
+  {
     "coin": "RTM",
     "name": "raptoreum",
     "fname": "Raptoreum",
@@ -10320,7 +10342,7 @@
     "derivation_path": "m/44'/60'"
   },
   {
-    "coin": "SPACE",
+    "coin": "SPACECOIN",
     "sign_message_prefix": "Komodo Signed Message:\n",
     "asset": "SPACE",
     "fname": "Spacecoin",
@@ -10336,6 +10358,81 @@
     },
     "derivation_path": "m/44'/141'",
     "trezor_coin": "Komodo"
+  },
+  {
+    "coin": "SPACE-AVX20",
+    "name": "space_avx20",
+    "fname": "Space Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 43114,
+    "required_confirmations": 3,
+    "avg_blocktime": 2.4,
+    "decimals": 18,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "AVAX",
+        "contract_address": "0x09211Dc67f9fe98Fb7bBB91Be0ef05f4a12FA2b2"
+      }
+    },
+    "derivation_path": "m/44'/9000'"
+  },
+  {
+    "coin": "SPACE-BEP20",
+    "name": "space_bep20",
+    "fname": "Space Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "avg_blocktime": 3,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x9E1170c12FDDd3B00FEc42ddF4C942565D9Be577"
+      }
+    },
+    "derivation_path": "m/44'/714'"
+  },
+  {
+    "coin": "SPACE-FTM20",
+    "name": "space_ftm20",
+    "fname": "Space Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 250,
+    "decimals": 18,
+    "avg_blocktime": 1.8,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "FTM",
+        "contract_address": "0x5f7F94a1dd7b15594d17543BEB8B30b111DD464c"
+      }
+    },
+    "derivation_path": "m/44'/1007'"
+  },
+  {
+    "coin": "SPACE-PLG20",
+    "name": "space_plg20",
+    "fname": "Space Token",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 137,
+    "decimals": 18,
+    "avg_blocktime": 1.8,
+    "required_confirmations": 20,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "MATIC",
+        "contract_address": "0xB53Ec4aCe420a62Cfb75aFdEba600D284777cd65"
+      }
+    },
+    "derivation_path": "m/44'/966'"
   },
   {
     "coin": "SRM-ERC20",
@@ -10721,6 +10818,25 @@
       }
     },
     "derivation_path": "m/44'/60'"
+  },
+  {
+    "coin": "TAZ-BEP20",
+    "name": "taz_bep20",
+    "fname": "Taz",
+    "rpcport": 80,
+    "mm2": 1,
+    "chain_id": 56,
+    "decimals": 18,
+    "avg_blocktime": 3,
+    "required_confirmations": 3,
+    "protocol": {
+      "type": "ERC20",
+      "protocol_data": {
+        "platform": "BNB",
+        "contract_address": "0x83BC92dcfC1F62Ba5dbd0f3537032f83a004300A"
+      }
+    },
+    "derivation_path": "m/44'/714'"
   },
   {
     "coin": "tBTC",
@@ -13174,7 +13290,7 @@
     "rpcport": 80,
     "mm2": 1,
     "chain_id": 1,
-    "decimals": 18,
+    "decimals": 8,
     "avg_blocktime": 15,
     "required_confirmations": 3,
     "protocol": {
@@ -13193,6 +13309,7 @@
     "rpcport": 80,
     "mm2": 1,
     "chain_id": 56,
+    "decimals": 8,
     "avg_blocktime": 3,
     "required_confirmations": 3,
     "protocol": {
