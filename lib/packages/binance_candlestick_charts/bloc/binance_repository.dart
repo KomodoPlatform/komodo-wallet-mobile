@@ -1,5 +1,7 @@
 // Using relative imports in this "package" to make it easier to track external
 // dependencies when moving or copying this "package" to another project.
+import 'dart:collection';
+
 import './binance_provider.dart';
 import '../models/binance_exchange_info.dart';
 import '../models/binance_klines.dart';
@@ -21,11 +23,6 @@ const Map<String, String> defaultBinanceCandleIntervalsMap = <String, String>{
   '259200': '3d',
   '604800': '1w',
 };
-final List<String> defaultBinanceCandleIntervals =
-    defaultBinanceCandleIntervalsMap.values.toList();
-final Map<String, String> reverseBinanceCandleIntervalsMap =
-    defaultBinanceCandleIntervalsMap
-        .map((String k, String v) => MapEntry<String, String>(v, k));
 
 class BinanceRepository {
   BinanceRepository({BinanceProvider binanceProvider})
@@ -59,29 +56,40 @@ class BinanceRepository {
 
   Future<Map<String, dynamic>> getLegacyOhlcCandleData(
     String symbol, {
-    List<String> intervals,
+    List<String> ohlcDurations,
   }) async {
-    final Map<String, dynamic> ohlcData = <String, dynamic>{};
+    final Map<String, dynamic> ohlcData = <String, dynamic>{
+      ...defaultBinanceCandleIntervalsMap
+    };
 
     // The Binance API requires the symbol to be in uppercase and without any
     // special characters, so we remove them here.
     symbol = normaliseSymbol(symbol);
-    intervals ??= defaultBinanceCandleIntervals;
+    ohlcDurations ??= defaultBinanceCandleIntervalsMap.keys.toList();
 
     await Future.wait<void>(
-      intervals.map(
-        (String interval) async {
+      ohlcDurations.map(
+        (String duration) async {
+          // final int startTime = DateTime.now()
+          //     .toUtc()
+          //     .subtract(
+          //       Duration(seconds: int.parse(duration)),
+          //     )
+          //     .millisecondsSinceEpoch;
           final BinanceKlinesResponse klinesResponse =
-              await _binanceProvider.fetchKlines(symbol, interval);
-          final String ohlcInterval =
-              reverseBinanceCandleIntervalsMap[interval];
+              await _binanceProvider.fetchKlines(
+            symbol,
+            defaultBinanceCandleIntervalsMap[duration],
+            limit: 500,
+            // startTime: startTime,
+          );
 
           if (klinesResponse != null) {
-            ohlcData[ohlcInterval] = klinesResponse.klines
+            ohlcData[duration] = klinesResponse.klines
                 .map((BinanceKline kline) => kline.toMap())
                 .toList();
           } else {
-            ohlcData[ohlcInterval] = <Map<String, dynamic>>[];
+            ohlcData[duration] = <Map<String, dynamic>>[];
           }
         },
       ),

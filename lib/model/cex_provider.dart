@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:komodo_dex/blocs/coins_bloc.dart';
+import 'package:komodo_dex/packages/binance_candlestick_charts/bloc/binance_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_config/app_config.dart';
@@ -17,7 +18,7 @@ import '../utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
-    _updateTickersList();
+    _updateTickersListV2();
     _updateRates();
 
     cexPrices.linkProvider(this);
@@ -92,43 +93,24 @@ class CexProvider extends ChangeNotifier {
   final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
   bool _updatingChart = false;
   List<String> _tickers;
+  final BinanceRepository _binanceRepository = BinanceRepository();
 
   void _updateRates() => cexPrices.updateRates();
 
   List<String> _getTickers() {
     if (_tickers != null) return _tickers;
 
-    _updateTickersList();
+    _updateTickersListV2();
     return _tickersFallBack;
   }
 
-  Future<void> _updateTickersList() async {
-    http.Response _res;
-    String _body;
+  Future<void> _updateTickersListV2() async {
     try {
-      _res = await http.get(_tickersListUrl).timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching tickers timed out');
-          return;
-        },
-      );
-      _body = _res.body;
+      final List<String> tickers = await _binanceRepository.getLegacyTickers();
+      _tickers = tickers;
+      notifyListeners();
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
-    }
-
-    List<dynamic> json;
-    try {
-      json = jsonDecode(_body);
-    } catch (e) {
-      Log('cex_provider', 'Failed to parse tickers json: $e');
-    }
-
-    if (json != null) {
-      _tickers =
-          json.map<String>((dynamic ticker) => ticker.toString()).toList();
-      notifyListeners();
     }
   }
 
@@ -146,9 +128,9 @@ class CexProvider extends ChangeNotifier {
       _charts[pair].status = ChartStatus.fetching;
     }
     try {
-      json0 = await _fetchChartData(chain[0]);
+      json0 = await _fetchChartDataV2(chain[0]);
       if (chain.length > 1) {
-        json1 = await _fetchChartData(chain[1]);
+        json1 = await _fetchChartDataV2(chain[1]);
       }
     } catch (_) {
       _updatingChart = false;
@@ -262,38 +244,22 @@ class CexProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> _fetchChartData(ChainLink link) async {
-    final String pair = '${link.rel}-${link.base}';
-    http.Response _res;
-    String _body;
+  Future<Map<String, dynamic>> _fetchChartDataV2(ChainLink link) async {
     try {
-      _res = await http
-          .get(Uri.parse('$_chartsUrl/${pair.toLowerCase()}'))
-          .timeout(
-        const Duration(seconds: 60),
-        onTimeout: () {
-          Log('cex_provider', 'Fetching $pair data timed out');
-          throw 'Fetching $pair timed out';
-        },
-      );
-      _body = _res.body;
+      final String pair = '${link.rel}-${link.base}';
+      final Map<String, dynamic> result =
+          await _binanceRepository.getLegacyOhlcCandleData( pair);
+      return result;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch data: $e');
       rethrow;
     }
-
-    Map<String, dynamic> json;
-    try {
-      json = jsonDecode(_body);
-    } catch (e) {
-      Log('cex_provider', 'Failed to parse json: $e');
-      rethrow;
-    }
-
-    return json;
   }
 
   List<ChainLink> _findChain(String pair) {
+    // remove cex postfixes
+    pair = getCoinTicker(pair);
+
     final List<String> abbr = pair.split('-');
     if (abbr[0] == abbr[1]) return null;
     final String base = abbr[1].toLowerCase();

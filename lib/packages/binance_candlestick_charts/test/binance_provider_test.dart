@@ -1,8 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
-import 'package:komodo_dex/packages/binance_candlestick_charts/bloc/binance_provider.dart';
-import 'package:komodo_dex/packages/binance_candlestick_charts/models/binance_exchange_info.dart';
-import 'package:komodo_dex/packages/binance_candlestick_charts/models/binance_klines.dart';
+
+import '../bloc/binance_provider.dart';
+import '../models/binance_exchange_info.dart';
+import '../models/binance_klines.dart';
 
 void main() {
   group('BinanceProvider', () {
