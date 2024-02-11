@@ -223,25 +223,36 @@ class _ChartPainter extends CustomPainter {
     final double fieldHeight = size.height - marginBottom - marginTop;
 
     // adjust time asix
-    double visibleCandlesNumber = size.width / (candleWidth + gap) / zoom;
-    if (visibleCandlesNumber < 1) visibleCandlesNumber = 1;
-    final double timeRange = visibleCandlesNumber * widget.duration;
+    int visibleCandles = (size.width / (candleWidth + gap) / zoom).floor();
+    if (visibleCandles < 1) {
+      visibleCandles = 1;
+    }
+    if (visibleCandles > data.length) {
+      visibleCandles = data.length;
+    }
+    final int timeRange =
+        data[0].closeTime - data[visibleCandles - 1].closeTime;
     final double timeScaleFactor = size.width / timeRange;
     setWidgetState(
-        'maxTimeShift',
-        (data.first.closeTime - data.last.closeTime) * timeScaleFactor -
-            timeRange * timeScaleFactor);
+      'maxTimeShift',
+      (data.first.closeTime - data.last.closeTime) * timeScaleFactor -
+          timeRange * timeScaleFactor,
+    );
     final double timeAxisMax =
         data[0].closeTime - timeAxisShift * zoom / timeScaleFactor;
     final double timeAxisMin = timeAxisMax - timeRange;
 
     //collect visible candles data
     final List<CandleData> visibleCandlesData = [];
-    for (int i = 0; i < data.length; i++) {
+    for (int i = 0; i < visibleCandles; i++) {
       final CandleData candle = data[i];
       final double dx = (candle.closeTime - timeAxisMin) * timeScaleFactor;
-      if (dx > size.width + candleWidth * zoom) continue;
-      if (dx < 0) break;
+      if (dx > size.width + candleWidth * zoom) {
+        continue;
+      }
+      if (dx < 0) {
+        break;
+      }
       visibleCandlesData.add(candle);
     }
 

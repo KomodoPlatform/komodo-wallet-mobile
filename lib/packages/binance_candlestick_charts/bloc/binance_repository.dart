@@ -8,7 +8,7 @@ import '../models/binance_klines.dart';
 
 // Declaring constants here to make this easier to copy & move around
 String get binanceApiEndpoint => 'https://api.binance.com/api/v3';
-const Map<String, String> defaultBinanceCandleIntervalsMap = <String, String>{
+const Map<String, String> defaultCandleIntervalsBinanceMap = <String, String>{
   '60': '1m',
   '180': '3m',
   '300': '5m',
@@ -59,29 +59,22 @@ class BinanceRepository {
     List<String> ohlcDurations,
   }) async {
     final Map<String, dynamic> ohlcData = <String, dynamic>{
-      ...defaultBinanceCandleIntervalsMap
+      ...defaultCandleIntervalsBinanceMap
     };
 
     // The Binance API requires the symbol to be in uppercase and without any
     // special characters, so we remove them here.
     symbol = normaliseSymbol(symbol);
-    ohlcDurations ??= defaultBinanceCandleIntervalsMap.keys.toList();
+    ohlcDurations ??= defaultCandleIntervalsBinanceMap.keys.toList();
 
     await Future.wait<void>(
       ohlcDurations.map(
         (String duration) async {
-          // final int startTime = DateTime.now()
-          //     .toUtc()
-          //     .subtract(
-          //       Duration(seconds: int.parse(duration)),
-          //     )
-          //     .millisecondsSinceEpoch;
           final BinanceKlinesResponse klinesResponse =
               await _binanceProvider.fetchKlines(
             symbol,
-            defaultBinanceCandleIntervalsMap[duration],
-            limit: 500,
-            // startTime: startTime,
+            defaultCandleIntervalsBinanceMap[duration],
+            limit: 500, // The default is 500, and the max is 1000 for Binance.
           );
 
           if (klinesResponse != null) {
