@@ -385,7 +385,7 @@ class _ChartPainter extends CustomPainter {
         rightMarkerPosition - labelWidth - 4,
         size.height - 7,
       ),
-      text: _formatTime(visibleCandlesData.first.closeTime * 1000),
+      text: _formatTime(visibleCandlesData.first.closeTime),
       align: TextAlign.end,
       width: labelWidth,
     );
@@ -396,7 +396,7 @@ class _ChartPainter extends CustomPainter {
         4,
         size.height - 7,
       ),
-      text: _formatTime(visibleCandlesData.last.closeTime * 1000),
+      text: _formatTime(visibleCandlesData.last.closeTime),
       align: TextAlign.start,
       width: labelWidth,
     );
@@ -485,7 +485,7 @@ class _ChartPainter extends CustomPainter {
           align: TextAlign.center,
           color: widget.textColor == Colors.black ? Colors.white : Colors.black,
           backgroundColor: widget.textColor,
-          text: ' ${_formatTime(selectedCandle.closeTime * 1000)} ',
+          text: ' ${_formatTime(selectedCandle.closeTime)} ',
           point: Offset(dx - 50, size.height - 7),
           width: labelWidth,
         );
@@ -569,16 +569,17 @@ class _ChartPainter extends CustomPainter {
   String _formatTime(int millisecondsSinceEpoch) {
     final DateTime utc = DateTime.fromMillisecondsSinceEpoch(
       millisecondsSinceEpoch,
-      isUtc: false,
+      isUtc: true,
     );
-    final bool thisYear = DateTime.now().year ==
-        DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch).year;
+    final bool thisYear = DateTime.now().year == utc.year;
 
     String format = 'MMM dd yyyy';
-    if (widget.duration < 60 * 60 * 24)
+    if (widget.duration < 60 * 60 * 24) {
       format = 'MMM dd${thisYear ? '' : ' yyyy'}, HH:00';
-    if (widget.duration < 60 * 60)
+    }
+    if (widget.duration < 60 * 60) {
       format = 'MMM dd${thisYear ? '' : ' yyyy'}, HH:mm';
+    }
 
     return DateFormat(format).format(utc);
   }
