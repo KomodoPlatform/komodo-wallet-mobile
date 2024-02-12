@@ -67,17 +67,13 @@ class CandleChartState extends State<CandleChart>
   @override
   Widget build(BuildContext context) {
     double _constrainedTimeShift(double timeShift) {
-      const overScroll = 70;
+      const int overScroll = 70;
+      const double minTimeShift = 0; //-overScroll / staticZoom / dynamicZoom;
+      final double maxTimeShiftValue = maxTimeShift != null
+          ? (maxTimeShift + overScroll) / staticZoom / dynamicZoom
+          : timeShift;
 
-      if (timeShift * staticZoom * dynamicZoom < -overScroll)
-        return -overScroll / staticZoom / dynamicZoom;
-
-      if (maxTimeShift == null) return timeShift;
-
-      if (timeShift * staticZoom * dynamicZoom > maxTimeShift + overScroll)
-        return (maxTimeShift + overScroll) / staticZoom / dynamicZoom;
-
-      return timeShift;
+      return timeShift.clamp(minTimeShift, maxTimeShiftValue);
     }
 
     double _constrainedZoom(double scale) {
