@@ -46,6 +46,7 @@ class CandleChartState extends State<CandleChart>
   Size canvasSize;
   Offset tapPosition;
   Map<String, dynamic> selectedPoint; // {'timestamp': int, 'price': double}
+  int scrollDragFactor = 5;
 
   @override
   void initState() {
@@ -112,7 +113,9 @@ class CandleChartState extends State<CandleChart>
 
             setState(() {
               timeAxisShift = _constrainedTimeShift(
-                  timeAxisShift + drag.delta.dx / staticZoom / dynamicZoom);
+                timeAxisShift +
+                    drag.delta.dx / scrollDragFactor / staticZoom / dynamicZoom,
+              );
             });
           },
           onScaleStart: (_) {
@@ -129,11 +132,13 @@ class CandleChartState extends State<CandleChart>
           onScaleUpdate: (ScaleUpdateDetails scale) {
             setState(() {
               dynamicZoom = _constrainedZoom(scale.scale);
-              timeAxisShift = _constrainedTimeShift(prevTimeAxisShift -
-                  canvasSize.width /
-                      2 *
-                      (1 - dynamicZoom) /
-                      (staticZoom * dynamicZoom));
+              timeAxisShift = _constrainedTimeShift(
+                prevTimeAxisShift -
+                    canvasSize.width /
+                        2 *
+                        (1 - dynamicZoom) /
+                        (staticZoom * dynamicZoom),
+              );
             });
           },
           onTapDown: (TapDownDetails details) {
