@@ -222,29 +222,28 @@ class _ChartPainter extends CustomPainter {
     const double labelWidth = 100;
     final double fieldHeight = size.height - marginBottom - marginTop;
 
-    // adjust time asix
-    int visibleCandles = (size.width / (candleWidth + gap) / zoom).floor();
-    if (visibleCandles < 1) {
-      visibleCandles = 1;
-    }
-    if (visibleCandles > data.length) {
-      visibleCandles = data.length;
-    }
-    final int timeRange =
-        data[0].closeTime - data[visibleCandles - 1].closeTime;
+    // adjust time axis
+    final int maxVisibleCandles =
+        (size.width / (candleWidth + gap) / zoom).floor();
+    final int firstCandleIndex =
+        timeAxisShift.floor().clamp(0, data.length - maxVisibleCandles);
+    final int lastVisibleCandleIndex = (firstCandleIndex + maxVisibleCandles)
+        .clamp(maxVisibleCandles, data.length - 1);
+
+    final int firstCandleCloseTime = data[firstCandleIndex].closeTime;
+    final int lastCandleCloseTime = data[lastVisibleCandleIndex].closeTime;
+    final int timeRange = firstCandleCloseTime - lastCandleCloseTime;
     final double timeScaleFactor = size.width / timeRange;
     setWidgetState(
       'maxTimeShift',
-      (data.first.closeTime - data.last.closeTime) * timeScaleFactor -
-          timeRange * timeScaleFactor,
+      (data.length - maxVisibleCandles).toDouble(),
     );
-    final double timeAxisMax =
-        data[0].closeTime - timeAxisShift * zoom / timeScaleFactor;
+    final double timeAxisMax = firstCandleCloseTime - zoom / timeScaleFactor;
     final double timeAxisMin = timeAxisMax - timeRange;
 
     //collect visible candles data
     final List<CandleData> visibleCandlesData = [];
-    for (int i = 0; i < visibleCandles; i++) {
+    for (int i = firstCandleIndex; i < lastVisibleCandleIndex; i++) {
       final CandleData candle = data[i];
       final double dx = (candle.closeTime - timeAxisMin) * timeScaleFactor;
       if (dx > size.width + candleWidth * zoom) {
