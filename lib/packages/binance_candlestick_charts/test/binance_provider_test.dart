@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 
 import '../bloc/binance_provider.dart';
 import '../models/binance_exchange_info.dart';
@@ -10,22 +9,23 @@ void main() {
     const apiUrl = 'https://api.binance.com/api/v3';
 
     test('fetchKlines returns BinanceKlinesResponse when successful', () async {
-      final provider = BinanceProvider(apiUrl: apiUrl);
-      final symbol = 'BTCUSDT';
-      final interval = '1m';
-      final limit = 100;
+      final BinanceProvider provider = BinanceProvider(apiUrl: apiUrl);
+      const String symbol = 'BTCUSDT';
+      const String interval = '1m';
+      const int limit = 100;
 
-      final result = await provider.fetchKlines(symbol, interval, limit: limit);
+      final BinanceKlinesResponse result =
+          await provider.fetchKlines(symbol, interval, limit: limit);
 
       expect(result, isA<BinanceKlinesResponse>());
       expect(result.klines.isNotEmpty, true);
     });
 
     test('fetchKlines throws an exception when unsuccessful', () async {
-      final provider = BinanceProvider(apiUrl: apiUrl);
-      final symbol = 'invalid_symbol';
-      final interval = '1m';
-      final limit = 100;
+      final BinanceProvider provider = BinanceProvider(apiUrl: apiUrl);
+      const String symbol = 'invalid_symbol';
+      const String interval = '1m';
+      const int limit = 100;
 
       expect(
         () => provider.fetchKlines(symbol, interval, limit: limit),
@@ -34,9 +34,10 @@ void main() {
     });
 
     test('fetchExchangeInfo returns a valid object when successful', () async {
-      final provider = BinanceProvider(apiUrl: apiUrl);
+      final BinanceProvider provider = BinanceProvider(apiUrl: apiUrl);
 
-      final result = await provider.fetchExchangeInfo();
+      final BinanceExchangeInfoResponse result =
+          await provider.fetchExchangeInfo();
 
       expect(result, isA<BinanceExchangeInfoResponse>());
       expect(result.timezone, isA<String>());

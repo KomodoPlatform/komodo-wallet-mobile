@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:http/http.dart' as http;
 
 import '../bloc/binance_repository.dart';
 
@@ -9,9 +8,7 @@ void main() {
 
     test('getLegacyOhlcCandleData returns a valid map when successful',
         () async {
-      // Prepare test data
-      final symbol = 'eth-btc';
-      final limit = 100;
+      const String symbol = 'eth-btc';
 
       // Call the method
       final Map<String, dynamic> result =
@@ -19,7 +16,6 @@ void main() {
 
       final Map<String, dynamic> resultMin =
           (result['60'] as List<Map<String, dynamic>>).first;
-      print(resultMin);
 
       // Perform assertions
       expect(result, isA<Map<String, dynamic>>());
@@ -33,9 +29,7 @@ void main() {
     test('getLegacyOhlcCandleData throws an exception when unsuccessful',
         () async {
       // Prepare test data
-      final symbol = 'invalid_symbol/';
-      final interval = '1m';
-      final limit = 100;
+      const String symbol = 'invalid_symbol/';
 
       // Call the method and expect an exception to be thrown
       expect(

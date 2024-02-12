@@ -24,6 +24,8 @@ const Map<String, String> defaultCandleIntervalsBinanceMap = <String, String>{
   '604800': '1w',
 };
 
+/// A repository class for interacting with the Binance API.
+/// This class provides methods to fetch legacy tickers and OHLC candle data.
 class BinanceRepository {
   BinanceRepository({BinanceProvider binanceProvider})
       : _binanceProvider =
@@ -33,6 +35,13 @@ class BinanceRepository {
 
   List<String> _symbols = <String>[];
 
+  /// Retrieves a list of tickers in the lowercase, dash-separated format (e.g. eth-btc).
+  ///
+  /// If the [_symbols] list is not empty, it is returned immediately.
+  /// Otherwise, it fetches the exchange information from [_binanceProvider]
+  /// and converts the symbols to the legacy hyphenated lowercase format.
+  ///
+  /// Returns a list of tickers.
   Future<List<String>> getLegacyTickers() async {
     if (_symbols.isNotEmpty) {
       return _symbols;
@@ -54,6 +63,22 @@ class BinanceRepository {
     return _symbols;
   }
 
+  /// Fetches the legacy OHLC (Open-High-Low-Close) candle data for a given symbol.
+  /// The candle data is fetched for the specified durations.
+  /// If no durations are provided, it fetches the data for all default durations.
+  /// Returns a map of durations to the corresponding candle data.
+  ///
+  /// Parameters:
+  /// - symbol: The symbol for which to fetch the candle data.
+  /// - ohlcDurations: The durations for which to fetch the candle data. If not provided, it fetches the data for all default durations.
+  ///
+  /// Returns:
+  /// A map of durations to the corresponding candle data.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// final Map<String, dynamic> candleData = await getLegacyOhlcCandleData('BTCUSDT', ohlcDurations: ['1m', '5m', '1h']);
+  /// ```
   Future<Map<String, dynamic>> getLegacyOhlcCandleData(
     String symbol, {
     List<String> ohlcDurations,
@@ -93,9 +118,12 @@ class BinanceRepository {
     return ohlcData;
   }
 
+  /// Normalizes the given [symbol] by removing special characters and converting it to uppercase.
+  ///
+  /// The Binance API requires the symbol to be in uppercase and without any special characters.
+  /// This method removes any dashes or slashes from the symbol and converts it to uppercase.
+  /// Returns the normalized symbol.
   String normaliseSymbol(String symbol) {
-    // The Binance API requires the symbol to be in uppercase and without any
-    // special characters, so we remove them here.
     symbol = symbol.replaceAll('-', '').replaceAll('/', '').toUpperCase();
     return symbol;
   }

@@ -1,6 +1,9 @@
+/// Represents the response from the Binance API for klines/candlestick data.
 class BinanceKlinesResponse {
+  /// Creates a new instance of [BinanceKlinesResponse].
   BinanceKlinesResponse({this.klines});
 
+  /// Creates a new instance of [BinanceKlinesResponse] from a JSON array.
   factory BinanceKlinesResponse.fromJson(List<dynamic> json) {
     return BinanceKlinesResponse(
       klines:
@@ -8,14 +11,18 @@ class BinanceKlinesResponse {
     );
   }
 
+  /// The list of klines (candlestick data).
   final List<BinanceKline> klines;
 
+  /// Converts the [BinanceKlinesResponse] object to a JSON array.
   List<dynamic> toJson() {
     return klines.map((BinanceKline kline) => kline.toJson()).toList();
   }
 }
 
+/// Represents a Binance Kline (candlestick) data.
 class BinanceKline {
+  /// Creates a new instance of [BinanceKline].
   BinanceKline({
     this.openTime,
     this.open,
@@ -30,6 +37,7 @@ class BinanceKline {
     this.takerBuyQuoteAssetVolume,
   });
 
+  /// Creates a new instance of [BinanceKline] from a JSON array.
   factory BinanceKline.fromJson(List<dynamic> json) {
     return BinanceKline(
       openTime: json[0],
@@ -46,18 +54,7 @@ class BinanceKline {
     );
   }
 
-  final int openTime;
-  final double open;
-  final double high;
-  final double low;
-  final double close;
-  final double volume;
-  final int closeTime;
-  final double quoteAssetVolume;
-  final int numberOfTrades;
-  final double takerBuyBaseAssetVolume;
-  final double takerBuyQuoteAssetVolume;
-
+  /// Converts the [BinanceKline] object to a JSON array.
   List<dynamic> toJson() {
     return <dynamic>[
       openTime,
@@ -74,6 +71,7 @@ class BinanceKline {
     ];
   }
 
+  /// Converts the kline data into a JSON object like that returned in the previously used OHLC endpoint.
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'timestamp': openTime,
@@ -85,4 +83,37 @@ class BinanceKline {
       'quote_volume': quoteAssetVolume
     };
   }
+
+  /// The opening time of the kline as a Unix timestamp since epoch (UTC).
+  final int openTime;
+
+  /// The opening price of the kline.
+  final double open;
+
+  /// The highest price reached during the kline.
+  final double high;
+
+  /// The lowest price reached during the kline.
+  final double low;
+
+  /// The closing price of the kline.
+  final double close;
+
+  /// The trading volume during the kline.
+  final double volume;
+
+  /// The closing time of the kline.
+  final int closeTime;
+
+  /// The quote asset volume during the kline.
+  final double quoteAssetVolume;
+
+  /// The number of trades executed during the kline.
+  final int numberOfTrades;
+
+  /// The volume of the asset bought by takers during the kline.
+  final double takerBuyBaseAssetVolume;
+
+  /// The quote asset volume of the asset bought by takers during the kline.
+  final double takerBuyQuoteAssetVolume;
 }
