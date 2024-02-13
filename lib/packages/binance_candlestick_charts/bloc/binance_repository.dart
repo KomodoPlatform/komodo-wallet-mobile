@@ -71,6 +71,7 @@ class BinanceRepository {
   /// Parameters:
   /// - symbol: The symbol for which to fetch the candle data.
   /// - ohlcDurations: The durations for which to fetch the candle data. If not provided, it fetches the data for all default durations.
+  /// - limit: The maximum number of candles to fetch for each duration. The default is 250.
   ///
   /// Returns:
   /// A map of durations to the corresponding candle data.
@@ -82,6 +83,7 @@ class BinanceRepository {
   Future<Map<String, dynamic>> getLegacyOhlcCandleData(
     String symbol, {
     List<String> ohlcDurations,
+    int limit = 500,
   }) async {
     final Map<String, dynamic> ohlcData = <String, dynamic>{
       ...defaultCandleIntervalsBinanceMap
@@ -99,10 +101,17 @@ class BinanceRepository {
               await _binanceProvider.fetchKlines(
             symbol,
             defaultCandleIntervalsBinanceMap[duration],
-            limit: 500, // The default is 500, and the max is 1000 for Binance.
+            limit:
+                limit, // The default is 500, and the max is 1000 for Binance.
           );
 
           if (klinesResponse != null) {
+            // Sort the klines in descending order of close time.
+            // This is necessary for the Candlestick chart to display the data correctly.
+            klinesResponse.klines.sort(
+              (BinanceKline a, BinanceKline b) =>
+                  b.closeTime.compareTo(a.closeTime),
+            );
             ohlcData[duration] = klinesResponse.klines
                 .map((BinanceKline kline) => kline.toMap())
                 .toList();
@@ -124,7 +133,6 @@ class BinanceRepository {
   /// This method removes any dashes or slashes from the symbol and converts it to uppercase.
   /// Returns the normalized symbol.
   String normaliseSymbol(String symbol) {
-    symbol = symbol.replaceAll('-', '').replaceAll('/', '').toUpperCase();
-    return symbol;
+    return symbol.replaceAll(RegExp(r'[-/]'), '').toUpperCase();
   }
 }

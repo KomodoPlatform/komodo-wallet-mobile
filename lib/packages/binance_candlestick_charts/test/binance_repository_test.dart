@@ -37,5 +37,29 @@ void main() {
         throwsException,
       );
     });
+
+    test('normaliseSymbol returns the correct symbol when given a valid symbol',
+        () {
+      // Prepare test data
+      const String symbol = 'eth-btc';
+
+      // Call the method
+      final String result = repository.normaliseSymbol(symbol);
+
+      // Perform assertions
+      expect(result, 'ETHBTC');
+    });
+
+    test(
+        'normaliseSymbol returns a normalised version of the input when given an invalid symbol',
+        () {
+      // Prepare test data
+      const String symbol = 'invalid_symbol/';
+
+      final String result = repository.normaliseSymbol(symbol);
+
+      // Call the method and expect an exception to be thrown
+      expect(result, 'INVALID_SYMBOL');
+    });
   });
 }

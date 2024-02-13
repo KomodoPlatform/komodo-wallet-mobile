@@ -118,7 +118,9 @@ class CexProvider extends ChangeNotifier {
     if (_updatingChart) return;
 
     final List<ChainLink> chain = _findChain(pair);
-    if (chain == null) throw 'No chart data available';
+    if (chain == null) {
+      throw 'No chart data available';
+    }
 
     Map<String, dynamic> json0;
     Map<String, dynamic> json1;
@@ -248,7 +250,7 @@ class CexProvider extends ChangeNotifier {
     try {
       final String pair = '${link.rel}-${link.base}';
       final Map<String, dynamic> result =
-          await _binanceRepository.getLegacyOhlcCandleData( pair);
+          await _binanceRepository.getLegacyOhlcCandleData(pair);
       return result;
     } catch (e) {
       Log('cex_provider', 'Failed to fetch data: $e');
@@ -258,7 +260,7 @@ class CexProvider extends ChangeNotifier {
 
   List<ChainLink> _findChain(String pair) {
     // remove cex postfixes
-    pair = getCoinTicker(pair);
+    pair = getCoinTickerRegex(pair);
 
     final List<String> abbr = pair.split('-');
     if (abbr[0] == abbr[1]) return null;
@@ -615,16 +617,18 @@ class CexPrices {
       // Some coins are presented in multiple networks,
       // like BAT-ERC20 and BAT-BEP20, but have same
       // coingeckoId and same usd price
-      final List<Coin> coins =
-          (allCoins.where((coin) => getCoinTicker(coin.abbr) == ticker) ?? [])
-              .toList();
+      final List<Coin> coins = (allCoins.where(
+                (Coin coin) => getCoinTickerRegex(coin.abbr) == ticker,
+              ) ??
+              [])
+          .toList();
 
       // check if coin volume is enough
-      double minVolume = 10000;
-      double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
-      double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
+      const double minVolume = 10000;
+      final double lastPrice = double.tryParse(pricesData['last_price']) ?? 0;
+      final double volume24h = double.tryParse(pricesData['volume24h']) ?? 0;
 
-      for (Coin coin in coins) {
+      for (final Coin coin in coins) {
         final String coinAbbr = coin.abbr;
         if (coin.type == CoinType.smartChain) {
           // enough_volume for all smartChain tokens is always true :. proceed
