@@ -232,7 +232,7 @@ class CexProvider extends ChangeNotifier {
       }
 
       data[duration] = _durationData;
-      notifyListeners();
+      // notifyListeners();
     });
 
     _charts[pair] = ChartData(
@@ -243,7 +243,7 @@ class CexProvider extends ChangeNotifier {
       updated: DateTime.now().millisecondsSinceEpoch,
     );
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   Future<Map<String, dynamic>> _fetchChartDataV2(ChainLink link) async {
@@ -263,21 +263,24 @@ class CexProvider extends ChangeNotifier {
     pair = getCoinTickerRegex(pair);
 
     final List<String> abbr = pair.split('-');
-    if (abbr[0] == abbr[1]) return null;
+    if (abbr[0] == abbr[1]) {
+      return null;
+    }
     final String base = abbr[1].toLowerCase();
     final String rel = abbr[0].toLowerCase();
     final List<String> tickers = _getTickers();
     List<ChainLink> chain;
 
-    if (tickers == null) return null;
+    if (tickers == null) {
+      return null;
+    }
 
     // try to find simple chain, direct or reverse
-    for (String ticker in tickers) {
+    for (final String ticker in tickers) {
       final List<String> availableAbbr = ticker.split('-');
       if (!(availableAbbr.contains(rel) && availableAbbr.contains(base))) {
         continue;
       }
-
       chain = [
         ChainLink(
           rel: availableAbbr[0],
@@ -285,20 +288,25 @@ class CexProvider extends ChangeNotifier {
           reverse: availableAbbr[0] != rel,
         )
       ];
+      break;
     }
 
-    if (chain != null) return chain;
+    if (chain != null) {
+      return chain;
+    }
 
     tickers.sort((String a, String b) {
-      if (a.toLowerCase().contains('btc') && !b.toLowerCase().contains('btc'))
+      if (a.toLowerCase().contains('btc') && !b.toLowerCase().contains('btc')) {
         return -1;
-      if (b.toLowerCase().contains('btc') && !a.toLowerCase().contains('btc'))
+      }
+      if (b.toLowerCase().contains('btc') && !a.toLowerCase().contains('btc')) {
         return 1;
+      }
       return 0;
     });
 
     OUTER:
-    for (String firstLinkStr in tickers) {
+    for (final String firstLinkStr in tickers) {
       final List<String> firstLinkCoins = firstLinkStr.split('-');
       if (!firstLinkCoins.contains(rel) && !firstLinkCoins.contains(base)) {
         continue;
@@ -312,7 +320,7 @@ class CexProvider extends ChangeNotifier {
           firstLink.reverse ? firstLink.rel : firstLink.base;
       final String secondBase = firstLinkCoins.contains(rel) ? base : rel;
 
-      for (String secondLink in tickers) {
+      for (final String secondLink in tickers) {
         final List<String> secondLinkCoins = secondLink.split('-');
         if (!(secondLinkCoins.contains(secondRel) &&
             secondLinkCoins.contains(secondBase))) {
@@ -332,7 +340,9 @@ class CexProvider extends ChangeNotifier {
       }
     }
 
-    if (chain != null) return chain;
+    if (chain != null) {
+      return chain;
+    }
 
     return null;
   }
@@ -739,7 +749,9 @@ class CexPrices {
   }
 
   void _notifyListeners() {
-    for (CexProvider provider in _providers) provider.notify();
+    for (final CexProvider provider in _providers) {
+      provider.notify();
+    }
   }
 }
 
