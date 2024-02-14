@@ -4,7 +4,6 @@ import 'package:flutter/material.dart' hide TextStyle;
 import 'package:intl/intl.dart';
 import '../../model/cex_provider.dart';
 import '../../utils/utils.dart';
-import 'dart:developer' as developer;
 
 class CandleChart extends StatefulWidget {
   const CandleChart({
@@ -72,26 +71,6 @@ class CandleChartState extends State<CandleChart>
 
   @override
   Widget build(BuildContext context) {
-    double _constrainedTimeShift(double timeShift) {
-      final double maxTimeShiftValue = maxTimeShift ?? timeShift;
-      return timeShift.clamp(0.0, maxTimeShiftValue);
-    }
-
-    double _constrainedZoom(double scale) {
-      double constrained = scale;
-
-      final double maxZoom = canvasSize.width / 5 / widget.candleWidth;
-      if (staticZoom * scale > maxZoom) {
-        constrained = maxZoom / staticZoom;
-      }
-      final double minZoom = canvasSize.width / 500 / widget.candleWidth;
-      if (staticZoom * scale < minZoom) {
-        constrained = minZoom / staticZoom;
-      }
-
-      return constrained;
-    }
-
     return SizedBox(
       child: Listener(
         onPointerDown: (_) {
@@ -105,18 +84,7 @@ class CandleChartState extends State<CandleChart>
           });
         },
         child: GestureDetector(
-          onHorizontalDragUpdate: (DragUpdateDetails drag) {
-            if (touchCounter > 1) {
-              return;
-            }
-
-            setState(() {
-              timeAxisShift = _constrainedTimeShift(
-                timeAxisShift +
-                    drag.delta.dx / scrollDragFactor / staticZoom / dynamicZoom,
-              );
-            });
-          },
+          onHorizontalDragUpdate: _onDragUpdate,
           onScaleStart: (_) {
             setState(() {
               prevTimeAxisShift = timeAxisShift;
@@ -128,25 +96,8 @@ class CandleChartState extends State<CandleChart>
               dynamicZoom = 1;
             });
           },
-          onScaleUpdate: (ScaleUpdateDetails scale) {
-            setState(() {
-              dynamicZoom = _constrainedZoom(scale.scale);
-              timeAxisShift = _constrainedTimeShift(
-                prevTimeAxisShift -
-                    canvasSize.width /
-                        2 *
-                        (1 - dynamicZoom) /
-                        (staticZoom * dynamicZoom),
-              );
-            });
-          },
-          onTapDown: (TapDownDetails details) {
-            tapPosition = null;
-
-            setState(() {
-              tapDownPosition = details.localPosition;
-            });
-          },
+          onScaleUpdate: _onScaleUpdate,
+          onTapDown: _onTapDown,
           onTap: () {
             tapPosition = tapDownPosition;
           },
@@ -157,34 +108,7 @@ class CandleChartState extends State<CandleChart>
               zoom: staticZoom * dynamicZoom,
               tapPosition: tapPosition,
               selectedPoint: selectedPoint,
-              setWidgetState: (String prop, dynamic value) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  setState(() {
-                    switch (prop) {
-                      case 'maxTimeShift':
-                        {
-                          maxTimeShift = value;
-                          break;
-                        }
-                      case 'canvasSize':
-                        {
-                          canvasSize = value;
-                          break;
-                        }
-                      case 'tapPosition':
-                        {
-                          tapPosition = value;
-                          break;
-                        }
-                      case 'selectedPoint':
-                        {
-                          selectedPoint = value;
-                          break;
-                        }
-                    }
-                  });
-                });
-              },
+              setWidgetState: _painterStateCallback,
             ),
             child: Center(
               child: Container(),
@@ -193,6 +117,88 @@ class CandleChartState extends State<CandleChart>
         ),
       ),
     );
+  }
+
+  void _onTapDown(TapDownDetails details) {
+    tapPosition = null;
+
+    setState(() {
+      tapDownPosition = details.localPosition;
+    });
+  }
+
+  void _onDragUpdate(DragUpdateDetails drag) {
+    if (touchCounter > 1) {
+      return;
+    }
+
+    setState(() {
+      final double adjustedDragDelta =
+          drag.delta.dx / scrollDragFactor / staticZoom / dynamicZoom;
+      timeAxisShift = _constrainedTimeShift(
+        timeAxisShift + adjustedDragDelta,
+      );
+    });
+  }
+
+  void _onScaleUpdate(ScaleUpdateDetails details) {
+    final double constrainedZoom = _constrainedZoom(details.scale);
+    if (constrainedZoom == 1) {
+      return;
+    }
+
+    setState(() {
+      dynamicZoom = constrainedZoom;
+    });
+  }
+
+  void _painterStateCallback(String prop, dynamic value) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        switch (prop) {
+          case 'maxTimeShift':
+            {
+              maxTimeShift = value;
+              break;
+            }
+          case 'canvasSize':
+            {
+              canvasSize = value;
+              break;
+            }
+          case 'tapPosition':
+            {
+              tapPosition = value;
+              break;
+            }
+          case 'selectedPoint':
+            {
+              selectedPoint = value;
+              break;
+            }
+        }
+      });
+    });
+  }
+
+  double _constrainedTimeShift(double timeShift) {
+    final double maxTimeShiftValue = maxTimeShift ?? timeShift;
+    return timeShift.clamp(0.0, maxTimeShiftValue);
+  }
+
+  double _constrainedZoom(double scale) {
+    double constrained = scale;
+
+    final double maxZoom = canvasSize.width / 5 / widget.candleWidth;
+    if (staticZoom * scale > maxZoom) {
+      constrained = maxZoom / staticZoom;
+    }
+    final double minZoom = canvasSize.width / 500 / widget.candleWidth;
+    if (staticZoom * scale < minZoom) {
+      constrained = minZoom / staticZoom;
+    }
+
+    return constrained;
   }
 }
 
@@ -205,10 +211,7 @@ class _ChartPainter extends CustomPainter {
     this.selectedPoint,
     this.setWidgetState,
   }) {
-    painter = Paint()
-      ..style = widget.filled ? PaintingStyle.fill : PaintingStyle.stroke
-      ..strokeWidth = widget.strokeWidth
-      ..strokeCap = StrokeCap.round;
+    painter = _initializePaint();
   }
 
   final CandleChart widget;
@@ -216,7 +219,7 @@ class _ChartPainter extends CustomPainter {
   final double zoom;
   final Offset tapPosition;
   final Map<String, dynamic> selectedPoint;
-  final Function(String, dynamic) setWidgetState;
+  final void Function(String, dynamic) setWidgetState;
 
   Paint painter;
   final double pricePaddingPercent = 15;
@@ -225,13 +228,12 @@ class _ChartPainter extends CustomPainter {
   final double marginTop = 14;
   final double marginBottom = 30;
   final double labelWidth = 100;
-  final int visibleCandlesLimit = 100;
+  final int visibleCandlesLimit = 500;
 
   @override
   void paint(Canvas canvas, Size size) {
     setWidgetState('canvasSize', size);
     final double fieldHeight = size.height - marginBottom - marginTop;
-    final List<CandleData> visibleCandlesData = <CandleData>[];
     double minPrice = double.infinity;
     double maxPrice = 0;
 
@@ -250,14 +252,16 @@ class _ChartPainter extends CustomPainter {
         widget.data[lastVisibleCandleIndex].closeTime;
     final int timeRange = firstCandleCloseTime - lastCandleCloseTime;
     final double timeScaleFactor = size.width / timeRange;
+    final double timeAxisMax = firstCandleCloseTime - zoom / timeScaleFactor;
+    final double timeAxisMin = timeAxisMax - timeRange;
+
     setWidgetState(
       'maxTimeShift',
       (widget.data.length - maxVisibleCandles).toDouble(),
     );
-    final double timeAxisMax = firstCandleCloseTime - zoom / timeScaleFactor;
-    final double timeAxisMin = timeAxisMax - timeRange;
 
     // Collect visible candles data
+    final List<CandleData> visibleCandlesData = <CandleData>[];
     for (int i = firstCandleIndex; i < lastVisibleCandleIndex; i++) {
       final CandleData candle = widget.data[i];
       final double dx = (candle.closeTime - timeAxisMin) * timeScaleFactor;
@@ -292,36 +296,61 @@ class _ChartPainter extends CustomPainter {
                 .round() *
             priceDivision;
 
-    // returns dy for given price
+    /// Converts a price to a y-coordinate for the candlestick chart.
     double _price2dy(double price) {
-      return size.height -
-          marginBottom -
-          ((price - originPrice) * priceScaleFactor);
+      final double relativePrice = price - originPrice;
+      final double scaledPrice = relativePrice * priceScaleFactor;
+      return size.height - marginBottom - scaledPrice;
     }
 
-    // returns dx for given time
+    /// Converts a time to an x-coordinate for the candlestick chart.
     double _time2dx(int time) {
-      return (time.toDouble() - timeAxisMin) * timeScaleFactor -
-          (widget.candleWidth + gap) * zoom / 2;
+      final double relativeTime = time.toDouble() - timeAxisMin;
+      final double scaledTime = relativeTime * timeScaleFactor;
+      final double adjustment = (widget.candleWidth + gap) * zoom / 2;
+      return scaledTime - adjustment;
     }
 
-    // calculate candles position
-    final Map<int, CandlePosition> candlesToRender = {};
+    _drawCandles(visibleCandlesData, _time2dx, _price2dy, canvas);
+    _drawPriceGrid(
+      size,
+      priceDivision,
+      priceScaleFactor,
+      originPrice,
+      _price2dy,
+      canvas,
+    );
+    _drawCurrentPrice(visibleCandlesData, _price2dy, size, fieldHeight, canvas);
+    _drawTimeGrid(size, canvas, visibleCandlesData, _time2dx);
+
+    if (tapPosition != null) {
+      _calculateSelectedPoint(visibleCandlesData, _time2dx, _price2dy);
+    }
+
+    if (selectedPoint != null) {
+      _drawSelectedPoint(visibleCandlesData, _time2dx, _price2dy, canvas, size);
+    }
+  }
+
+  void _drawCandles(
+    List<CandleData> visibleCandlesData,
+    double Function(int time) _time2dx,
+    double Function(double price) _price2dy,
+    Canvas canvas,
+  ) {
     for (final CandleData candle in visibleCandlesData) {
       final double dx = _time2dx(candle.closeTime);
+      final double closePrice = _price(candle.closePrice);
+      final double openPrice = _price(candle.openPrice);
 
-      final double top =
-          _price2dy(max(_price(candle.closePrice), _price(candle.openPrice)));
-      double bottom =
-          _price2dy(min(_price(candle.closePrice), _price(candle.openPrice)));
+      final double top = _price2dy(max(closePrice, openPrice));
+      double bottom = _price2dy(min(closePrice, openPrice));
       if (bottom - top < widget.strokeWidth) {
         bottom = top + widget.strokeWidth;
       }
 
-      candlesToRender[candle.closeTime] = CandlePosition(
-        color: _price(candle.closePrice) < _price(candle.openPrice)
-            ? widget.downColor
-            : widget.upColor,
+      final CandlePosition candlePosition = CandlePosition(
+        color: closePrice < openPrice ? widget.downColor : widget.upColor,
         high: Offset(dx, _price2dy(_price(candle.highPrice))),
         low: Offset(dx, _price2dy(_price(candle.lowPrice))),
         left: dx - widget.candleWidth * zoom / 2,
@@ -329,14 +358,18 @@ class _ChartPainter extends CustomPainter {
         top: top,
         bottom: bottom,
       );
+      _drawCandle(canvas, painter, candlePosition);
     }
+  }
 
-    // draw candles
-    candlesToRender.forEach((int timeStamp, CandlePosition candle) {
-      _drawCandle(canvas, painter, candle);
-    });
-
-    // draw price grid
+  void _drawPriceGrid(
+    Size size,
+    double priceDivision,
+    double priceScaleFactor,
+    double originPrice,
+    double Function(double price) _price2dy,
+    Canvas canvas,
+  ) {
     final int visibleDivisions =
         (size.height / (priceDivision * priceScaleFactor)).floor() + 1;
     for (int i = 0; i < visibleDivisions; i++) {
@@ -360,10 +393,16 @@ class _ChartPainter extends CustomPainter {
         width: labelWidth,
       );
     }
+  }
 
-    //draw current price
-    final double currentPrice =
-        _price(widget.data[firstCandleIndex].closePrice);
+  void _drawCurrentPrice(
+    List<CandleData> visibleCandlesData,
+    double Function(double price) _price2dy,
+    Size size,
+    double fieldHeight,
+    Canvas canvas,
+  ) {
+    final double currentPrice = _price(visibleCandlesData.first.closePrice);
     double currentPriceDy = _price2dy(currentPrice);
     bool outside = false;
     if (currentPriceDy > size.height - marginBottom) {
@@ -398,8 +437,14 @@ class _ChartPainter extends CustomPainter {
       align: TextAlign.end,
       width: labelWidth,
     );
+  }
 
-    // draw time grid
+  void _drawTimeGrid(
+    Size size,
+    Canvas canvas,
+    List<CandleData> visibleCandlesData,
+    double Function(int time) _time2dx,
+  ) {
     double rightMarkerPosition = size.width;
     if (timeAxisShift < 0) {
       rightMarkerPosition = rightMarkerPosition -
@@ -447,90 +492,98 @@ class _ChartPainter extends CustomPainter {
       Offset(rightMarkerPosition, size.height - marginBottom + 5),
       painter,
     );
+  }
 
-    // select point on Tap
-    if (tapPosition != null) {
-      setWidgetState('selectedPoint', null);
-      double minDistance;
-      for (final CandleData candle in visibleCandlesData) {
-        final List<double> prices = [
-          _price(candle.openPrice),
-          _price(candle.closePrice),
-          _price(candle.highPrice),
-          _price(candle.lowPrice),
-        ].toList();
+  void _calculateSelectedPoint(
+    List<CandleData> visibleCandlesData,
+    double Function(int time) _time2dx,
+    double Function(double price) _price2dy,
+  ) {
+    setWidgetState('selectedPoint', null);
+    double minDistance;
+    for (final CandleData candle in visibleCandlesData) {
+      final List<double> prices = [
+        _price(candle.openPrice),
+        _price(candle.closePrice),
+        _price(candle.highPrice),
+        _price(candle.lowPrice),
+      ].toList();
 
-        for (final double price in prices) {
-          final double distance = sqrt(
-            pow(tapPosition.dx - _time2dx(candle.closeTime), 2) +
-                pow(tapPosition.dy - _price2dy(price), 2),
-          );
-          if (distance > 30) {
-            continue;
-          }
-          if (minDistance != null && distance > minDistance) {
-            continue;
-          }
-
-          minDistance = distance;
-          setWidgetState('selectedPoint', <String, dynamic>{
-            'timestamp': candle.closeTime,
-            'price': price,
-          });
+      for (final double price in prices) {
+        final double distance = sqrt(
+          pow(tapPosition.dx - _time2dx(candle.closeTime), 2) +
+              pow(tapPosition.dy - _price2dy(price), 2),
+        );
+        if (distance > 30) {
+          continue;
         }
-      }
-      setWidgetState('tapPosition', null);
-    }
+        if (minDistance != null && distance > minDistance) {
+          continue;
+        }
 
-    // draw selected point
-    if (selectedPoint != null) {
-      CandleData selectedCandle;
-      try {
-        selectedCandle = visibleCandlesData.firstWhere((CandleData candle) {
-          return candle.closeTime == selectedPoint['timestamp'];
+        minDistance = distance;
+        setWidgetState('selectedPoint', <String, dynamic>{
+          'timestamp': candle.closeTime,
+          'price': price,
         });
-      } catch (_) {}
-
-      if (selectedCandle != null) {
-        const double radius = 3;
-        final double dx = _time2dx(selectedCandle.closeTime);
-        final double dy = _price2dy(selectedPoint['price']);
-        painter.style = PaintingStyle.stroke;
-
-        canvas.drawCircle(Offset(dx, dy), radius, painter);
-
-        double startX = dx + radius;
-        while (startX < size.width) {
-          canvas.drawLine(Offset(startX, dy), Offset(startX + 5, dy), painter);
-          startX += 10;
-        }
-
-        _drawText(
-          canvas: canvas,
-          align: TextAlign.right,
-          color: widget.textColor == Colors.black ? Colors.white : Colors.black,
-          backgroundColor: widget.textColor,
-          text: ' ${formatPrice(selectedPoint['price'], 8)} ',
-          point: Offset(size.width - labelWidth - 2, dy - 2),
-          width: labelWidth,
-        );
-
-        double startY = dy + radius;
-        while (startY < size.height - marginBottom + 10) {
-          canvas.drawLine(Offset(dx, startY), Offset(dx, startY + 5), painter);
-          startY += 10;
-        }
-
-        _drawText(
-          canvas: canvas,
-          align: TextAlign.center,
-          color: widget.textColor == Colors.black ? Colors.white : Colors.black,
-          backgroundColor: widget.textColor,
-          text: ' ${_formatTime(selectedCandle.closeTime)} ',
-          point: Offset(dx - 50, size.height - 7),
-          width: labelWidth,
-        );
       }
+    }
+    setWidgetState('tapPosition', null);
+  }
+
+  void _drawSelectedPoint(
+    List<CandleData> visibleCandlesData,
+    double Function(int time) _time2dx,
+    double Function(double price) _price2dy,
+    Canvas canvas,
+    Size size,
+  ) {
+    CandleData selectedCandle;
+    try {
+      selectedCandle = visibleCandlesData.firstWhere((CandleData candle) {
+        return candle.closeTime == selectedPoint['timestamp'];
+      });
+    } catch (_) {}
+
+    if (selectedCandle != null) {
+      const double radius = 3;
+      final double dx = _time2dx(selectedCandle.closeTime);
+      final double dy = _price2dy(selectedPoint['price']);
+      painter.style = PaintingStyle.stroke;
+
+      canvas.drawCircle(Offset(dx, dy), radius, painter);
+
+      double startX = dx + radius;
+      while (startX < size.width) {
+        canvas.drawLine(Offset(startX, dy), Offset(startX + 5, dy), painter);
+        startX += 10;
+      }
+
+      _drawText(
+        canvas: canvas,
+        align: TextAlign.right,
+        color: widget.textColor == Colors.black ? Colors.white : Colors.black,
+        backgroundColor: widget.textColor,
+        text: ' ${formatPrice(selectedPoint['price'], 8)} ',
+        point: Offset(size.width - labelWidth - 2, dy - 2),
+        width: labelWidth,
+      );
+
+      double startY = dy + radius;
+      while (startY < size.height - marginBottom + 10) {
+        canvas.drawLine(Offset(dx, startY), Offset(dx, startY + 5), painter);
+        startY += 10;
+      }
+
+      _drawText(
+        canvas: canvas,
+        align: TextAlign.center,
+        color: widget.textColor == Colors.black ? Colors.white : Colors.black,
+        backgroundColor: widget.textColor,
+        text: ' ${_formatTime(selectedCandle.closeTime)} ',
+        point: Offset(dx - 50, size.height - 7),
+        width: labelWidth,
+      );
     }
   } // paint
 
@@ -614,6 +667,13 @@ class _ChartPainter extends CustomPainter {
       paragraph,
       Offset(point.dx, point.dy - paragraph.height),
     );
+  }
+
+  Paint _initializePaint() {
+    return Paint()
+      ..style = widget.filled ? PaintingStyle.fill : PaintingStyle.stroke
+      ..strokeWidth = widget.strokeWidth
+      ..strokeCap = StrokeCap.round;
   }
 }
 
