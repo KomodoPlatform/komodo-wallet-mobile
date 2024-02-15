@@ -88,9 +88,7 @@ class CexProvider extends ChangeNotifier {
     cexPrices.unlinkProvider(this);
   }
 
-  final String _chartsUrl = appConfig.candlestickData;
-  final Uri _tickersListUrl = Uri.parse(appConfig.candlestickTickersList);
-  final Map<String, ChartData> _charts = {}; // {'BTC-USD': ChartData(),}
+  final Map<String, ChartData> _charts = {};
   bool _updatingChart = false;
   List<String> _tickers;
   final BinanceRepository _binanceRepository = BinanceRepository();
@@ -98,7 +96,9 @@ class CexProvider extends ChangeNotifier {
   void _updateRates() => cexPrices.updateRates();
 
   List<String> _getTickers() {
-    if (_tickers != null) return _tickers;
+    if (_tickers != null) {
+      return _tickers;
+    }
 
     _updateTickersListV2();
     return _tickersFallBack;
@@ -106,8 +106,7 @@ class CexProvider extends ChangeNotifier {
 
   Future<void> _updateTickersListV2() async {
     try {
-      final List<String> tickers = await _binanceRepository.getLegacyTickers();
-      _tickers = tickers;
+      _tickers = await _binanceRepository.getLegacyTickers();
       notifyListeners();
     } catch (e) {
       Log('cex_provider', 'Failed to fetch tickers list: $e');
@@ -162,7 +161,7 @@ class CexProvider extends ChangeNotifier {
     json0.forEach((String duration, dynamic list) {
       final List<CandleData> _durationData = [];
 
-      for (var candle in list) {
+      for (final Map<String, dynamic> candle in list) {
         double open = chain[0].reverse
             ? 1 / candle['open'].toDouble()
             : candle['open'].toDouble();
@@ -232,7 +231,6 @@ class CexProvider extends ChangeNotifier {
       }
 
       data[duration] = _durationData;
-      // notifyListeners();
     });
 
     _charts[pair] = ChartData(
@@ -242,8 +240,6 @@ class CexProvider extends ChangeNotifier {
       status: ChartStatus.success,
       updated: DateTime.now().millisecondsSinceEpoch,
     );
-
-    // notifyListeners();
   }
 
   Future<Map<String, dynamic>> _fetchChartDataV2(ChainLink link) async {

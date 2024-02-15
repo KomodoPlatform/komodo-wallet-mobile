@@ -33,8 +33,6 @@ class BinanceRepository {
 
   final BinanceProvider _binanceProvider;
 
-  List<String> _symbols = <String>[];
-
   /// Retrieves a list of tickers in the lowercase, dash-separated format (e.g. eth-btc).
   ///
   /// If the [_symbols] list is not empty, it is returned immediately.
@@ -43,23 +41,22 @@ class BinanceRepository {
   ///
   /// Returns a list of tickers.
   Future<List<String>> getLegacyTickers() async {
-    if (_symbols.isNotEmpty) {
-      return _symbols;
-    }
-
     final BinanceExchangeInfoResponse exchangeInfo =
         await _binanceProvider.fetchExchangeInfo();
-    if (exchangeInfo != null) {
-      // The legacy candlestick implementation uses hyphenated lowercase
-      // symbols, so we convert the symbols to that format here.
-      _symbols = exchangeInfo.symbols
-          .map(
-            (Symbol symbol) =>
-                '${symbol.baseAsset}-${symbol.quoteAsset}'.toLowerCase(),
-          )
-          .toList();
+    if (exchangeInfo == null) {
+      return [];
     }
 
+    // The legacy candlestick implementation uses hyphenated lowercase
+    // symbols, so we convert the symbols to that format here.
+    final List<String> _symbols = exchangeInfo.symbols
+        .where((Symbol symbol) => symbol.status.toUpperCase() == 'TRADING')
+        .map(
+          (Symbol symbol) =>
+              '${symbol.baseAsset}-${symbol.quoteAsset}'.toLowerCase(),
+        )
+        .toList();
+    _symbols.sort();
     return _symbols;
   }
 
@@ -112,6 +109,7 @@ class BinanceRepository {
               (BinanceKline a, BinanceKline b) =>
                   b.closeTime.compareTo(a.closeTime),
             );
+
             ohlcData[duration] = klinesResponse.klines
                 .map((BinanceKline kline) => kline.toMap())
                 .toList();

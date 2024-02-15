@@ -42,18 +42,33 @@ class _CoinsPriceListState extends State<CoinsPriceList> {
                     style: const TextStyle(fontSize: 18),
                   ),
                 )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _sortedList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final Coin coin = _sortedList[index].coin;
-                    final String coinAbbr = coin.abbr.toUpperCase();
-                    return BuildCoinPriceListItem(
-                      key: Key('coin-$coinAbbr'),
-                      coinBalance: _sortedList[index],
-                      onTap: () => widget.onItemTap(coin),
-                    );
+              : Listener(
+                  onPointerDown: (_) {
+                    setState(() {
+                      touchCounter++;
+                    });
                   },
+                  onPointerUp: (_) {
+                    setState(() {
+                      touchCounter--;
+                    });
+                  },
+                  child: ListView.builder(
+                    physics: touchCounter > 1
+                        ? const NeverScrollableScrollPhysics()
+                        : const ScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _sortedList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final Coin coin = _sortedList[index].coin;
+                      final String coinAbbr = coin.abbr.toUpperCase();
+                      return BuildCoinPriceListItem(
+                        key: Key('coin-$coinAbbr'),
+                        coinBalance: _sortedList[index],
+                        onTap: () => widget.onItemTap(coin),
+                      );
+                    },
+                  ),
                 );
         } else {
           return const Center(
