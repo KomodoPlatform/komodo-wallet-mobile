@@ -52,6 +52,7 @@ class CandleChartState extends State<CandleChart>
   double dynamicZoom;
   double staticZoom;
   Offset tapDownPosition;
+  int touchCounter = 0;
   double maxTimeShift;
   Size canvasSize;
   Offset tapPosition;
@@ -81,24 +82,36 @@ class CandleChartState extends State<CandleChart>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: GestureDetector(
-        onHorizontalDragUpdate: _onDragUpdate,
-        onScaleStart: _onScaleStart,
-        onScaleEnd: _onScaleEnd,
-        onScaleUpdate: _onScaleUpdate,
-        onTapDown: _onTapDown,
-        onTap: _onTap,
-        child: CustomPaint(
-          painter: _ChartPainter(
-            widget: widget,
-            timeAxisShift: timeAxisShift,
-            zoom: staticZoom * dynamicZoom,
-            tapPosition: tapPosition,
-            selectedPoint: selectedPoint,
-            setWidgetState: _painterStateCallback,
-          ),
-          child: Center(
-            child: Container(),
+      child: Listener(
+        onPointerDown: (_) {
+          setState(() {
+            touchCounter++;
+          });
+        },
+        onPointerUp: (_) {
+          setState(() {
+            touchCounter--;
+          });
+        },
+        child: GestureDetector(
+          onHorizontalDragUpdate: _onDragUpdate,
+          onScaleStart: _onScaleStart,
+          onScaleEnd: _onScaleEnd,
+          onScaleUpdate: _onScaleUpdate,
+          onTapDown: _onTapDown,
+          onTap: _onTap,
+          child: CustomPaint(
+            painter: _ChartPainter(
+              widget: widget,
+              timeAxisShift: timeAxisShift,
+              zoom: staticZoom * dynamicZoom,
+              tapPosition: tapPosition,
+              selectedPoint: selectedPoint,
+              setWidgetState: _painterStateCallback,
+            ),
+            child: Center(
+              child: Container(),
+            ),
           ),
         ),
       ),
@@ -131,6 +144,10 @@ class CandleChartState extends State<CandleChart>
   }
 
   void _onDragUpdate(DragUpdateDetails drag) {
+    if (touchCounter > 1) {
+      return;
+    }
+
     setState(() {
       final double adjustedDragDelta =
           drag.delta.dx / widget.scrollDragFactor / staticZoom / dynamicZoom;
