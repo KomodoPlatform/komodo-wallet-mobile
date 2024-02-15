@@ -31,22 +31,19 @@ class _BuildCoinPriceListItemState extends State<BuildCoinPriceListItem> {
   bool quotedChart = false;
   String chartDuration = '3600';
   CexProvider cexProvider;
-  String _currency;
-  bool coinHasNonZeroPrice = false;
-  bool coinHasChartData = false;
 
   @override
   Widget build(BuildContext context) {
-    cexProvider = Provider.of<CexProvider>(context);
+    cexProvider = Provider.of<CexProvider>(context, listen: false);
     coin = widget.coinBalance.coin;
     balance = widget.coinBalance.balance;
 
-    coinHasNonZeroPrice =
+    final bool coinHasNonZeroPrice =
         double.parse(widget.coinBalance.priceForOne ?? '0') > 0;
-    _currency = cexProvider.currency.toLowerCase() == 'usd'
+    final String _currency = cexProvider.currency.toLowerCase() == 'usd'
         ? 'USDC'
         : cexProvider.currency.toUpperCase();
-    coinHasChartData = cexProvider
+    final bool coinHasChartData = cexProvider
         .isChartAvailable('${widget.coinBalance.coin.abbr}-$_currency');
 
     return Column(

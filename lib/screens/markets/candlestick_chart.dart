@@ -30,6 +30,8 @@ class CandleChart extends StatefulWidget {
   final bool quoted;
   final Color gridColor;
 
+  // Constants previously declared in the paint method
+  // Moved these here to make them accessible and possibly configurable
   int get scrollDragFactor => 5;
   double get pricePaddingPercent => 15;
   double get pricePreferredDivisions => 4;
@@ -37,7 +39,7 @@ class CandleChart extends StatefulWidget {
   double get marginTop => 14;
   double get marginBottom => 30;
   double get labelWidth => 100;
-  int get visibleCandlesLimit => 100;
+  int get visibleCandlesLimit => 500;
 
   @override
   CandleChartState createState() => CandleChartState();
@@ -93,22 +95,11 @@ class CandleChartState extends State<CandleChart>
         },
         child: GestureDetector(
           onHorizontalDragUpdate: _onDragUpdate,
-          onScaleStart: (_) {
-            setState(() {
-              prevTimeAxisShift = timeAxisShift;
-            });
-          },
-          onScaleEnd: (_) {
-            setState(() {
-              staticZoom = staticZoom * dynamicZoom;
-              dynamicZoom = 1;
-            });
-          },
+          onScaleStart: _onScaleStart,
+          onScaleEnd: _onScaleEnd,
           onScaleUpdate: _onScaleUpdate,
           onTapDown: _onTapDown,
-          onTap: () {
-            tapPosition = tapDownPosition;
-          },
+          onTap: _onTap,
           child: CustomPaint(
             painter: _ChartPainter(
               widget: widget,
@@ -125,6 +116,23 @@ class CandleChartState extends State<CandleChart>
         ),
       ),
     );
+  }
+
+  void _onTap() {
+    tapPosition = tapDownPosition;
+  }
+
+  void _onScaleStart(_) {
+    setState(() {
+      prevTimeAxisShift = timeAxisShift;
+    });
+  }
+
+  void _onScaleEnd(_) {
+    setState(() {
+      staticZoom = staticZoom * dynamicZoom;
+      dynamicZoom = 1;
+    });
   }
 
   void _onTapDown(TapDownDetails details) {
@@ -237,9 +245,6 @@ class _ChartPainter extends CustomPainter {
     setWidgetState('canvasSize', size);
     final double fieldHeight =
         size.height - widget.marginBottom - widget.marginTop;
-    final List<CandleData> visibleCandlesData = <CandleData>[];
-    double minPrice = double.infinity;
-    double maxPrice = 0;
 
     // adjust time axis
     final int maxVisibleCandles =
@@ -251,6 +256,63 @@ class _ChartPainter extends CustomPainter {
     final int lastVisibleCandleIndex = (firstCandleIndex + maxVisibleCandles)
         .clamp(maxVisibleCandles - 1, widget.data.length - 1);
 
+    setWidgetState(
+      'maxTimeShift',
+      (widget.data.length - maxVisibleCandles).toDouble(),
+    );
+
+    final VisibleCandles visibleCandles = _collectVisibleCandles(
+      firstCandleIndex,
+      lastVisibleCandleIndex,
+      size,
+      fieldHeight,
+    );
+    final CandleGridData gridData = visibleCandles.gridData;
+
+    /// Converts a price to a y-coordinate for the candlestick chart.
+    /// Keeping this function here to avoid the need to pass the widget, size
+    /// and gridData to each call of the function.
+    double _price2dy(double price) {
+      final double relativePrice = price - gridData.originPrice;
+      final double scaledPrice = relativePrice * gridData.priceScaleFactor;
+      return size.height - widget.marginBottom - scaledPrice;
+    }
+
+    /// Converts a time to an x-coordinate for the candlestick chart.
+    double _time2dx(int time) {
+      final double relativeTime = time.toDouble() - gridData.timeAxisMin;
+      final double scaledTime = relativeTime * gridData.timeScaleFactor;
+      final double adjustment = (widget.candleWidth + widget.gap) * zoom / 2;
+      return scaledTime - adjustment;
+    }
+
+    _drawCandles(visibleCandles.candles, _time2dx, _price2dy, canvas);
+    _drawPriceGrid(
+      size,
+      gridData,
+      _price2dy,
+      canvas,
+    );
+    _drawCurrentPrice(
+        visibleCandles.candles, _price2dy, size, fieldHeight, canvas);
+    _drawTimeGrid(size, canvas, visibleCandles.candles, _time2dx);
+
+    if (tapPosition != null) {
+      _calculateSelectedPoint(visibleCandles.candles, _time2dx, _price2dy);
+    }
+
+    if (selectedPoint != null) {
+      _drawSelectedPoint(
+          visibleCandles.candles, _time2dx, _price2dy, canvas, size);
+    }
+  }
+
+  VisibleCandles _collectVisibleCandles(
+    int firstCandleIndex,
+    int lastVisibleCandleIndex,
+    Size size,
+    double fieldHeight,
+  ) {
     final int firstCandleCloseTime = widget.data[firstCandleIndex].closeTime;
     final int lastCandleCloseTime =
         widget.data[lastVisibleCandleIndex].closeTime;
@@ -259,12 +321,9 @@ class _ChartPainter extends CustomPainter {
     final double timeAxisMax = firstCandleCloseTime - zoom / timeScaleFactor;
     final double timeAxisMin = timeAxisMax - timeRange;
 
-    setWidgetState(
-      'maxTimeShift',
-      (widget.data.length - maxVisibleCandles).toDouble(),
-    );
-
-    // Collect visible candles data
+    final List<CandleData> visibleCandlesData = <CandleData>[];
+    double minPrice = double.infinity;
+    double maxPrice = 0;
     for (int i = firstCandleIndex; i < lastVisibleCandleIndex; i++) {
       final CandleData candle = widget.data[i];
       final double dx = (candle.closeTime - timeAxisMin) * timeScaleFactor;
@@ -287,53 +346,60 @@ class _ChartPainter extends CustomPainter {
       visibleCandlesData.add(candle);
     }
 
-    // adjust price axis
+    return VisibleCandles(
+      candles: visibleCandlesData,
+      gridData: _calculateGridScale(
+        minPrice,
+        maxPrice,
+        fieldHeight,
+        timeAxisMax,
+        timeAxisMin,
+        timeScaleFactor,
+      ),
+    );
+  }
+
+  CandleGridData _calculateGridScale(
+    double minPrice,
+    double maxPrice,
+    double fieldHeight,
+    double timeAxisMax,
+    double timeAxisMin,
+    double timeScaleFactor,
+  ) {
     final double priceRange = maxPrice - minPrice;
-    final double priceAxis =
-        priceRange + (2 * priceRange * widget.pricePaddingPercent / 100);
+
+    // Calculate the price axis, taking into account the padding
+    final double padding = 2 * priceRange * widget.pricePaddingPercent / 100;
+    final double priceAxis = priceRange + padding;
     final double priceScaleFactor = fieldHeight / priceAxis;
     final double priceDivision =
         _priceDivision(priceAxis, widget.pricePreferredDivisions);
-    final double originPrice =
-        ((minPrice - (priceRange * widget.pricePaddingPercent / 100)) /
-                    priceDivision)
-                .round() *
-            priceDivision;
 
-    /// Converts a price to a y-coordinate for the candlestick chart.
-    double _price2dy(double price) {
-      final double relativePrice = price - originPrice;
-      final double scaledPrice = relativePrice * priceScaleFactor;
-      return size.height - widget.marginBottom - scaledPrice;
-    }
-
-    /// Converts a time to an x-coordinate for the candlestick chart.
-    double _time2dx(int time) {
-      final double relativeTime = time.toDouble() - timeAxisMin;
-      final double scaledTime = relativeTime * timeScaleFactor;
-      final double adjustment = (widget.candleWidth + widget.gap) * zoom / 2;
-      return scaledTime - adjustment;
-    }
-
-    _drawCandles(visibleCandlesData, _time2dx, _price2dy, canvas);
-    _drawPriceGrid(
-      size,
+    // Calculate the origin price
+    final double originPrice = _calculateOriginPrice(
+      minPrice,
+      priceRange,
       priceDivision,
-      priceScaleFactor,
-      originPrice,
-      _price2dy,
-      canvas,
     );
-    _drawCurrentPrice(visibleCandlesData, _price2dy, size, fieldHeight, canvas);
-    _drawTimeGrid(size, canvas, visibleCandlesData, _time2dx);
 
-    if (tapPosition != null) {
-      _calculateSelectedPoint(visibleCandlesData, _time2dx, _price2dy);
-    }
+    return CandleGridData(
+      originPrice: originPrice,
+      priceScaleFactor: priceScaleFactor,
+      priceDivision: priceDivision,
+      timeAxisMax: timeAxisMax,
+      timeAxisMin: timeAxisMin,
+      timeScaleFactor: timeScaleFactor,
+    );
+  }
 
-    if (selectedPoint != null) {
-      _drawSelectedPoint(visibleCandlesData, _time2dx, _price2dy, canvas, size);
-    }
+  double _calculateOriginPrice(
+      double minPrice, double priceRange, double priceDivision) {
+    final double paddingForMinPrice =
+        minPrice - (priceRange * widget.pricePaddingPercent / 100);
+    final int roundedPrice = (paddingForMinPrice / priceDivision).round();
+    final double originPrice = roundedPrice * priceDivision;
+    return originPrice;
   }
 
   void _drawCandles(
@@ -368,17 +434,17 @@ class _ChartPainter extends CustomPainter {
 
   void _drawPriceGrid(
     Size size,
-    double priceDivision,
-    double priceScaleFactor,
-    double originPrice,
+    CandleGridData gridData,
     double Function(double price) _price2dy,
     Canvas canvas,
   ) {
-    final int visibleDivisions =
-        (size.height / (priceDivision * priceScaleFactor)).floor() + 1;
+    final double textHeight =
+        gridData.priceDivision * gridData.priceScaleFactor;
+    final double divisions = size.height / textHeight;
+    final int visibleDivisions = divisions.floor() + 1;
     for (int i = 0; i < visibleDivisions; i++) {
       painter.color = widget.gridColor;
-      final double price = originPrice + i * priceDivision;
+      final double price = gridData.originPrice + i * gridData.priceDivision;
       final double dy = _price2dy(price);
       canvas.drawLine(Offset(0, dy), Offset(size.width, dy), painter);
       final String formattedPrice = formatPrice(price, 8);
@@ -699,4 +765,34 @@ class CandlePosition {
   double bottom;
   double left;
   double right;
+}
+
+class VisibleCandles {
+  VisibleCandles({
+    @required this.candles,
+    @required this.gridData,
+  });
+
+  List<CandleData> candles;
+  CandleGridData gridData;
+}
+
+class CandleGridData {
+  CandleGridData({
+    @required this.originPrice,
+    @required this.priceScaleFactor,
+    @required this.priceDivision,
+    @required this.timeAxisMax,
+    @required this.timeAxisMin,
+    @required this.timeScaleFactor,
+  });
+
+  double minPrice;
+  double maxPrice;
+  double originPrice;
+  double priceScaleFactor;
+  double priceDivision;
+  double timeAxisMax;
+  double timeAxisMin;
+  double timeScaleFactor;
 }
