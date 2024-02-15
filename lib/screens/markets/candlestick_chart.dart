@@ -52,7 +52,6 @@ class CandleChartState extends State<CandleChart>
   double dynamicZoom;
   double staticZoom;
   Offset tapDownPosition;
-  int touchCounter = 0;
   double maxTimeShift;
   Size canvasSize;
   Offset tapPosition;
@@ -82,36 +81,24 @@ class CandleChartState extends State<CandleChart>
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      child: Listener(
-        onPointerDown: (_) {
-          setState(() {
-            touchCounter++;
-          });
-        },
-        onPointerUp: (_) {
-          setState(() {
-            touchCounter--;
-          });
-        },
-        child: GestureDetector(
-          onHorizontalDragUpdate: _onDragUpdate,
-          onScaleStart: _onScaleStart,
-          onScaleEnd: _onScaleEnd,
-          onScaleUpdate: _onScaleUpdate,
-          onTapDown: _onTapDown,
-          onTap: _onTap,
-          child: CustomPaint(
-            painter: _ChartPainter(
-              widget: widget,
-              timeAxisShift: timeAxisShift,
-              zoom: staticZoom * dynamicZoom,
-              tapPosition: tapPosition,
-              selectedPoint: selectedPoint,
-              setWidgetState: _painterStateCallback,
-            ),
-            child: Center(
-              child: Container(),
-            ),
+      child: GestureDetector(
+        onHorizontalDragUpdate: _onDragUpdate,
+        onScaleStart: _onScaleStart,
+        onScaleEnd: _onScaleEnd,
+        onScaleUpdate: _onScaleUpdate,
+        onTapDown: _onTapDown,
+        onTap: _onTap,
+        child: CustomPaint(
+          painter: _ChartPainter(
+            widget: widget,
+            timeAxisShift: timeAxisShift,
+            zoom: staticZoom * dynamicZoom,
+            tapPosition: tapPosition,
+            selectedPoint: selectedPoint,
+            setWidgetState: _painterStateCallback,
+          ),
+          child: Center(
+            child: Container(),
           ),
         ),
       ),
@@ -144,10 +131,6 @@ class CandleChartState extends State<CandleChart>
   }
 
   void _onDragUpdate(DragUpdateDetails drag) {
-    if (touchCounter > 1) {
-      return;
-    }
-
     setState(() {
       final double adjustedDragDelta =
           drag.delta.dx / widget.scrollDragFactor / staticZoom / dynamicZoom;
@@ -247,10 +230,14 @@ class _ChartPainter extends CustomPainter {
         size.height - widget.marginBottom - widget.marginTop;
 
     // adjust time axis
+    final int adjustedVisibleCandleLimit =
+        widget.visibleCandlesLimit > widget.data.length
+            ? widget.data.length
+            : widget.visibleCandlesLimit;
     final int maxVisibleCandles =
         (size.width / (widget.candleWidth + widget.gap) / zoom)
             .floor()
-            .clamp(0, widget.visibleCandlesLimit);
+            .clamp(0, adjustedVisibleCandleLimit);
     final int firstCandleIndex =
         timeAxisShift.floor().clamp(0, widget.data.length - maxVisibleCandles);
     final int lastVisibleCandleIndex = (firstCandleIndex + maxVisibleCandles)
