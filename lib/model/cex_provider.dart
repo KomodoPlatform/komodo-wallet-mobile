@@ -18,7 +18,7 @@ import '../utils/utils.dart';
 
 class CexProvider extends ChangeNotifier {
   CexProvider() {
-    _updateTickersListV2();
+    _updateTickersList();
     _updateRates();
 
     cexPrices.linkProvider(this);
@@ -100,11 +100,11 @@ class CexProvider extends ChangeNotifier {
       return _tickers;
     }
 
-    _updateTickersListV2();
+    _updateTickersList();
     return _tickersFallBack;
   }
 
-  Future<void> _updateTickersListV2() async {
+  Future<void> _updateTickersList() async {
     try {
       _tickers = await _binanceRepository.getLegacyTickers();
       notifyListeners();
@@ -129,9 +129,9 @@ class CexProvider extends ChangeNotifier {
       _charts[pair].status = ChartStatus.fetching;
     }
     try {
-      json0 = await _fetchChartDataV2(chain[0]);
+      json0 = await _fetchChartData(chain[0]);
       if (chain.length > 1) {
-        json1 = await _fetchChartDataV2(chain[1]);
+        json1 = await _fetchChartData(chain[1]);
       }
     } catch (_) {
       _updatingChart = false;
@@ -242,7 +242,7 @@ class CexProvider extends ChangeNotifier {
     );
   }
 
-  Future<Map<String, dynamic>> _fetchChartDataV2(ChainLink link) async {
+  Future<Map<String, dynamic>> _fetchChartData(ChainLink link) async {
     try {
       final String pair = '${link.rel}-${link.base}';
       final Map<String, dynamic> result =

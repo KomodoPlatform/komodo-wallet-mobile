@@ -20,9 +20,9 @@ class BinanceProvider {
   /// Parameters:
   /// - [symbol]: The trading symbol for which to fetch the candlestick chart data.
   /// - [interval]: The time interval for the candlestick chart data (e.g., '1m', '1h', '1d').
-  /// - [startTime]: The start time (in milliseconds, Unix time) of the data range to fetch (optional).
-  /// - [endTime]: The end time (in milliseconds, Unix time) of the data range to fetch (optional).
-  /// - [limit]: The maximum number of data points to fetch (optional).
+  /// - [startTime]: The start time (in milliseconds since epoch, Unix time) of the data range to fetch (optional).
+  /// - [endTime]: The end time (in milliseconds since epoch, Unix time) of the data range to fetch (optional).
+  /// - [limit]: The maximum number of data points to fetch (optional). Defaults to 500, maximum is 1000.
   ///
   /// Returns:
   /// A [Future] that resolves to a [BinanceKlinesResponse] object containing the fetched candlestick chart data.

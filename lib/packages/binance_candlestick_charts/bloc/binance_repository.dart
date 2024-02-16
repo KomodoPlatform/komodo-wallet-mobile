@@ -68,14 +68,14 @@ class BinanceRepository {
   /// Parameters:
   /// - symbol: The symbol for which to fetch the candle data.
   /// - ohlcDurations: The durations for which to fetch the candle data. If not provided, it fetches the data for all default durations.
-  /// - limit: The maximum number of candles to fetch for each duration. The default is 250.
+  /// - limit: The maximum number of candles to fetch for each duration. The default is 500, and the maximum is 1000.
   ///
   /// Returns:
   /// A map of durations to the corresponding candle data.
   ///
   /// Example usage:
   /// ```dart
-  /// final Map<String, dynamic> candleData = await getLegacyOhlcCandleData('BTCUSDT', ohlcDurations: ['1m', '5m', '1h']);
+  /// final Map<String, dynamic> candleData = await getLegacyOhlcCandleData('btc-usdt', ohlcDurations: ['1m', '5m', '1h']);
   /// ```
   Future<Map<String, dynamic>> getLegacyOhlcCandleData(
     String symbol, {
@@ -98,8 +98,7 @@ class BinanceRepository {
               await _binanceProvider.fetchKlines(
             symbol,
             defaultCandleIntervalsBinanceMap[duration],
-            limit:
-                limit, // The default is 500, and the max is 1000 for Binance.
+            limit: limit,
           );
 
           if (klinesResponse != null) {

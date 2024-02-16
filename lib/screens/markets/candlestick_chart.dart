@@ -40,6 +40,8 @@ class CandleChart extends StatefulWidget {
   double get marginBottom => 30;
   double get labelWidth => 100;
   int get visibleCandlesLimit => 500;
+  int get adjustedVisibleCandleLimit =>
+      visibleCandlesLimit > data.length ? data.length : visibleCandlesLimit;
 
   @override
   CandleChartState createState() => CandleChartState();
@@ -245,20 +247,10 @@ class _ChartPainter extends CustomPainter {
     setWidgetState('canvasSize', size);
     final double fieldHeight =
         size.height - widget.marginBottom - widget.marginTop;
-
-    // adjust time axis
-    final int adjustedVisibleCandleLimit =
-        widget.visibleCandlesLimit > widget.data.length
-            ? widget.data.length
-            : widget.visibleCandlesLimit;
     final int maxVisibleCandles =
         (size.width / (widget.candleWidth + widget.gap) / zoom)
             .floor()
-            .clamp(0, adjustedVisibleCandleLimit);
-    final int firstCandleIndex =
-        timeAxisShift.floor().clamp(0, widget.data.length - maxVisibleCandles);
-    final int lastVisibleCandleIndex = (firstCandleIndex + maxVisibleCandles)
-        .clamp(maxVisibleCandles - 1, widget.data.length - 1);
+            .clamp(0, widget.adjustedVisibleCandleLimit);
 
     setWidgetState(
       'maxTimeShift',
@@ -266,8 +258,7 @@ class _ChartPainter extends CustomPainter {
     );
 
     final VisibleCandles visibleCandles = _collectVisibleCandles(
-      firstCandleIndex,
-      lastVisibleCandleIndex,
+      maxVisibleCandles,
       size,
       fieldHeight,
     );
@@ -312,11 +303,14 @@ class _ChartPainter extends CustomPainter {
   }
 
   VisibleCandles _collectVisibleCandles(
-    int firstCandleIndex,
-    int lastVisibleCandleIndex,
+    int maxVisibleCandles,
     Size size,
     double fieldHeight,
   ) {
+    final int firstCandleIndex =
+        timeAxisShift.floor().clamp(0, widget.data.length - maxVisibleCandles);
+    final int lastVisibleCandleIndex = (firstCandleIndex + maxVisibleCandles)
+        .clamp(maxVisibleCandles - 1, widget.data.length - 1);
     final int firstCandleCloseTime = widget.data[firstCandleIndex].closeTime;
     final int lastCandleCloseTime =
         widget.data[lastVisibleCandleIndex].closeTime;
