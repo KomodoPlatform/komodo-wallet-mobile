@@ -707,7 +707,7 @@ class _ChartPainter extends CustomPainter {
     );
 
     const String format = 'MMM dd yyyy HH:mm';
-    return DateFormat(format).format(utc);
+    return DateFormat(format).format(utc.toLocal());
   }
 
   void _drawText({
