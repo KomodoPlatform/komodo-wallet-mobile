@@ -150,8 +150,18 @@ class Ask {
 
   Rational getReceiveAmount(Rational amountToSell) {
     Rational buyAmount = amountToSell / fract2rat(priceFract);
-    if (buyAmount >= fract2rat(maxvolumeFract))
-      buyAmount = fract2rat(maxvolumeFract);
+    final Rational buyBaseAmount = buyAmount * fract2rat(priceFract);
+
+    final Rational maxVolumeBase = fract2rat(maxvolumeFract);
+    final Rational maxVolumeRel =
+        fract2rat(maxvolumeFract) / fract2rat(priceFract);
+
+    final bool askRelGreaterThanMaxRelVolume = buyAmount >= maxVolumeRel;
+    final bool askBaseGreaterThanMaxBaseVolume = buyBaseAmount >= maxVolumeBase;
+
+    if (askRelGreaterThanMaxRelVolume || askBaseGreaterThanMaxBaseVolume) {
+      buyAmount = maxVolumeRel;
+    }
     return buyAmount;
   }
 
