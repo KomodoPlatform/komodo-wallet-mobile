@@ -106,6 +106,12 @@ String getCoinTicker(String abbr) {
   return abbr;
 }
 
+String getCoinTickerRegex(String abbr) {
+  final String suffixes = appConfig.protocolSuffixes.join('|');
+  final RegExp regExp = RegExp('(_|-)($suffixes)');
+  return abbr.replaceAll(regExp, '');
+}
+
 Rational deci2rat(Decimal decimal) {
   try {
     return Rational.parse(decimal.toString());
