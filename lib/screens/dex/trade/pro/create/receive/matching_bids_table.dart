@@ -120,6 +120,10 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
   }
 
   TableRow _tableRow(Ask bid, int index) {
+    /// Convert the USD equivalent of the bid volume to the receive coin amount
+    final double _bidVolume = bid.maxvolume.toDouble();
+    final double convertedVolume = _bidVolume / bid.priceRat.toDouble();
+
     return TableRow(
       children: [
         TableRowInkWell(
@@ -192,7 +196,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.maxvolume.toDouble()),
+              formatPrice(convertedVolume),
               style:
                   Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
             ),
@@ -215,7 +219,7 @@ class _MatchingBidsTableState extends State<MatchingBidsTable> {
                   color: Theme.of(context).highlightColor,
                 ))),
             child: Text(
-              formatPrice(bid.maxvolume.toDouble() * double.parse(bid.price)),
+              formatPrice(convertedVolume * double.parse(bid.price)),
               style:
                   Theme.of(context).textTheme.bodyText2.copyWith(fontSize: 13),
             ),
