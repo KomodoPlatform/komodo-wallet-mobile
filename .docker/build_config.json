@@ -1,0 +1,29 @@
+{
+    "api": {
+        "version": "b0fd99e",
+        "should_update": true,
+        "base_url": "https://sdk.devbuilds.komodo.earth",
+        "default_branch": "main",
+        "platforms": {
+            "ios": {
+                "keywords": [
+                    "ios",
+                    "aarch64"
+                ],
+                "path": "ios"
+            },
+            "android-armv7": {
+                "keywords": [
+                    "android-armv7"
+                ],
+                "path": "android/app/src/main/cpp/libs/armeabi-v7a"
+            },
+            "android-aarch64": {
+                "keywords": [
+                    "android-aarch64"
+                ],
+                "path": "android/app/src/main/cpp/libs/arm64-v8a"
+            }
+        }
+    }
+}
