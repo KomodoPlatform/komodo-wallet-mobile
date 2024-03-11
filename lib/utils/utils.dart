@@ -865,6 +865,27 @@ Future<String> scanQr(BuildContext context) async {
   );
 }
 
+/// Removes the blockchain prefix from [address]
+/// 
+/// Returns [address] if either the prefix or address are empty.
+///
+/// Example usage:
+/// ```dart
+/// removeBlockchainPrefix(eth:0x123) == '0x123'
+/// ```
+String removeBlockchainPrefix(String address) {
+  if (address.contains(':')) {
+    final List<String> parts = address.split(':');
+    final bool hasPrefix = parts.length == 2 && parts[0].isNotEmpty;
+    final bool hasAddress = parts.length == 2 && parts[1].isNotEmpty;
+    if (hasPrefix && hasAddress) {
+      return parts[1];
+    }
+  }
+
+  return address;
+}
+
 /// Function to generate password based on some criteria
 ///
 /// Adapted from code at https://blog.albertobonacina.com/password-generator-with-dart.

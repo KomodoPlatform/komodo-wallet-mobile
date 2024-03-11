@@ -301,7 +301,7 @@ class _AmountAddressStepState extends State<AmountAddressStep> {
         barcode = 'Error';
       });
     } else {
-      final address = result;
+      final address = removeBlockchainPrefix(result);
       final uri = Uri.tryParse(address.trim());
 
       setState(() {
