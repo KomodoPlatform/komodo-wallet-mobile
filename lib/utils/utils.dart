@@ -711,6 +711,35 @@ class PaymentUriInfo {
   final String amount;
 }
 
+/// Returns the value of a [parameter] from the [address].
+/// Returns null if the [parameter] is not found.
+/// [address] is expected to be a blockchain address or URL with parameters,
+/// e.g. '?amount=123'
+///
+/// Example usage:
+/// ```dart
+/// getParameterValue('litecoin:NPZcaiggQTy6uxL?amount=0.2', 'amount') == '0.2'
+/// ```
+String getParameterValue(String address, String parameter) {
+  final RegExp regExp = RegExp('(?<=$parameter=)(.*?)(?=&|\$)');
+  final RegExpMatch match = regExp.firstMatch(address);
+  return match?.group(0);
+}
+
+/// Returns the address from the [uri].
+/// Returns the [uri] if no address is found.
+/// [uri] is expected to be a blockchain address or URL with parameters,
+/// e.g. '?amount=123'
+/// Example usage:
+/// ```dart
+/// getAddressFromUri('litecoin:NPZcaiggQTy6uxL?amount=0.2') == 'NPZcaiggQTy6uxL'
+/// ```
+String getAddressFromUri(String uri) {
+  final RegExp regExp = RegExp(r'(?<=:)(.*?)(?=\?|$)');
+  final RegExpMatch match = regExp.firstMatch(uri);
+  return match?.group(0) ?? uri.split(':').last;
+}
+
 void showUriDetailsDialog(
     BuildContext context, PaymentUriInfo uriInfo, Function callbackIfAccepted) {
   if (uriInfo == null) return;
