@@ -2987,6 +2987,30 @@
     "derivation_path": "m/44'/966'"
   },
   {
+    "coin": "CLAM",
+    "name": "clams",
+    "fname": "Clams",
+    "isPoS": 1,
+    "rpcport": 30174,
+    "pubtype": 137,
+    "p2shtype": 13,
+    "wiftype": 133,
+    "segwit": false,
+    "txfee": 10000,
+    "mm2": 1,
+    "sign_message_prefix": "Clam Signed Message:\n",
+    "required_confirmations": 5,
+    "avg_blocktime": 60,
+    "protocol": {
+      "type": "UTXO"
+    },
+    "derivation_path": "m/44'/23'",
+    "links": {
+      "github": "https://github.com/nochowderforyou/clams",
+      "homepage": "http://clamclient.com"
+    }
+  },
+  {
     "coin": "CLC",
     "sign_message_prefix": "Komodo Signed Message:\n",
     "asset": "CLC",
