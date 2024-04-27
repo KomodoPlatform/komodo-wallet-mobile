@@ -359,6 +359,8 @@ String _getColor(String coin) {
     'VET': '#18C6FF',
     'VITE': '#007AFF',
     'VOTE2022': '#7490AA',
+    'VOTE2023': '#7490AA',
+    'VOTE2024': '#7490AA',
     'VRA': '#D70A41',
     'VRM': '#586A7A',
     'VRSC': '#3164D3',
