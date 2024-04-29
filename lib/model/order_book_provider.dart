@@ -269,7 +269,25 @@ class SyncOrderbook {
     });
 
     list.sort((a, b) => a.pair.rel.compareTo(b.pair.rel));
-    return list;
+
+    return list.where((OrderbookDepth item) {
+      final bool sameAsOrderbookTicker = item.pair.base == coin.orderbookTicker;
+      bool sameAsSegwitPair = false;
+      if (item.pair.base.toLowerCase().contains('segwit')) {
+        sameAsSegwitPair = item.pair.base
+            .replaceAll('segwit', '')
+            .replaceAll('-', '')
+            .contains(item.pair.rel);
+      }
+      if (item.pair.rel.toLowerCase().contains('segwit')) {
+        sameAsSegwitPair = item.pair.rel
+            .replaceAll('segwit', '')
+            .replaceAll('-', '')
+            .contains(item.pair.base);
+      }
+
+      return !sameAsOrderbookTicker && !sameAsSegwitPair;
+    }).toList();
   }
 
   Future<void> _updateOrderBooks() async {
