@@ -40,11 +40,11 @@ class CoinUpdater {
 
   static const isUpdateEnabled = true;
 
-  final String localAssetPathConfig = 'assets/coins_config.json';
+  final String localAssetPathConfig = 'assets/coins_config_ssl.json';
   final String localAssetPathCoins = 'assets/coins.json';
 
   String get remotePathConfig =>
-      '$coinsRepoUrl/$coinsRepoBranch/utils/coins_config.json';
+      '$coinsRepoUrl/$coinsRepoBranch/utils/coins_config_ssl.json';
   String get remotePathCoins => '$coinsRepoUrl/$coinsRepoBranch/coins';
 
   String _cachedConfig;
