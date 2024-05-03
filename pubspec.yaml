@@ -207,7 +207,7 @@ flutter:
   - assets/svg_light/
   - assets/swap_share/
   - assets/coins.json
-  - assets/coins_config_ssl.json
+  - assets/coins_config_tcp.json
   - assets/rebranding/
 
   # The following line ensures that the Material Icons font is
