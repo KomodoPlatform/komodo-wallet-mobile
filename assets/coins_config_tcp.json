@@ -35,10 +35,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -82,10 +78,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -229,10 +221,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -333,10 +321,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -384,10 +368,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -434,10 +414,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -535,10 +511,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -594,10 +566,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -730,10 +698,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -923,10 +887,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -983,10 +943,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -1030,10 +986,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -1091,10 +1043,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -1141,10 +1089,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -1202,10 +1146,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -1213,6 +1153,56 @@
             },
             {
                 "url": "https://electrum3.cipig.net:18755"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "AIBC": {
+        "coin": "AIBC",
+        "type": "UTXO",
+        "name": "Aiblockchain",
+        "coinpaprika_id": "",
+        "coingecko_id": "",
+        "livecoinwatch_id": "",
+        "explorer_url": "http://95.111.231.8:3001/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Aiblockchain",
+        "rpcport": 7772,
+        "pubtype": 23,
+        "p2shtype": 23,
+        "wiftype": 176,
+        "txfee": 0,
+        "dust": 5460,
+        "segwit": true,
+        "mm2": 1,
+        "required_confirmations": 11,
+        "avg_blocktime": 30,
+        "protocol": {
+            "type": "UTXO",
+            "bip44": "m/44'/2'/0'/0/0"
+        },
+        "links": {
+            "github": "https://github.com/nickgsh/AiBlockChain",
+            "homepage": "https://aibc.space/"
+        },
+        "electrum": [
+            {
+                "url": "aibc.pro:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "email": "electrum1_admin@aibc.pro"
+                    },
+                    {
+                        "github": "nickgsh"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block/"
@@ -1356,10 +1346,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -1416,10 +1402,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -1466,10 +1448,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -1575,10 +1553,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -1622,10 +1596,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -1720,10 +1690,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -1779,10 +1745,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -2033,10 +1995,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -2177,10 +2135,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -2266,10 +2220,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -2426,10 +2376,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -2475,10 +2421,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -2662,10 +2604,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -2682,6 +2620,45 @@
                 "contact": {
                     "email": "cipi@komodoplatform.com"
                 }
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "AYA": {
+        "coin": "AYA",
+        "type": "UTXO",
+        "name": "Aryacoin",
+        "coinpaprika_id": "aya-aryacoin",
+        "coingecko_id": "aryacoin",
+        "livecoinwatch_id": "AYA",
+        "explorer_url": "https://explorer.aryacoin.io/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Aryacoin Signed Message:\n",
+        "fname": "Aryacoin",
+        "rpcport": 9332,
+        "pubtype": 23,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 100000,
+        "dust": 54600,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "requires_notarization": true,
+        "avg_blocktime": 30,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/357'",
+        "electrum": [
+            {
+                "url": "88.99.26.209:5151",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -2869,10 +2846,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -2972,10 +2945,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -3118,10 +3087,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -3178,10 +3143,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -3225,10 +3186,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -3277,10 +3234,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -3327,10 +3280,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -3478,10 +3427,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -3734,10 +3679,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -3896,10 +3837,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -3943,6 +3880,50 @@
         "token_id": "bb553ac2ac7af0fcd4f24f9dfacc7f925bfb1446c6e18c7966db95a8d50fb378",
         "parent_coin": "SLP",
         "token_address_url": "token/",
+        "explorer_block_url": "block/"
+    },
+    "BBK": {
+        "coin": "BBK",
+        "type": "UTXO",
+        "name": "BitBlocks",
+        "coinpaprika_id": "bbk-bitblocks",
+        "coingecko_id": "",
+        "livecoinwatch_id": "BBK",
+        "explorer_url": "https://bbk.ccore.online/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": true,
+        "sign_message_prefix": "DarkNet Signed Message:\n",
+        "fname": "BitBlocks",
+        "rpcport": 59768,
+        "pubtype": 25,
+        "p2shtype": 85,
+        "wiftype": 107,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "links": {
+            "github": "https://github.com/BitBlocksProject/BitBlocks",
+            "homepage": "https://bitblocksproject.com"
+        },
+        "electrum": [
+            {
+                "url": "bbk-one.ewm-cx.net:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "bbk-two.ewm-cx.net:50001",
+                "protocol": "TCP"
+            }
+        ],
         "explorer_block_url": "block/"
     },
     "BBK-BEP20": {
@@ -4029,10 +4010,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -4079,10 +4056,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -4246,6 +4219,49 @@
         "explorer_block_url": "block/",
         "forex_id": "IDR"
     },
+    "BITN": {
+        "coin": "BITN",
+        "type": "UTXO",
+        "name": "Bitnet",
+        "coinpaprika_id": "bit-bitnet",
+        "coingecko_id": "bitnet-io",
+        "livecoinwatch_id": "________BIT",
+        "explorer_url": "https://bitexplorer.io/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Bitnet Signed Message:\n",
+        "fname": "Bitnet",
+        "rpcport": 9332,
+        "pubtype": 25,
+        "p2shtype": 22,
+        "wiftype": 158,
+        "txfee": 700000,
+        "segwit": true,
+        "bech32_hrp": "bit",
+        "mm2": 1,
+        "required_confirmations": 1,
+        "avg_blocktime": 600,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "electrum": [
+            {
+                "url": "bitexplorer.io:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "c4pt#7855"
+                    }
+                ]
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
     "BLK": {
         "coin": "BLK",
         "type": "UTXO",
@@ -4299,6 +4315,15 @@
                         "discord": "michelvankessel#7656"
                     }
                 ]
+            },
+            {
+                "url": "electrum1.blackcoin.nl:10001",
+                "contact": [
+                    {
+                        "discord": "michelvankessel#7656"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -4401,6 +4426,15 @@
                         "discord": "michelvankessel#7656"
                     }
                 ]
+            },
+            {
+                "url": "electrum1.blackcoin.nl:10011",
+                "contact": [
+                    {
+                        "discord": "michelvankessel#7656"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -4442,6 +4476,10 @@
             {
                 "url": "electrum1.blocx.space:50002",
                 "protocol": "SSL"
+            },
+            {
+                "url": "electrum1.blocx.space:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -4492,6 +4530,49 @@
         "explorer_block_url": "block/",
         "binance_id": "BNB"
     },
+    "BOLI": {
+        "coin": "BOLI",
+        "type": "UTXO",
+        "name": "Bolivarcoin",
+        "coinpaprika_id": "boli-bolivarcoin",
+        "coingecko_id": "bolivarcoin",
+        "livecoinwatch_id": "BOLI",
+        "explorer_url": "https://chainz.cryptoid.info/boli/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "DarkCoin Signed Message:\n",
+        "fname": "Bolivarcoin",
+        "confpath": "USERHOME/.bolivarcoincore/bolivarcoin.conf",
+        "rpcport": 3563,
+        "pubtype": 85,
+        "p2shtype": 5,
+        "wiftype": 213,
+        "segwit": false,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 180,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/278'",
+        "links": {
+            "github": "https://github.com/BOLI-Project/BolivarCoin",
+            "homepage": "https://bolis.info"
+        },
+        "electrum": [
+            {
+                "url": "electrum2.bolivarcoin.tech:23001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?"
+    },
     "BONE-ERC20": {
         "coin": "BONE-ERC20",
         "type": "ERC-20",
@@ -4526,10 +4607,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -4714,10 +4791,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -4774,10 +4847,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -4828,10 +4897,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -4938,10 +5003,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -4997,10 +5058,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -5059,10 +5116,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -5109,10 +5162,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -5161,10 +5210,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -5424,6 +5469,60 @@
         "token_address_url": "tokentxns?a=",
         "explorer_block_url": "block/",
         "binance_id": "BTC"
+    },
+    "BTCZ": {
+        "coin": "BTCZ",
+        "type": "UTXO",
+        "name": "BitcoinZ",
+        "coinpaprika_id": "btcz-bitcoinz",
+        "coingecko_id": "bitcoinz",
+        "livecoinwatch_id": "BTCZ",
+        "explorer_url": "https://explorer.btcz.rocks/",
+        "explorer_tx_url": "tx/",
+        "explorer_address_url": "address/",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "BitcoinZ Signed Message:\n",
+        "fname": "BitcoinZ",
+        "rpcport": 1979,
+        "taddr": 28,
+        "pubtype": 184,
+        "p2shtype": 189,
+        "wiftype": 128,
+        "txfee": 10000,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 150,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/177'",
+        "electrum": [
+            {
+                "url": "electrum1.btcz.rocks:50001",
+                "contact": [
+                    {
+                        "discord": "VandarGR#6065"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrum2.btcz.rocks:50001",
+                "contact": [
+                    {
+                        "discord": "VandarGR#6065"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
     },
     "BTCZ-BEP20": {
         "coin": "BTCZ-BEP20",
@@ -5769,10 +5868,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -5828,10 +5923,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -6030,10 +6121,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -6077,10 +6164,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -6173,10 +6256,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -6281,10 +6360,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -6331,10 +6406,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -6392,10 +6463,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -6716,10 +6783,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -6811,10 +6874,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -6861,10 +6920,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -6922,10 +6977,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -6977,10 +7028,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -7085,10 +7132,6 @@
         "fallback_swap_contract": "0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/arbitrum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://arb1.arbitrum.io/rpc"
             }
         ],
@@ -7140,6 +7183,62 @@
             }
         ],
         "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
+    "CHTA": {
+        "coin": "CHTA",
+        "type": "UTXO",
+        "name": "Cheetahcoin",
+        "coinpaprika_id": "chta-cheetahcoin",
+        "coingecko_id": "cheetahcoin",
+        "livecoinwatch_id": "CHTA",
+        "explorer_url": "http://chtaexplorer.mooo.com:3002/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Cheetahcoin",
+        "rpcport": 8536,
+        "pubtype": 28,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 40000,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 120,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/682'",
+        "electrum": [
+            {
+                "url": "electrum.shorelinecrypto.com:10007",
+                "contact": [
+                    {
+                        "email": "support@shorelinecrypto.com"
+                    },
+                    {
+                        "discord": "honglu69#5911"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrum2.mooo.com:10007",
+                "contact": [
+                    {
+                        "email": "support@shorelinecrypto.com"
+                    },
+                    {
+                        "discord": "honglu69#5911"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
         "explorer_block_url": "block/"
     },
     "CHTA-BEP20": {
@@ -7299,10 +7398,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -7359,10 +7454,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -7409,10 +7500,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -7514,10 +7601,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -7568,6 +7651,15 @@
             {
                 "url": "clam-ex-one.ewmci.online:50002",
                 "protocol": "SSL",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
+            },
+            {
+                "url": "clam-ex-one.ewmci.online:50001",
+                "protocol": "TCP",
                 "contact": [
                     {
                         "discord": "475820011634819072"
@@ -7659,10 +7751,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -7759,10 +7847,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -7864,10 +7948,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -7914,10 +7994,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -8018,10 +8094,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -8149,10 +8221,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -8209,10 +8277,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -8256,10 +8320,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -8348,10 +8408,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -8494,10 +8550,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -8554,10 +8606,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -8605,10 +8653,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -8712,10 +8756,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -8849,10 +8889,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -8975,10 +9011,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -9038,10 +9070,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -9097,10 +9125,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -9158,10 +9182,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -9208,10 +9228,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -9416,6 +9432,10 @@
                 "url": "failover.dgc.ewmcx.biz:50002",
                 "protocol": "SSL",
                 "disable_cert_verification": true
+            },
+            {
+                "url": "electrumx.dgc.ewmcx.org:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -9455,10 +9475,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -9865,10 +9881,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -10058,6 +10070,48 @@
         "explorer_block_url": "block/",
         "binance_id": "DOGE"
     },
+    "DOGEC": {
+        "coin": "DOGEC",
+        "type": "UTXO",
+        "name": "DogeCash",
+        "coinpaprika_id": "dogec-dogecash",
+        "coingecko_id": "dogecash",
+        "livecoinwatch_id": "DOGEC",
+        "explorer_url": "https://explorer.dogecash.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "DarkNet Signed Message:\n",
+        "fname": "DogeCash",
+        "rpcport": 56750,
+        "pubtype": 30,
+        "p2shtype": 19,
+        "wiftype": 122,
+        "txfee": 10000,
+        "dust": 5460,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/385'",
+        "links": {
+            "github": "https://github.com/dogecash/dogecash",
+            "homepage": "https://dogecash.net"
+        },
+        "electrum": [
+            {
+                "url": "dogec-one.ewm-cx.com:50006",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
     "DOGEDASH-BEP20": {
         "coin": "DOGEDASH-BEP20",
         "type": "BEP-20",
@@ -10243,6 +10297,49 @@
         ],
         "explorer_block_url": "block/"
     },
+    "DP": {
+        "coin": "DP",
+        "type": "Smart Chain",
+        "name": "DigitalPrice",
+        "coinpaprika_id": "dp-digitalprice",
+        "coingecko_id": "digitalprice",
+        "livecoinwatch_id": "DP",
+        "explorer_url": "https://dp.explorer.dexstats.info/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Komodo Signed Message:\n",
+        "asset": "DP",
+        "fname": "DigitalPrice",
+        "rpcport": 28388,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "requires_notarization": false,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo",
+        "electrum": [
+            {
+                "url": "1.eu.dp.electrum.dexstats.info:10021",
+                "contact": [
+                    {
+                        "discord": "Zanzarismo#6500"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
     "DOI": {
         "coin": "DOI",
         "type": "UTXO",
@@ -10365,6 +10462,18 @@
                         "discord": "cipi#4502"
                     }
                 ]
+            },
+            {
+                "url": "electrum1.cipig.net:10052",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -10496,10 +10605,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -10607,10 +10712,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -10744,10 +10845,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -10848,10 +10945,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -10950,9 +11043,6 @@
             },
             {
                 "url": "https://besu-de.etc-network.info"
-            },
-            {
-                "url": "https://besu-at.etc-network.info"
             }
         ],
         "explorer_block_url": "block/",
@@ -11036,10 +11126,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -11097,10 +11183,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -11137,10 +11219,6 @@
         "swap_contract_address": "0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "fallback_swap_contract": "0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/arbitrum",
-                "gui_auth": true
-            },
             {
                 "url": "https://arb1.arbitrum.io/rpc"
             }
@@ -11231,10 +11309,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -11371,10 +11445,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -11422,10 +11492,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -11483,10 +11549,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -11533,10 +11595,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -11595,10 +11653,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -11650,10 +11704,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -11711,10 +11761,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -11850,10 +11896,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -11909,10 +11951,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -12018,10 +12056,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -12116,10 +12150,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -12183,6 +12213,71 @@
             }
         ],
         "explorer_block_url": "block/"
+    },
+    "FIRO": {
+        "coin": "FIRO",
+        "type": "UTXO",
+        "name": "Firo",
+        "coinpaprika_id": "firo-firo",
+        "coingecko_id": "zcoin",
+        "livecoinwatch_id": "FIRO",
+        "explorer_url": "https://explorer.firo.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Firo Signed Message:\n",
+        "fname": "Firo",
+        "rpcport": 8888,
+        "pubtype": 82,
+        "p2shtype": 7,
+        "wiftype": 210,
+        "txfee": 1000,
+        "mm2": 1,
+        "required_confirmations": 1,
+        "avg_blocktime": 300,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "trezor_coin": "Firo",
+        "links": {
+            "github": "https://github.com/firoorg/firo",
+            "homepage": "https://firo.org"
+        },
+        "electrum": [
+            {
+                "url": "electrumx.firo.org:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "github": "https://github.com/firoorg/electrumx-firo/issues"
+                    }
+                ]
+            },
+            {
+                "url": "electrumx01.firo.org:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "github": "https://github.com/firoorg/electrumx-firo/issues"
+                    }
+                ]
+            },
+            {
+                "url": "electrumx02.firo.org:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "github": "https://github.com/firoorg/electrumx-firo/issues"
+                    }
+                ]
+            }
+        ],
+        "explorer_block_url": "block/",
+        "binance_id": "FIRO"
     },
     "FIRO-BEP20": {
         "coin": "FIRO-BEP20",
@@ -12286,6 +12381,15 @@
                         "discord": "motty#8318"
                     }
                 ]
+            },
+            {
+                "url": "electrumx1.fujicoin.org:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "motty#8318"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block/"
@@ -12343,6 +12447,15 @@
             {
                 "url": "electrumx2.fujicoin.org:50003",
                 "protocol": "SSL",
+                "contact": [
+                    {
+                        "discord": "motty#8318"
+                    }
+                ]
+            },
+            {
+                "url": "electrumx1.fujicoin.org:50001",
+                "protocol": "TCP",
                 "contact": [
                     {
                         "discord": "motty#8318"
@@ -12528,10 +12641,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -12823,10 +12932,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -12923,10 +13028,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -13033,10 +13134,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -13093,10 +13190,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -13143,10 +13236,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -13236,10 +13325,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -13283,10 +13368,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -13392,10 +13473,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -13452,10 +13529,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -13463,6 +13536,49 @@
             },
             {
                 "url": "https://electrum3.cipig.net:18755"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "GBX": {
+        "coin": "GBX",
+        "type": "UTXO",
+        "name": "GoByte",
+        "coinpaprika_id": "gbx-gobyte",
+        "coingecko_id": "gobyte",
+        "livecoinwatch_id": "GBX",
+        "explorer_url": "https://insight.gobyte.network/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "DarkCoin Signed Message:\n",
+        "fname": "GoByte",
+        "confpath": "USERHOME/.gobytecore/gobyte.conf",
+        "rpcport": 12454,
+        "pubtype": 38,
+        "p2shtype": 10,
+        "wiftype": 198,
+        "segwit": false,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 3,
+        "avg_blocktime": 150,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/176'",
+        "links": {
+            "github": "https://github.com/gobytecoin/gobyte",
+            "homepage": "https://gobyte.network"
+        },
+        "electrum": [
+            {
+                "url": "88.99.26.209:5128",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -13605,6 +13721,10 @@
             {
                 "url": "electrum2.netseed.net:50002",
                 "protocol": "SSL"
+            },
+            {
+                "url": "electrum1.netseed.net:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -13715,10 +13835,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -13774,10 +13890,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -13921,10 +14033,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -13971,10 +14079,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -14023,10 +14127,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -14084,10 +14184,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -14134,10 +14230,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -14250,10 +14342,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -14373,6 +14461,30 @@
                         "discord": "jackielove4u#0412"
                     }
                 ]
+            },
+            {
+                "url": "electrum1.groestlcoin.org:50001",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrum12.groestlcoin.org:50001",
+                "contact": [
+                    {
+                        "email": "jackielove4u@hotmail.com"
+                    },
+                    {
+                        "discord": "jackielove4u#0412"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -14412,10 +14524,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -14465,10 +14573,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -14570,10 +14674,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -14669,10 +14769,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -14728,10 +14824,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -14794,10 +14886,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -14854,10 +14942,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -14904,10 +14988,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -14964,10 +15044,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -15060,10 +15136,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -15119,10 +15191,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -15267,10 +15335,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -15423,10 +15487,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -15474,10 +15534,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -15524,10 +15580,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -15633,10 +15685,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -15738,10 +15786,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -15893,10 +15937,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -15990,10 +16030,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -16092,10 +16128,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16144,10 +16176,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16195,10 +16223,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -16292,10 +16316,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -16353,10 +16373,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16405,10 +16421,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16456,10 +16468,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -16553,10 +16561,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -16612,10 +16616,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -16712,10 +16712,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -16773,10 +16769,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16824,10 +16816,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -16877,10 +16865,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -16928,10 +16912,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -16981,10 +16961,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -17032,10 +17008,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -17085,10 +17057,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -17136,10 +17104,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -17189,10 +17153,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -17237,10 +17197,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -17288,10 +17244,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -17349,10 +17301,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -17399,10 +17347,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -17452,10 +17396,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -17504,10 +17444,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -17555,10 +17491,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -18083,10 +18015,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -18143,10 +18071,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -18193,10 +18117,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -18540,6 +18460,19 @@
                         "discord": "475820011634819072"
                     }
                 ]
+            },
+            {
+                "url": "88.99.26.209:5140",
+                "protocol": "TCP"
+            },
+            {
+                "url": "lcc-ex-one.ewmci.online:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -18591,6 +18524,19 @@
                         "discord": "475820011634819072"
                     }
                 ]
+            },
+            {
+                "url": "88.99.26.209:5140",
+                "protocol": "TCP"
+            },
+            {
+                "url": "lcc-ex-one.ewmci.online:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -18630,10 +18576,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -18691,10 +18633,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -18745,10 +18683,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -18806,10 +18740,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -18855,10 +18785,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -18915,10 +18841,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -19010,10 +18932,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -19147,10 +19065,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -19250,10 +19164,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -19359,10 +19269,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -19370,6 +19276,94 @@
             },
             {
                 "url": "https://electrum3.cipig.net:18755"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "WCN": {
+        "coin": "WCN",
+        "type": "UTXO",
+        "name": "Widecoin",
+        "coinpaprika_id": "wcn-widecoin",
+        "coingecko_id": "widecoin",
+        "livecoinwatch_id": "WCN",
+        "explorer_url": "https://explorer.widecoin.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Widecoin",
+        "rpcport": 8552,
+        "pubtype": 73,
+        "p2shtype": 33,
+        "wiftype": 153,
+        "txfee": 100000,
+        "segwit": true,
+        "bech32_hrp": "wc",
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 30,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/613'",
+        "electrum": [
+            {
+                "url": "electrumx.widecoin.org:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.widecoin.org:50001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "WCN-segwit": {
+        "coin": "WCN-segwit",
+        "type": "UTXO",
+        "name": "Widecoin",
+        "coinpaprika_id": "wcn-widecoin",
+        "coingecko_id": "widecoin",
+        "livecoinwatch_id": "WCN",
+        "explorer_url": "https://explorer.widecoin.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Widecoin",
+        "rpcport": 8552,
+        "pubtype": 73,
+        "p2shtype": 33,
+        "wiftype": 153,
+        "txfee": 100000,
+        "segwit": true,
+        "bech32_hrp": "wc",
+        "address_format": {
+            "format": "segwit"
+        },
+        "orderbook_ticker": "WCN",
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 30,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/613'",
+        "electrum": [
+            {
+                "url": "electrumx.widecoin.org:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.widecoin.org:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -19408,10 +19402,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -19473,10 +19463,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -19842,10 +19828,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -19994,10 +19976,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -20093,10 +20071,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -20152,10 +20126,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -20238,10 +20208,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -20342,10 +20308,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -20493,10 +20455,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -20676,10 +20634,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -20854,10 +20808,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -20962,10 +20912,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -21061,10 +21007,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -21166,10 +21108,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -21219,10 +21157,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -21279,10 +21213,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -21420,10 +21350,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -21431,6 +21357,116 @@
             },
             {
                 "url": "https://electrum3.cipig.net:18755"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "MONA": {
+        "coin": "MONA",
+        "type": "UTXO",
+        "name": "MonaCoin",
+        "coinpaprika_id": "mona-monacoin",
+        "coingecko_id": "monacoin",
+        "livecoinwatch_id": "MONA",
+        "explorer_url": "https://blockbook.electrum-mona.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Monacoin Signed Message:\n",
+        "fname": "MonaCoin",
+        "rpcport": 9402,
+        "pubtype": 50,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 100000,
+        "dust": 100000,
+        "segwit": true,
+        "bech32_hrp": "mona",
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 90,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/22'",
+        "trezor_coin": "Monacoin",
+        "links": {
+            "github": "https://github.com/monacoinproject/monacoin",
+            "homepage": "https://monacoin.org"
+        },
+        "electrum": [
+            {
+                "url": "133.167.67.203:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.tamami-foundation.org:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx1.monacoin.ninja:50001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "MONA-segwit": {
+        "coin": "MONA-segwit",
+        "type": "UTXO",
+        "name": "MonaCoin",
+        "coinpaprika_id": "mona-monacoin",
+        "coingecko_id": "monacoin",
+        "livecoinwatch_id": "MONA",
+        "explorer_url": "https://blockbook.electrum-mona.org/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Monacoin Signed Message:\n",
+        "fname": "MonaCoin",
+        "rpcport": 9402,
+        "pubtype": 50,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 100000,
+        "dust": 100000,
+        "segwit": true,
+        "bech32_hrp": "mona",
+        "address_format": {
+            "format": "segwit"
+        },
+        "orderbook_ticker": "MONA",
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 90,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/22'",
+        "trezor_coin": "Monacoin",
+        "links": {
+            "github": "https://github.com/monacoinproject/monacoin",
+            "homepage": "https://monacoin.org"
+        },
+        "electrum": [
+            {
+                "url": "133.167.67.203:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.tamami-foundation.org:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx1.monacoin.ninja:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -21658,6 +21694,62 @@
         "token_address_url": "tokentxns?a=",
         "explorer_block_url": "block/"
     },
+    "NENG": {
+        "coin": "NENG",
+        "type": "UTXO",
+        "name": "Nengcoin",
+        "coinpaprika_id": "neng-nengcoin",
+        "coingecko_id": "nengcoin",
+        "livecoinwatch_id": "NENG",
+        "explorer_url": "http://nengexplorer.mooo.com:3001/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Nengcoin",
+        "rpcport": 6376,
+        "pubtype": 53,
+        "p2shtype": 5,
+        "wiftype": 176,
+        "txfee": 200000,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/681'",
+        "electrum": [
+            {
+                "url": "electrum.shorelinecrypto.com:10001",
+                "contact": [
+                    {
+                        "email": "support@shorelinecrypto.com"
+                    },
+                    {
+                        "discord": "honglu69#5911"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrum2.mooo.com:10001",
+                "contact": [
+                    {
+                        "email": "support@shorelinecrypto.com"
+                    },
+                    {
+                        "discord": "honglu69#5911"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
     "NENG-BEP20": {
         "coin": "NENG-BEP20",
         "type": "BEP-20",
@@ -21745,10 +21837,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -21849,10 +21937,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -22314,10 +22398,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -22374,10 +22454,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -22526,10 +22602,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -22586,10 +22658,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -22641,10 +22709,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -22702,10 +22766,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -22745,10 +22805,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/harmony",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.harmony.one"
             },
@@ -22845,10 +22901,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -22997,10 +23049,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -23100,10 +23148,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -23160,10 +23204,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -23174,6 +23214,136 @@
             }
         ],
         "explorer_block_url": "block/"
+    },
+    "PINK": {
+        "coin": "PINK",
+        "type": "UTXO",
+        "name": "Pinkcoin",
+        "coinpaprika_id": "pink-pinkcoin",
+        "coingecko_id": "pinkcoin",
+        "livecoinwatch_id": "PINK",
+        "explorer_url": "https://chainz.cryptoid.info/pink/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": true,
+        "sign_message_prefix": "Pinkcoin Signed Message:\n",
+        "fname": "Pinkcoin",
+        "rpcport": 9135,
+        "isPoS": 1,
+        "pubtype": 3,
+        "p2shtype": 28,
+        "wiftype": 131,
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/117'",
+        "links": {
+            "github": "https://github.com/Pink2Dev/Pink2",
+            "homepage": "https://getstarted.with.pink"
+        },
+        "electrum": [
+            {
+                "url": "pink-one.ewm-cx.net:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "pink-two.ewm-cx.net:50001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?"
+    },
+    "PIVX": {
+        "coin": "PIVX",
+        "type": "UTXO",
+        "name": "PIVX",
+        "coinpaprika_id": "pivx-pivx",
+        "coingecko_id": "pivx",
+        "livecoinwatch_id": "PIVX",
+        "explorer_url": "https://chainz.cryptoid.info/pivx/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "PIVX",
+        "rpcport": 51473,
+        "pubtype": 30,
+        "p2shtype": 13,
+        "wiftype": 212,
+        "txfee": 100000,
+        "dust": 5460,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/119'",
+        "electrum": [
+            {
+                "url": "electrum01.chainster.org:50001",
+                "contact": [
+                    {
+                        "discord": "312541186793406465"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?",
+        "binance_id": "PIVX"
+    },
+    "PND": {
+        "coin": "PND",
+        "type": "UTXO",
+        "name": "Pandacoin",
+        "coinpaprika_id": "pnd-pandacoin",
+        "coingecko_id": "pandacoin",
+        "livecoinwatch_id": "PND",
+        "explorer_url": "https://chainz.cryptoid.info/pnd/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Pandacoin",
+        "isPoS": 1,
+        "rpcport": 22444,
+        "pubtype": 55,
+        "p2shtype": 22,
+        "wiftype": 183,
+        "decimals": 6,
+        "txfee": 10000000,
+        "dust": 1000000,
+        "segwit": true,
+        "bech32_hrp": "pn",
+        "mm2": 1,
+        "required_confirmations": 1,
+        "avg_blocktime": 600,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/37'",
+        "electrum": [
+            {
+                "url": "electrum.thepandacoin.net:50001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?"
     },
     "POT": {
         "coin": "POT",
@@ -23256,10 +23426,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -23316,10 +23482,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -23370,10 +23532,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -23430,10 +23588,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -23534,10 +23688,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -23593,10 +23743,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -23692,10 +23838,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -23751,10 +23893,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -23814,6 +23952,15 @@
                         "discord": "PRUX-Coin#1668"
                     }
                 ]
+            },
+            {
+                "url": "electrumx.live:50010",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "PRUX-Coin#1668"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block/"
@@ -23853,10 +24000,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -23913,10 +24056,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -24014,10 +24153,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -24118,10 +24253,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -24457,10 +24588,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -24521,10 +24648,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -24638,6 +24761,18 @@
                         "discord": "cipi#4502"
                     }
                 ]
+            },
+            {
+                "url": "electrum3.cipig.net:10071",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -24764,10 +24899,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -24833,6 +24964,18 @@
                         "discord": "cipi#4502"
                     }
                 ]
+            },
+            {
+                "url": "electrum3.cipig.net:10071",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -24923,10 +25066,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -25031,10 +25170,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -25091,10 +25226,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -25150,10 +25281,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -25217,6 +25344,15 @@
                         "discord": "475820011634819072"
                     }
                 ]
+            },
+            {
+                "url": "ric-ex-two.ewmci.online:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -25271,6 +25407,15 @@
             {
                 "url": "ric-ex-two.ewmci.online:50002",
                 "protocol": "SSL",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
+            },
+            {
+                "url": "ric-ex-two.ewmci.online:50001",
+                "protocol": "TCP",
                 "contact": [
                     {
                         "discord": "475820011634819072"
@@ -25508,10 +25653,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -25568,10 +25709,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -25618,10 +25755,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -25679,10 +25812,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -25729,10 +25858,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -25794,10 +25919,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -25882,6 +26003,62 @@
                         "discord": "rtbcoin"
                     }
                 ]
+            },
+            {
+                "url": "electrumx1.ridethebullcoin.com:10002",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "email": "rtbadmin@ridethebullcoin.com"
+                    },
+                    {
+                        "github": "RTBCoin"
+                    },
+                    {
+                        "discord": "rtbcoin"
+                    }
+                ]
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "RTM": {
+        "coin": "RTM",
+        "type": "UTXO",
+        "name": "Raptoreum",
+        "coinpaprika_id": "rtm-raptoreum",
+        "coingecko_id": "raptoreum",
+        "livecoinwatch_id": "RTM",
+        "explorer_url": "https://explorer.raptoreum.com/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Raptoreum",
+        "rpcport": 9998,
+        "pubtype": 60,
+        "p2shtype": 16,
+        "wiftype": 128,
+        "txfee": 1000,
+        "mm2": 1,
+        "confpath": "USERHOME/.raptoreumcore/raptoreum.conf",
+        "required_confirmations": 3,
+        "avg_blocktime": 120,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/10226'",
+        "electrum": [
+            {
+                "url": "x1.raptoreum.com:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "x2.raptoreum.com:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -26047,10 +26224,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -26154,10 +26327,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -26302,10 +26471,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -26402,10 +26567,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -26461,10 +26622,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -26553,10 +26710,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -26653,10 +26806,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -26702,10 +26851,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -26833,10 +26978,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -26928,10 +27069,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -26975,10 +27112,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -27026,10 +27159,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -27086,10 +27215,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -27261,10 +27386,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -27361,10 +27482,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -27420,10 +27537,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -27556,10 +27669,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -27701,10 +27810,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -27965,10 +28070,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -28073,10 +28174,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -28133,10 +28230,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -28189,6 +28282,22 @@
                         "discord": "cipi#4502"
                     }
                 ]
+            },
+            {
+                "url": "electrum3.cipig.net:10068",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "testnet.aranguren.org:51001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -28238,6 +28347,22 @@
                         "discord": "cipi#4502"
                     }
                 ]
+            },
+            {
+                "url": "electrum3.cipig.net:10068",
+                "contact": [
+                    {
+                        "email": "cipi@komodoplatform.com"
+                    },
+                    {
+                        "discord": "cipi#4502"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "testnet.aranguren.org:51001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -28277,10 +28402,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -28382,10 +28503,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -28443,6 +28560,58 @@
             }
         ],
         "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
+    "THC": {
+        "coin": "THC",
+        "type": "Smart Chain",
+        "name": "HempCoin",
+        "coinpaprika_id": "thc-hempcoin",
+        "coingecko_id": "hempcoin-thc",
+        "livecoinwatch_id": "THC",
+        "explorer_url": "https://thc.explorer.dexstats.info/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Komodo Signed Message:\n",
+        "asset": "THC",
+        "fname": "HempCoin",
+        "rpcport": 36790,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "requires_notarization": true,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo",
+        "electrum": [
+            {
+                "url": "1.eu.thc.electrum.dexstats.info:10020",
+                "contact": [
+                    {
+                        "discord": "CHMEX#0686"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "2.eu.thc.electrum.dexstats.info:10020",
+                "contact": [
+                    {
+                        "discord": "CHMEX#0686"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
         "explorer_block_url": "block/"
     },
     "THC-BEP20": {
@@ -28535,6 +28704,18 @@
                         "discord": "chmex#0686"
                     }
                 ]
+            },
+            {
+                "url": "1.eu.tokel.electrum.dexstats.info:10077",
+                "contact": [
+                    {
+                        "email": "chmex@dexstats.info"
+                    },
+                    {
+                        "discord": "chmex#0686"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -28574,10 +28755,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -28817,10 +28994,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -28914,10 +29087,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -28964,10 +29133,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -29125,10 +29290,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -29185,10 +29346,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -29232,10 +29389,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -29369,10 +29522,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -29472,10 +29621,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -29531,10 +29676,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -29625,10 +29766,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -29672,10 +29809,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -29733,10 +29866,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -29783,10 +29912,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -29835,10 +29960,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -30031,10 +30152,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -30130,10 +30247,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -30177,10 +30290,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -30229,10 +30338,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -30335,10 +30440,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -30516,10 +30617,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -30566,10 +30663,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -30665,10 +30758,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -30769,10 +30858,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -30906,10 +30991,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -30956,10 +31037,6 @@
         "fallback_swap_contract": "0x9130b257d37a52e52f21054c4da3450c72f595ce",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/arbitrum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://arb1.arbitrum.io/rpc"
             }
         ],
@@ -31000,10 +31077,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -31048,10 +31121,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -31147,10 +31216,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -31205,10 +31270,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -31350,6 +31411,15 @@
                         "discord": "michelvankessel#7656"
                     }
                 ]
+            },
+            {
+                "url": "e1.validitytech.com:11001",
+                "contact": [
+                    {
+                        "discord": "michelvankessel#7656"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -31436,10 +31506,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -31496,10 +31562,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -31555,10 +31617,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -31870,9 +31928,187 @@
                         "github": "Miner113"
                     }
                 ]
+            },
+            {
+                "url": "electrum1.grms.pw:17485",
+                "contact": [
+                    {
+                        "email": "contact@grms.pw"
+                    },
+                    {
+                        "discord": "miner113#7864"
+                    },
+                    {
+                        "github": "Miner113"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
+    },
+    "VPRM": {
+        "coin": "VPRM",
+        "type": "Smart Chain",
+        "name": "Vaporum",
+        "coinpaprika_id": "vprm-vaporum-coin",
+        "coingecko_id": "vaporum-coin",
+        "livecoinwatch_id": "VPRM",
+        "explorer_url": "http://explorer.vaporumcoin.us/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Komodo Signed Message:\n",
+        "asset": "VPRM",
+        "fname": "Vaporum",
+        "rpcport": 51609,
+        "txversion": 4,
+        "overwintered": 1,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 30,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/141'",
+        "trezor_coin": "Komodo",
+        "electrum": [
+            {
+                "url": "electrumx1.vaporumcoin.us:50001",
+                "contact": [
+                    {
+                        "github": "VaporumCoin"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.vaporumcoin.us:50001",
+                "contact": [
+                    {
+                        "github": "VaporumCoin"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "VTC": {
+        "coin": "VTC",
+        "type": "UTXO",
+        "name": "Vertcoin",
+        "coinpaprika_id": "vtc-vertcoin",
+        "coingecko_id": "vertcoin",
+        "livecoinwatch_id": "VTC",
+        "explorer_url": "https://chainz.cryptoid.info/vtc/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Vertcoin Signed Message:\n",
+        "fname": "Vertcoin",
+        "rpcport": 5888,
+        "pubtype": 71,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 100000,
+        "dust": 100000,
+        "segwit": true,
+        "bech32_hrp": "vtc",
+        "mm2": 1,
+        "required_confirmations": 4,
+        "avg_blocktime": 150,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/28'",
+        "trezor_coin": "Vertcoin",
+        "links": {
+            "github": "https://github.com/vertcoin-project/vertcoin-core",
+            "homepage": "https://vertcoin.org"
+        },
+        "electrum": [
+            {
+                "url": "88.99.26.209:5028",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.javerity.com:5885",
+                "contact": [
+                    {
+                        "discord": "cruelnovo#4936"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?"
+    },
+    "VTC-segwit": {
+        "coin": "VTC-segwit",
+        "type": "UTXO",
+        "name": "Vertcoin",
+        "coinpaprika_id": "vtc-vertcoin",
+        "coingecko_id": "vertcoin",
+        "livecoinwatch_id": "VTC",
+        "explorer_url": "https://chainz.cryptoid.info/vtc/",
+        "explorer_tx_url": "tx.dws?",
+        "explorer_address_url": "address.dws?",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "sign_message_prefix": "Vertcoin Signed Message:\n",
+        "fname": "Vertcoin",
+        "rpcport": 5888,
+        "pubtype": 71,
+        "p2shtype": 5,
+        "wiftype": 128,
+        "txfee": 100000,
+        "dust": 100000,
+        "segwit": true,
+        "bech32_hrp": "vtc",
+        "address_format": {
+            "format": "segwit"
+        },
+        "orderbook_ticker": "VTC",
+        "mm2": 1,
+        "required_confirmations": 4,
+        "avg_blocktime": 150,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/28'",
+        "trezor_coin": "Vertcoin",
+        "links": {
+            "github": "https://github.com/vertcoin-project/vertcoin-core",
+            "homepage": "https://vertcoin.org"
+        },
+        "electrum": [
+            {
+                "url": "88.99.26.209:5028",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.javerity.com:5885",
+                "contact": [
+                    {
+                        "discord": "cruelnovo#4936"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block.dws?"
     },
     "WAF": {
         "coin": "WAF",
@@ -32009,10 +32245,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -32069,10 +32301,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
-            {
                 "url": "https://polygon-rpc.com"
             },
             {
@@ -32119,10 +32347,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -32180,10 +32404,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -32239,10 +32459,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -32336,10 +32552,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
-            {
                 "url": "https://fantom.drpc.org"
             },
             {
@@ -32383,10 +32595,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -32434,10 +32642,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -32505,6 +32709,74 @@
             }
         ],
         "token_address_url": "tokentxns?a=",
+        "explorer_block_url": "block/"
+    },
+    "XEP-segwit": {
+        "coin": "XEP-segwit",
+        "type": "UTXO",
+        "name": "Electra Protocol",
+        "coinpaprika_id": "",
+        "coingecko_id": "",
+        "livecoinwatch_id": "XEP",
+        "explorer_url": "https://electraprotocol.network/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Electra Protocol",
+        "rpcport": 16816,
+        "pubtype": 55,
+        "p2shtype": 137,
+        "wiftype": 162,
+        "txversion": 2,
+        "txfee": 100000,
+        "dust": 100000,
+        "mm2": 1,
+        "segwit": true,
+        "signature_version": "witness_v0",
+        "bech32_hrp": "ep",
+        "address_format": {
+            "format": "segwit"
+        },
+        "orderbook_ticker": "XEP",
+        "required_confirmations": 4,
+        "avg_blocktime": 80,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/597'",
+        "electrum": [
+            {
+                "url": "electrumx1.electraprotocol.eu:50001",
+                "contact": [
+                    {
+                        "discord": "287952234317348865"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.electraprotocol.eu:50001",
+                "contact": [
+                    {
+                        "discord": "287952234317348865"
+                    }
+                ],
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx3.electraprotocol.eu:50001",
+                "contact": [
+                    {
+                        "discord": "287952234317348865"
+                    }
+                ],
+                "protocol": "TCP"
+            }
+        ],
         "explorer_block_url": "block/"
     },
     "XEP-BEP20": {
@@ -32591,10 +32863,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -32651,10 +32919,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -32748,6 +33012,10 @@
             {
                 "url": "lenoir.ecoincore.com:10892",
                 "protocol": "SSL"
+            },
+            {
+                "url": "lenoir.ecoincore.com:10891",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -32790,6 +33058,10 @@
             {
                 "url": "lenoir.ecoincore.com:10892",
                 "protocol": "SSL"
+            },
+            {
+                "url": "lenoir.ecoincore.com:10891",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -32864,6 +33136,56 @@
                         "discord": "456566604809895947"
                     }
                 ]
+            }
+        ],
+        "explorer_block_url": "block/"
+    },
+    "XPM": {
+        "coin": "XPM",
+        "type": "UTXO",
+        "name": "Primecoin",
+        "coinpaprika_id": "xpm-primecoin",
+        "coingecko_id": "primecoin",
+        "livecoinwatch_id": "XPM",
+        "explorer_url": "https://www.blockseek.io/xpm/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": true,
+        "fname": "Primecoin",
+        "rpcport": 8332,
+        "pubtype": 23,
+        "p2shtype": 83,
+        "wiftype": 151,
+        "txfee": 0,
+        "dust": 1000000,
+        "mm2": 1,
+        "required_confirmations": 5,
+        "avg_blocktime": 60,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/24'",
+        "trezor_coin": "Primecoin",
+        "links": {
+            "github": "https://github.com/primecoin/primecoin",
+            "homepage": "https://primecoin.io"
+        },
+        "electrum": [
+            {
+                "url": "electrumx.gemmer.primecoin.org:50011",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.mainnet.primecoin.org:50011",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx.primecoin.org:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -33015,10 +33337,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -33080,10 +33398,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -33140,10 +33454,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -33242,6 +33552,14 @@
                         "discord": "475820011634819072"
                     }
                 ]
+            },
+            {
+                "url": "electrumx1.vanillacash.info:50011",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.vanillacash.info:50011",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -33411,6 +33729,14 @@
             {
                 "url": "electrumx-verge.cloud:50002",
                 "protocol": "SSL"
+            },
+            {
+                "url": "88.99.26.209:5036",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx-verge.cloud:50001",
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/",
@@ -33498,10 +33824,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
             {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
@@ -33599,10 +33921,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -33658,10 +33976,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/fantom",
-                "gui_auth": true
-            },
             {
                 "url": "https://fantom.drpc.org"
             },
@@ -33750,10 +34064,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -33853,10 +34163,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -34120,6 +34426,19 @@
                         "discord": "475820011634819072"
                     }
                 ]
+            },
+            {
+                "url": "207.180.252.200:50011",
+                "protocol": "TCP"
+            },
+            {
+                "url": "zet-ex-three.ewmci.online:50011",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "475820011634819072"
+                    }
+                ]
             }
         ],
         "explorer_block_url": "block.dws?"
@@ -34207,10 +34526,6 @@
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/avalanche",
-                "gui_auth": true
-            },
-            {
                 "url": "https://api.avax.network/ext/bc/C/rpc"
             },
             {
@@ -34259,10 +34574,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -34319,10 +34630,6 @@
         "swap_contract_address": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "fallback_swap_contract": "0x9130b257D37A52E52F21054c4DA3450c72f595CE",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/polygon",
-                "gui_auth": true
-            },
             {
                 "url": "https://polygon-rpc.com"
             },
@@ -34415,6 +34722,52 @@
         ],
         "explorer_block_url": "block/"
     },
+    "FLUX": {
+        "coin": "FLUX",
+        "type": "UTXO",
+        "name": "Flux",
+        "coinpaprika_id": "zel-zelcash",
+        "coingecko_id": "zelcash",
+        "livecoinwatch_id": "_FLUX",
+        "explorer_url": "https://explorer.runonflux.io/",
+        "explorer_tx_url": "",
+        "explorer_address_url": "",
+        "supported": [],
+        "active": false,
+        "is_testnet": false,
+        "currently_enabled": false,
+        "wallet_only": false,
+        "fname": "Flux",
+        "rpcport": 16124,
+        "taddr": 28,
+        "pubtype": 184,
+        "p2shtype": 189,
+        "wiftype": 128,
+        "txversion": 4,
+        "overwintered": 1,
+        "version_group_id": "0x892f2085",
+        "consensus_branch_id": "0x76b809bb",
+        "txfee": 10000,
+        "mm2": 1,
+        "required_confirmations": 2,
+        "avg_blocktime": 120,
+        "protocol": {
+            "type": "UTXO"
+        },
+        "derivation_path": "m/44'/19167'",
+        "electrum": [
+            {
+                "url": "electrumx.runonflux.io:50001",
+                "protocol": "TCP"
+            },
+            {
+                "url": "electrumx2.runonflux.io:50001",
+                "protocol": "TCP"
+            }
+        ],
+        "explorer_block_url": "block/",
+        "binance_id": "FLUX"
+    },
     "FLUX-ERC20": {
         "coin": "FLUX-ERC20",
         "type": "ERC-20",
@@ -34450,10 +34803,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35206,10 +35555,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35269,10 +35614,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35335,10 +35676,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35400,10 +35737,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35460,10 +35793,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35519,10 +35848,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35584,10 +35909,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35643,10 +35964,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35709,10 +36026,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35772,10 +36085,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35876,10 +36185,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -35935,10 +36240,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -35999,10 +36300,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -36065,10 +36362,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -36125,10 +36418,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -36184,10 +36473,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -36249,10 +36534,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -36309,10 +36590,6 @@
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
             {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
-            {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
                     "email": "cipi@komodoplatform.com"
@@ -36368,10 +36645,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -36476,10 +36749,6 @@
         "swap_contract_address": "0x24ABE4c71FC658C91313b6552cd40cD808b3Ea80",
         "fallback_swap_contract": "0x8500AFc0bc5214728082163326C2FF0C73f4a871",
         "nodes": [
-            {
-                "url": "https://node.komodo.earth:8080/ethereum",
-                "gui_auth": true
-            },
             {
                 "url": "https://eth1.cipig.net:18555",
                 "contact": {
@@ -36718,6 +36987,21 @@
                         "twitter": "whiveio"
                     }
                 ]
+            },
+            {
+                "url": "electrumx1.cointest.com:50001",
+                "contact": [
+                    {
+                        "email": "protocol@whive.io"
+                    },
+                    {
+                        "discord": "whiveio#9340"
+                    },
+                    {
+                        "twitter": "whiveio"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -36787,6 +37071,21 @@
                         "twitter": "whiveio"
                     }
                 ]
+            },
+            {
+                "url": "electrumx1.cointest.com:50001",
+                "contact": [
+                    {
+                        "email": "protocol@whive.io"
+                    },
+                    {
+                        "discord": "whiveio#9340"
+                    },
+                    {
+                        "twitter": "whiveio"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -37053,6 +37352,18 @@
                         "discord": "smk#7640"
                     }
                 ]
+            },
+            {
+                "url": "zombie.dragonhound.info:10033",
+                "contact": [
+                    {
+                        "email": "smk@komodoplatform.com"
+                    },
+                    {
+                        "discord": "smk#7640"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -37215,6 +37526,15 @@
                         "email": "support@actioncoin.com"
                     }
                 ]
+            },
+            {
+                "url": "electrumx2.actioncoin.com:10001",
+                "contact": [
+                    {
+                        "email": "support@actioncoin.com"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -37553,6 +37873,18 @@
                         "discord": "Diabaths#1919"
                     }
                 ]
+            },
+            {
+                "url": "coin.crionic.org:50001",
+                "contact": [
+                    {
+                        "email": "diabatiis@gmail.com"
+                    },
+                    {
+                        "discord": "Diabaths#1919"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -37615,6 +37947,18 @@
                         "discord": "Hans_Schmidt#0745"
                     }
                 ]
+            },
+            {
+                "url": "electrum1-mainnet.evrmorecoin.org:50001",
+                "contact": [
+                    {
+                        "email": "hans_schm1dt@protonmail.com"
+                    },
+                    {
+                        "discord": "Hans_Schmidt#0745"
+                    }
+                ],
+                "protocol": "TCP"
             }
         ],
         "explorer_block_url": "block/"
@@ -37658,6 +38002,15 @@
                 "contact": [
                     {
                         "github": "https://github.com/kiirocoin/electrum-kiiro/issues"
+                    }
+                ]
+            },
+            {
+                "url": "electrum1.kiirocoin.org:50001",
+                "protocol": "TCP",
+                "contact": [
+                    {
+                        "discord": "1155906841625239684"
                     }
                 ]
             }
