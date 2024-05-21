@@ -1,18 +1,19 @@
 FROM ubuntu:latest as build 
 
-RUN apt update && apt upgrade -y && apt install -y python3 python3-pip git curl  && \
-    mkdir -p /home/mobiledevops && \
-    git clone https://github.com/KomodoPlatform/komodo-wallet-mobile /home/mobiledevops/komodo-wallet-mobile && \ 
-    cd /home/mobiledevops/komodo-wallet-mobile && \
-    git checkout origin/$BRANCH &&\
-    curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
+RUN apt update && apt upgrade -y && apt install -y python3 python3-pip git curl nodejs python3-venv && \
+    mkdir -p /home/mobiledevops/komodo-wallet-mobile
+
+WORKDIR /home/mobiledevops/komodo-wallet-mobile
+
+COPY . .
+
+RUN curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
     curl -o assets/coins_config.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/utils/coins_config.json && \
     mkdir -p android/app/src/main/cpp/libs/armeabi-v7a && \
     mkdir -p android/app/src/main/cpp/libs/arm64-v8a && \
-    python3 -m pip install -r .docker/requirements.txt && \
-    python3 .docker/update_api.py --force
-
-ADD .docker docker
+    python3 -m venv .venv && \ 
+    .venv/bin/pip install -r .docker/requirements.txt && \
+    .venv/bin/python .docker/update_api.py --force
 
 FROM mobiledevops/android-sdk-image:34.0.0-jdk17 as final
 
@@ -36,14 +37,14 @@ RUN $ANDROID_HOME/cmdline-tools/bin/sdkmanager --sdk_root=${ANDROID_SDK_ROOT} --
     sdkmanager --install "cmdline-tools;latest" --sdk_root=${ANDROID_SDK_ROOT} && \
     sdkmanager --install "platform-tools" --sdk_root=${ANDROID_SDK_ROOT}    
 
-COPY --from=build /home/mobiledevops/komodo-wallet-mobile /home/mobiledevops/komodo-wallet-mobile
-
-WORKDIR /home/$USER/komodo-wallet-mobile
-
 RUN flutter config --no-analytics --android-sdk=$ANDROID_HOME \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
     && flutter doctor \
     && flutter update-packages 
+
+COPY --from=build --chown=$USER:$USER /home/mobiledevops/komodo-wallet-mobile /home/mobiledevops/komodo-wallet-mobile
+
+WORKDIR /home/$USER/komodo-wallet-mobile
 
 CMD [ "flutter", "build", "apk", "--release" ]
