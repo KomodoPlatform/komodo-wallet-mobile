@@ -53,45 +53,26 @@ class AppConfig {
   List<String> get walletOnlyCoins => [
         'ARRR-BEP20',
         'ATOM',
-        'RBTC',
-        'OSMO',
-        'BET',
-        'BOTS',
+        'BBK',
         'CELR-ARB20',
-        'CRYPTO',
-        'HODL',
-        'JUMBLR',
-        'LUNA-ERC20',
-        'LUNA-BEP20',
-        'LUNA-HRC20',
-        'LUNA-PLG20',
-        'MSHARK',
+        'GALA-BEP20',
+        'KIP0002',
+        'KIP0003',
+        'KIP0004',
+        'MINU-BEP20',
+        'NVC',
+        'OSMO',
         'PAXG-ERC20',
-        'ETH-ARB20',
-        'ETHK-OPT20',
-        'ETHR-ARB20',
+        'PINK',
+        'POT',
+        'RBTC',
+        'RDD',
+        'SXP-BEP20',
+        'SXP-ERC20',
         'USDT-ARB20',
         'USDT-ERC20',
-        'MGW',
-        'DEX',
-        'PANGEA',
-        'REVS',
-        'SUPERNET',
-        'NVC',
-        'UST-ERC20',
-        'UST-BEP20',
-        'UST-HRC20',
-        'UST-PLG20',
-        'XPM',
-        'XVC-OLD',
-        'SXP-BEP20',
         'VOTE2023',
-        'GALA-BEP20',
-        'SXP-ERC20',
-        'BBK',
-        'RDD',
-        'PINK',
-        'POT'
+        'XPM',
       ];
 
   List<String> get protocolSuffixes => [
@@ -196,7 +177,7 @@ class AppConfig {
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L113
   String get fiatPricesEndpoint =>
-      'https://rates.komodo.earth/api/v1/usd_rates';
+      'https://defi-stats.komodo.earth/api/v3/rates/fixer_io';
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L95
