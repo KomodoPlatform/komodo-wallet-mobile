@@ -2,13 +2,11 @@
     "name": "flutter_docker",
     "context": "..",
     "dockerFile": "../.docker/android-dev.dockerfile",
-    "remoteUser": "mobiledevops",
-    "settings": {
-        "terminal.integrated.shell.linux": null
-    },
+    "remoteUser": "komodo",
+    "postAttachCommand": "sh .docker/dev-setup.sh",
     "runArgs": [
         "--privileged"
     ],
-    "workspaceMount": "source=${localWorkspaceFolder},target=/home/mobiledevops/workspace,type=bind,consistency=delegated",
-    "workspaceFolder": "/home/mobiledevops/workspace"
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/komodo/workspace,type=bind,consistency=delegated",
+    "workspaceFolder": "/home/komodo/workspace"
 }
