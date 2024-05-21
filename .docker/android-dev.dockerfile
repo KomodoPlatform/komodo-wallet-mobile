@@ -10,7 +10,9 @@ RUN apt update && apt install -y python3 python3-pip python3-venv && \
     useradd -u 1001 -m $USER && \
     usermod -aG sudo $USER && \
     echo "$USER ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
-    chown -R $USER:$USER /home/$USER
+    chown -R $USER:$USER /home/$USER && \
+    chown -R $USER:$USER /opt/android-sdk-linux && \
+    chmod -R u+rw,g+rw /opt/android-sdk-linux 
 
 USER $USER
 

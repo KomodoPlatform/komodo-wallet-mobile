@@ -1,5 +1,4 @@
 chmod u+rw,g+r komodo:komodo /home/komodo/workspace
-chown -R komodo:komodo /opt/android-sdk-linux
 mkdir -p android/app/src/main/cpp/libs/armeabi-v7a
 mkdir -p android/app/src/main/cpp/libs/arm64-v8a
 /home/komodo/.venv/bin/pip install -r .docker/requirements.txt 
