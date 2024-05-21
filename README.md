@@ -77,6 +77,8 @@ docker build -f .docker/android-apk-build.dockerfile . -t mobile_apk_build
 docker run --rm -u 1001:1001 -v ./build:/app/build mobile_apk_build:latest
 ```
 
+The build output should be in the following directory: `build/app/outputs/flutter-apk/app-release.apk`
+
 ## Run/Build with screenshot and video recording ON
 
 ```

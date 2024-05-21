@@ -7,7 +7,6 @@ RUN apt update && \
 
 WORKDIR /app
 
-# TODO: add .dockerignore
 COPY . .
 
 # TODO: add .gitkeep files for the missing directories 
