@@ -1,8 +1,6 @@
 FROM ubuntu:latest as build 
 
-ARG BRANCH="feature/docker-build"
-
-RUN apt update && apt upgrade -y && apt install -y git curl nodejs  && \
+RUN apt update && apt upgrade -y && apt install -y python3 python3-pip git curl  && \
     mkdir -p /home/mobiledevops && \
     git clone https://github.com/KomodoPlatform/komodo-wallet-mobile /home/mobiledevops/komodo-wallet-mobile && \ 
     cd /home/mobiledevops/komodo-wallet-mobile && \
@@ -11,7 +9,8 @@ RUN apt update && apt upgrade -y && apt install -y git curl nodejs  && \
     curl -o assets/coins_config.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/utils/coins_config.json && \
     mkdir -p android/app/src/main/cpp/libs/armeabi-v7a && \
     mkdir -p android/app/src/main/cpp/libs/arm64-v8a && \
-    cp -R ./.docker ./docker
+    python3 -m pip install -r .docker/requirements.txt && \
+    python3 .docker/update_api.py --force
 
 ADD .docker docker
 
@@ -45,7 +44,6 @@ RUN flutter config --no-analytics --android-sdk=$ANDROID_HOME \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
     && flutter doctor \
-    && flutter update-packages \
-    && dart run docker/update_api.dart
+    && flutter update-packages 
 
 CMD [ "flutter", "build", "apk", "--release" ]
