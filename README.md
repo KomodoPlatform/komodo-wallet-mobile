@@ -68,6 +68,14 @@ Windows: `choco install jq`, [Choco software](https://chocolatey.org/)
 
 https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-run
 
+### Build with docker
+
+To build from a container without installing Flutter on an x86_64 machine (Linux or Windows) with Docker or Podman installed, you can use the provided Dockerfile.
+
+```bash
+docker build -f .docker/android-apk-build.dockerfile . -t mobile_apk_build
+docker run --rm -u 1001:1001 -v ./build:/app/build mobile_apk_build:latest
+```
 
 ## Run/Build with screenshot and video recording ON
 
