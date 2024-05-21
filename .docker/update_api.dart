@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
@@ -7,9 +5,13 @@ import 'package:path/path.dart' as path;
 import 'package:html/parser.dart' as parser;
 import 'package:archive/archive_io.dart';
 
-import 'build_steps.dart';
+Future<void> main(List<String> arguments) async {
+  final UpdateAPIStep updateApiStep = UpdateAPIStep('./');
+  await updateApiStep.build();
+}
 
-class UpdateAPIStep extends BuildStep {
+
+class UpdateAPIStep {
   final String projectRoot;
   late Map<String, dynamic> config;
   late String apiVersion;
@@ -24,7 +26,6 @@ class UpdateAPIStep extends BuildStep {
     _loadArguments();
   }
 
-  @override
   Future<void> build() async {
     if (!config['api']['should_update']) {
       print('API update is not enabled in the configuration.');
@@ -37,13 +38,11 @@ class UpdateAPIStep extends BuildStep {
     }
   }
 
-  @override
   bool canSkip() {
     // TODO: Add skip logic
     return false;
   }
 
-  @override
   Future<void> revert() async {
     print('Reverting changes made by UpdateAPIStep...');
     // TODO: Add revert logic
