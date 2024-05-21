@@ -74,7 +74,7 @@ To build from a container without installing Flutter on an x86_64 machine (Linux
 
 ```bash
 docker build -f .docker/android-apk-build.dockerfile . -t mobile_apk_build
-docker run --rm -u 1001:1001 -v ./build:/app/build mobile_apk_build:latest
+docker run --rm -v ./build:/app/build mobile_apk_build:latest
 ```
 
 The build output should be in the following directory: `build/app/outputs/flutter-apk/app-release.apk`
