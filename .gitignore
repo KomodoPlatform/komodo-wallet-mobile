@@ -16,6 +16,7 @@
 .buildlog/
 .history
 .svn/
+**/.api_last_updated
 
 # IntelliJ related
 *.iml
