@@ -1,4 +1,4 @@
-FROM ubuntu:latest as build 
+FROM ubuntu:24.04 as build 
 
 ENV FLUTTER_HOME "/home/komodo/.flutter-sdk"
 
@@ -24,7 +24,8 @@ RUN curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/c
     git fetch && \
     git checkout tags/2.8.1 
 
-FROM ghcr.io/cirruslabs/android-sdk:34 as final
+# Locally tagged image for now
+FROM komodo/android-sdk:34 as final
 
 ENV FLUTTER_VERSION="2.8.1"
 ENV FLUTTER_HOME "/home/komodo/.flutter-sdk"
