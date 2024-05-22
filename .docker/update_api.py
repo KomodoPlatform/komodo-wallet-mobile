@@ -82,6 +82,9 @@ class UpdateAPI:
         zip_file_name = os.path.basename(zip_file_url)
         destination_path = os.path.join(destination_folder, zip_file_name)
 
+        # Ensure the destination directory exists
+        os.makedirs(destination_folder, exist_ok=True)
+
         # Save the zip file to the specified folder
         with open(destination_path, "wb") as file:
             response.raw.decode_content = True
