@@ -72,9 +72,21 @@ https://github.com/KomodoPlatform/AtomicDEX-mobile/wiki/Project-Setup#build-and-
 
 To build from a container without installing Flutter on an x86_64 machine (Linux or Windows) with Docker or Podman installed, you can use the provided Dockerfile.
 
+On x86 systems you can build using the following commands:
+
 ```bash
-docker build -f .docker/android-apk-build.dockerfile . -t mobile_apk_build
-docker run --rm -v ./build:/app/build mobile_apk_build:latest
+flutter clean
+docker build -f .docker/android-sdk.dockerfile . -t komodo/android-sdk:34
+docker build -f .docker/android-apk-build.dockerfile . -t komodo/komodo-wallet-mobile
+docker run --rm -v ./build:/app/build komodo/komodo-wallet-mobile:latest
+```
+On ARM systems (M1 Mac, Raspberry Pi, etc.) you can build using the following commands:
+
+```bash
+flutter clean
+docker build --platform=linux/arm64 -f .docker/android-sdk.dockerfile . -t komodo/android-sdk:34
+docker build --platform=linux/arm64 -f .docker/android-apk-build.dockerfile . -t komodo/komodo-wallet-mobile
+docker run --platform=linux/arm64 --rm -v ./build:/app/build komodo/komodo-wallet-mobile:latest
 ```
 
 The build output should be in the following directory: `build/app/outputs/flutter-apk/app-release.apk`
