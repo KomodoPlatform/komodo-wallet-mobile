@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 import os
-import re
 import sys
 import json
 import shutil
 import zipfile
 import requests
 import argparse
-import subprocess
 from pathlib import Path
 from datetime import datetime
 
-
-class UpdateAPI():
+class UpdateAPI:
     '''Updates the API module version for all or a specified platform.'''
     def __init__(self, tag=None, platform=None, force=False):
         self.tag = tag
@@ -35,7 +32,7 @@ class UpdateAPI():
         self.platforms_config = self.config["api"]["platforms"]
 
         # Get the GitHub repository URL
-        self.github_repo = self.config["api"]["github_repository"]
+        self.github_repo = self.config["api"]["github_repository"].replace("https://github.com/", "https://api.github.com/repos/")
 
         # Check if should use the latest release
         self.use_latest_release = self.config["api"].get("use_latest_release", False)
@@ -50,22 +47,15 @@ class UpdateAPI():
     def get_release_assets(self):
         '''Fetches the assets of the specified or latest release from the GitHub repository.'''
         if self.use_latest_release:
-            api_url = self.github_repo.replace("https://github.com/", "https://api.github.com/repos/") + "/releases/latest"
+            api_url = f"{self.github_repo}/releases/latest"
         else:
-            api_url = self.github_repo.replace("https://github.com/", "https://api.github.com/repos/") + "/releases"
+            api_url = f"{self.github_repo}/releases/tags/{self.tag}"
         
         response = requests.get(api_url)
         response.raise_for_status()
-        releases = response.json()
+        release = response.json()
 
-        if self.use_latest_release:
-            return releases["assets"]
-        else:
-            for release in releases:
-                if self.tag == release["tag_name"]:
-                    return release["assets"]
-
-        raise ValueError(f"Could not find a release for tag '{self.tag}'")
+        return release["assets"]
 
     def get_zip_file_url(self, platform):
         '''Returns the URL of the zip file for the requested version / platform.'''
@@ -74,7 +64,7 @@ class UpdateAPI():
         keywords = search_parameters["keywords"]
         for asset in assets:
             file_name = asset["name"]
-            if all(keyword in file_name for keyword in keywords) and (self.tag in file_name if not self.use_latest_release else True):
+            if all(keyword in file_name for keyword in keywords):
                 return asset["browser_download_url"]
         raise ValueError(f"Could not find release zip file for tag '{self.tag}' on '{platform}' platform!")
 
@@ -100,27 +90,6 @@ class UpdateAPI():
         print(f"Saved to '{destination_path}'")
         return destination_path
 
-    def update_documentation(self):
-        '''Updates the API version in the documentation.'''
-        documentation_file = f"{self.project_root}/docs/UPDATE_API_MODULE.md"
-
-        # Read the existing documentation file
-        with open(documentation_file, "r") as f:
-            content = f.read()
-
-        # Update the version information in the documentation
-        updated_content = re.sub(
-            r"(Current api module version is) `([^`]+)`",
-            f"\\1 `{self.tag}`",
-            content
-        )
-
-        # Write the updated content back to the documentation file
-        with open(documentation_file, "w") as f:
-            f.write(updated_content)
-
-        print(f"API version in documentation updated to {self.tag}")
-
     def update_api(self):
         '''Updates the API module.'''
         tag = self.config["api"]["release_tag"]
@@ -130,7 +99,7 @@ class UpdateAPI():
         if self.platform:   
             platforms = {self.platform: platforms[self.platform]}
 
-        for platform, platform_info in platforms.items():
+        for platform in platforms:
             # Set the api module destination folder
             destination_folder = self.get_platform_destination_folder(platform)
 
@@ -155,28 +124,6 @@ class UpdateAPI():
                 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
                     zip_ref.extractall(destination_folder)
 
-                # Update wasm module
-                if platform == 'web':
-                    print(f"Updating WASM module...")
-                    npm_exec = "npm.cmd" if sys.platform == "win32" else "npm"
-                    # If we dont do this first, we might get stuck at the `npm run build` step as there
-                    # appears to be no "non-interactive" flag to accept installing deps with `npm run build`
-                    result = subprocess.run([npm_exec, "install"], capture_output=True, text=True)
-                    if result.returncode == 0:
-                        print("npm install completed.")
-                    else:
-                        print("npm install failed. Please make sure you are using nodejs 18, e.g. `nvm use 18`.)")
-                        print(result.stderr)
-                        sys.exit(1)
-
-                    result = subprocess.run([npm_exec, "run", "build"], capture_output=True, text=True)
-                    if result.returncode == 0:
-                        print("Done.")
-                    else:
-                        print("npm run build failed. Please make sure you are using nodejs 18, e.g. `nvm use 18`.)")
-                        print(result.stderr)
-                        sys.exit(1)
-                        
                 # Make mm2 file executable for Linux
                 if platform == 'linux':
                     print("Make mm2 file executable for Linux")
