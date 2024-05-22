@@ -1,4 +1,6 @@
 # Komodo Wallet - Open Source GitHub Repository 🚀
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/KomodoPlatform/komodo-wallet-mobile?quickstart=1)
+
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/komodoplatform/atomicdex-mobile/build.yml)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/komodoplatform/atomicdex-mobile)
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/komodoplatform/atomicdex-mobile)
