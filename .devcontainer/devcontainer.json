@@ -1,8 +1,12 @@
 {
     "name": "flutter_docker",
-    "dockerComposeFile": "../.docker/docker-compose.yml",
-    "service": "komodo-wallet-mobile",
+    "context": "..",
+    "dockerFile": "../.docker/android-dev.dockerfile",
     "remoteUser": "komodo",
     "postAttachCommand": "sh .docker/dev-setup.sh",
+    "runArgs": [
+        "--privileged"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/komodo/workspace,type=bind,consistency=delegated",
     "workspaceFolder": "/home/komodo/workspace"
 }
