@@ -78,7 +78,7 @@ To build from a container without installing Flutter on an x86_64 machine (Linux
 sh .docker/build_apk_release.sh
 ```
 
-You can build using docker with the following commands:
+You can also manually build using docker with the following commands:
 
 ```bash
 docker build -f .docker/android-sdk.dockerfile . -t komodo/android-sdk:34
@@ -86,15 +86,11 @@ docker build -f .docker/android-apk-build.dockerfile . -t komodo/komodo-wallet-m
 docker run --rm -v ./build:/app/build komodo/komodo-wallet-mobile:latest
 ```
 
-On ARM systems (M1 Mac, Raspberry Pi, etc.) you might have to specify the platform for the build steps as shown below:
-
-```bash
-docker build --platform=linux/arm64 -f .docker/android-sdk.dockerfile . -t komodo/android-sdk:34
-docker build --platform=linux/arm64 -f .docker/android-apk-build.dockerfile . -t komodo/komodo-wallet-mobile
-docker run --platform=linux/arm64 --rm -v ./build:/app/build komodo/komodo-wallet-mobile:latest
-```
-
 The build output should be in the following directory: `build/app/outputs/flutter-apk/app-release.apk`
+
+NOTE: There are known issues with building this repository using docker on ARM-based systems (e.g. M-series Macs, Raspberry Pi):
+ - linux/amd64: [Dart VM emulation on M1 Mac fails](https://github.com/dart-lang/sdk/issues/48420)
+ - linux/arm64: fails due to dependencies limiting the versions of the dart sdk, android gradle plugin, and gradle build tools. See the [Gradle Compatibility Matrix](https://docs.gradle.org/current/userguide/compatibility.html)
 
 ## Run/Build with screenshot and video recording ON
 
@@ -122,6 +118,17 @@ Ensure you run the most recent Komodo DeFi Framework [stable release](https://gi
 **Relative to the Flutter project's root folder. E.g. if your name was Bob and you cloned the flutter project into your macOS home directory, the full path for the iOS API would be `/Users/Bob/atomicdex_mobile/ios/libmm2.a`*
 
 See [our wiki](https://github.com/KomodoPlatform/atomicdex-mobile/wiki/Project-Setup#android-builds-from-scratch) here for more thorough project setup steps. Besides installing the API binary, Komodo Wallet is set up similarly to any other cloned Flutter project.
+
+### Setup with Python script
+
+You can use the provided Python script to download and extract the API binary for you. This script will download the latest release of the API binary from GitHub and extract it to the correct location.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r .docker/requirements.txt
+python .docker/update_api.py --force
+```
 
 ## Accessing the database
 
