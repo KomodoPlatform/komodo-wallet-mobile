@@ -1,4 +1,4 @@
-FROM ghcr.io/cirruslabs/android-sdk:34 as final
+FROM komodo/android-sdk:34 as final
 
 ENV FLUTTER_VERSION="2.8.1"
 ENV FLUTTER_HOME "/home/komodo/.flutter-sdk"
