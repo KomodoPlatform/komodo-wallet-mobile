@@ -1,6 +1,7 @@
 FROM docker.io/ubuntu:22.04
 
 LABEL Author "Onur Özkan <onur@komodoplatform.com>"
+ARG KDF_BRANCH=main
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
@@ -59,6 +60,8 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     apt install -y python3 python3-pip git curl nodejs python3-venv sudo && \
     git clone https://github.com/KomodoPlatform/komodo-defi-framework.git /app && \
     cd /app && \
+    git fetch --all && \
+    git checkout origin/$KDF_BRANCH && \
     if [ "$(uname -m)" = "x86_64" ]; then \
     bash ./scripts/ci/android-ndk.sh x86 23; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
@@ -71,7 +74,6 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
 ENV PATH="/root/.cargo/bin:$PATH"
 
 ENV PATH=$PATH:/android-ndk/bin
-ARG KDF_BRANCH=main
 
 # Libz is distributed in the android ndk, but for some unknown reason it is not
 # found in the build process of some crates, so we explicit set the DEP_Z_ROOT
@@ -83,6 +85,10 @@ ENV CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=x86_64-linux-android-clang \
     CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_RUNNER=qemu-arm \
     CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
     CXX_armv7_linux_androideabi=armv7a-linux-androideabi21-clang++ \
+    CC_aarch64_linux_android=aarch64-linux-android21-clang \
+    CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android21-clang \
+    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
+    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang \
     DEP_Z_INCLUDE=/android-ndk/sysroot/usr/include/ \
     OPENSSL_STATIC=1 \
     OPENSSL_DIR=/openssl \
