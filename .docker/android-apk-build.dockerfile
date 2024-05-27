@@ -8,8 +8,8 @@ RUN cd /app && \
     rustup target add armv7-linux-androideabi && \
     export PATH=$PATH:/android-ndk/bin && \
     CC_aarch64_linux_android=aarch64-linux-android21-clang CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android21-clang cargo rustc --target=aarch64-linux-android --lib --release --crate-type=staticlib --package mm2_bin_lib && \
-    mv target/aarch64-linux-android/release/libmm2lib.a target/aarch64-linux-android/release/libmm2.a &&\
     CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang cargo rustc --target=armv7-linux-androideabi --lib --release --crate-type=staticlib --package mm2_bin_lib && \
+    mv target/aarch64-linux-android/release/libmm2lib.a target/aarch64-linux-android/release/libmm2.a &&\
     mv target/armv7-linux-androideabi/release/libmm2lib.a target/armv7-linux-androideabi/release/libmm2.a
 
 # Locally tagged image for now
