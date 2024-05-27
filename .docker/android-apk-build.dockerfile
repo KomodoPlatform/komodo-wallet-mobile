@@ -12,7 +12,6 @@ RUN cd /app && \
     mv target/aarch64-linux-android/release/libmm2lib.a target/aarch64-linux-android/release/libmm2.a &&\
     mv target/armv7-linux-androideabi/release/libmm2lib.a target/armv7-linux-androideabi/release/libmm2.a
 
-# Locally tagged image for now
 FROM komodo/android-sdk:34 as final
 
 ENV FLUTTER_VERSION="2.8.1"
@@ -44,5 +43,3 @@ RUN flutter config --no-analytics  \
     && yes "y" | flutter doctor --android-licenses \
     && flutter doctor \
     && flutter update-packages 
-
-COPY --from=build /app /app
