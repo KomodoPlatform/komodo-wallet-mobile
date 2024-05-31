@@ -1,7 +1,5 @@
 FROM komodo/kdf-android:latest as build 
 
-ENV FLUTTER_HOME "/home/komodo/.flutter-sdk"
-
 RUN cd /app && \ 
     rustup default nightly-2022-10-29 && \
     rustup target add aarch64-linux-android && \
