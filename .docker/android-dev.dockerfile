@@ -1,6 +1,5 @@
 FROM docker.io/ubuntu:22.04
 
-LABEL Author "Onur Özkan <onur@komodoplatform.com>"
 ARG KDF_BRANCH=main
 ENV KDF_DIR=/kdf
 
@@ -128,14 +127,7 @@ RUN PATH="$HOME/.cargo/bin:$PATH" && \
     else \
     echo "Unsupported architecture"; \
     exit 1; \
-    fi && \
-    cd $KDF_DIR && \ 
-    export PATH="$HOME/.cargo/bin:$PATH" && \ 
-    export PATH=$PATH:/android-ndk/bin && \
-    CC_aarch64_linux_android=aarch64-linux-android21-clang CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android21-clang cargo rustc --target=aarch64-linux-android --lib --release --crate-type=staticlib --package mm2_bin_lib && \
-    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang cargo rustc --target=armv7-linux-androideabi --lib --release --crate-type=staticlib --package mm2_bin_lib && \
-    mv target/aarch64-linux-android/release/libmm2lib.a target/aarch64-linux-android/release/libmm2.a &&\
-    mv target/armv7-linux-androideabi/release/libmm2lib.a target/armv7-linux-androideabi/release/libmm2.a
+    fi
 
 RUN set -e -o xtrace \
     && cd /opt \
@@ -143,7 +135,9 @@ RUN set -e -o xtrace \
     && sudo apt-get update \
     && sudo apt-get install -y jq \
     openjdk-17-jdk \
-    wget zip unzip git openssh-client curl bc software-properties-common build-essential ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov libsqlite3-dev --no-install-recommends \
+    wget zip unzip git openssh-client curl bc software-properties-common build-essential \
+    ruby-full ruby-bundler libstdc++6 libpulse0 libglu1-mesa locales lcov \
+    libsqlite3-dev --no-install-recommends \
     # for x86 emulators
     libxtst6 libnss3-dev libnspr4 libxss1 libatk-bridge2.0-0 libgtk-3-0 libgdk-pixbuf2.0-0 \
     && sudo rm -rf /var/lib/apt/lists/* \
@@ -162,9 +156,7 @@ RUN set -e -o xtrace \
     && git config --global user.name "Komodo Platform" \
     && yes | sdkmanager \
     "platforms;android-$ANDROID_PLATFORM_VERSION" \
-    "build-tools;$ANDROID_BUILD_TOOLS_VERSION" \
-    && yes | sdkmanager "ndk;$ANDROID_NDK_VERSION"
-
+    "build-tools;$ANDROID_BUILD_TOOLS_VERSION"
 
 RUN git clone https://github.com/flutter/flutter.git ${FLUTTER_HOME}  \
     && cd ${FLUTTER_HOME}  \
