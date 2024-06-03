@@ -3,6 +3,32 @@ FROM docker.io/ubuntu:22.04
 ARG KDF_BRANCH=main
 ENV KDF_DIR=/kdf
 
+# Libz is distributed in the android ndk, but for some unknown reason it is not
+# found in the build process of some crates, so we explicit set the DEP_Z_ROOT
+ENV CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=x86_64-linux-android-clang \
+    CARGO_TARGET_X86_64_LINUX_ANDROID_RUNNER="qemu-x86_64 -cpu qemu64,+mmx,+sse,+sse2,+sse3,+ssse3,+sse4.1,+sse4.2,+popcnt" \
+    CC_x86_64_linux_android=x86_64-linux-android-clang \
+    CXX_x86_64_linux_android=x86_64-linux-android-clang++ \
+    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang \
+    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_RUNNER=qemu-arm \
+    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
+    CXX_armv7_linux_androideabi=armv7a-linux-androideabi21-clang++ \
+    CC_aarch64_linux_android=aarch64-linux-android21-clang \
+    CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android21-clang \
+    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
+    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang \
+    DEP_Z_INCLUDE=/android-ndk/sysroot/usr/include/ \
+    OPENSSL_STATIC=1 \
+    OPENSSL_DIR=/openssl \
+    OPENSSL_INCLUDE_DIR=/openssl/include \
+    OPENSSL_LIB_DIR=/openssl/lib \
+    RUST_TEST_THREADS=1 \
+    HOME=/home/komodo/ \
+    TMPDIR=/tmp/ \
+    ANDROID_DATA=/ \
+    ANDROID_DNS_MODE=local \
+    ANDROID_ROOT=/system
+
 ENV FLUTTER_VERSION="2.8.1"
 ENV FLUTTER_HOME "/home/komodo/.flutter-sdk"
 ENV USER="komodo"
@@ -29,31 +55,6 @@ ENV ANDROID_BUILD_TOOLS_VERSION 34.0.0
 
 # https://developer.android.com/ndk/downloads
 ENV ANDROID_NDK_VERSION 26.3.11579264
-# Libz is distributed in the android ndk, but for some unknown reason it is not
-# found in the build process of some crates, so we explicit set the DEP_Z_ROOT
-ENV CARGO_TARGET_X86_64_LINUX_ANDROID_LINKER=x86_64-linux-android-clang \
-    CARGO_TARGET_X86_64_LINUX_ANDROID_RUNNER="qemu-x86_64 -cpu qemu64,+mmx,+sse,+sse2,+sse3,+ssse3,+sse4.1,+sse4.2,+popcnt" \
-    CC_x86_64_linux_android=x86_64-linux-android-clang \
-    CXX_x86_64_linux_android=x86_64-linux-android-clang++ \
-    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang \
-    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_RUNNER=qemu-arm \
-    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
-    CXX_armv7_linux_androideabi=armv7a-linux-androideabi21-clang++ \
-    CC_aarch64_linux_android=aarch64-linux-android21-clang \
-    CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=aarch64-linux-android21-clang \
-    CC_armv7_linux_androideabi=armv7a-linux-androideabi21-clang \
-    CARGO_TARGET_ARMV7_LINUX_ANDROIDEABI_LINKER=armv7a-linux-androideabi21-clang \
-    DEP_Z_INCLUDE=/android-ndk/sysroot/usr/include/ \
-    OPENSSL_STATIC=1 \
-    OPENSSL_DIR=/openssl \
-    OPENSSL_INCLUDE_DIR=/openssl/include \
-    OPENSSL_LIB_DIR=/openssl/lib \
-    RUST_TEST_THREADS=1 \
-    HOME=/tmp/ \
-    TMPDIR=/tmp/ \
-    ANDROID_DATA=/ \
-    ANDROID_DNS_MODE=local \
-    ANDROID_ROOT=/system
 
 RUN apt update && apt install -y sudo && \
     useradd -u $USER_ID -m $USER && \ 
