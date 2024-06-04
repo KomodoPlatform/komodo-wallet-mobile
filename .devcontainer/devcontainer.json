@@ -8,5 +8,10 @@
         "--privileged"
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/home/komodo/workspace,type=bind,consistency=delegated",
-    "workspaceFolder": "/home/komodo/workspace"
+    "workspaceFolder": "/home/komodo/workspace",
+    "hostRequirements": {
+        "cpus": 4,
+        "memory": "16gb",
+        "storage": "32gb"
+    }
 }

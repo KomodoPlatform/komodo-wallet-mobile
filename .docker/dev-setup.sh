@@ -3,8 +3,8 @@
 set -e
 
 sudo git config core.fileMode false
-sudo chmod -R u+rwx /home/komodo
-sudo chown -R komodo:komodo /home/komodo
+sudo chmod -R u+rwx /home/komodo/workspace
+sudo chown -R komodo:komodo /home/komodo/workspace
 flutter pub get
 
 curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins 
