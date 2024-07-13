@@ -17,6 +17,7 @@
 .buildlog/
 .history
 .svn/
+**/.api_last_updated
 
 # coins file extras
 # /assets/coins.json

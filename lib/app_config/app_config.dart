@@ -177,7 +177,7 @@ class AppConfig {
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L113
   String get fiatPricesEndpoint =>
-      'https://rates.komodo.earth/api/v1/usd_rates';
+      'https://defi-stats.komodo.earth/api/v3/rates/fixer_io';
 
   // endpoint source code:
   // https://github.com/KomodoPlatform/mobile_endpoints_proxy/blob/main/main.py#L95
