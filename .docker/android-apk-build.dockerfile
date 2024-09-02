@@ -21,10 +21,13 @@ ENV ANDROID_AARCH64_LIB_SRC=/app/target/aarch64-linux-android/release/libkdf.a
 ENV ANDROID_ARMV7_LIB=android/app/src/main/cpp/libs/armeabi-v7a
 ENV ANDROID_ARMV7_LIB_SRC=/app/target/armv7-linux-androideabi/release/libkdf.a
 
-WORKDIR /app
-COPY . .
+USER komodo
 
-RUN curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
+WORKDIR /app
+COPY --chown=$USER:$USER . .
+
+RUN rm -f assets/coins.json && rm -f assets/coins_config.json && \
+    curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
     curl -o assets/coins_config.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/utils/coins_config.json && \
     mkdir -p android/app/src/main/cpp/libs/armeabi-v7a && \
     mkdir -p android/app/src/main/cpp/libs/arm64-v8a && \
