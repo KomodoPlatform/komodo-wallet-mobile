@@ -112,8 +112,8 @@ RUN PATH="$HOME/.cargo/bin:$PATH" && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     export PATH="$HOME/.cargo/bin:$PATH" && \ 
     sudo chown -R $USER:$USER $HOME/.cargo && \
-    rustup toolchain install nightly-2022-10-29 --no-self-update --profile=minimal &&\
-    rustup default nightly-2022-10-29 && \
+    rustup toolchain install nightly-2023-06-01 --no-self-update --profile=minimal && \
+    rustup default nightly-2023-06-01 && \
     rustup target add aarch64-linux-android && \
     rustup target add armv7-linux-androideabi && \
     sudo apt install -y python3 python3-pip git curl nodejs python3-venv sudo && \
