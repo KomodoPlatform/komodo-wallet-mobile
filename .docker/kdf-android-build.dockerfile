@@ -1,6 +1,6 @@
 FROM docker.io/ubuntu:22.04
 
-LABEL Author "Onur Özkan <onur@komodoplatform.com>"
+LABEL Author="Onur Özkan <onur@komodoplatform.com>"
 ARG KDF_BRANCH=main
 
 RUN apt-get update -y && \

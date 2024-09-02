@@ -1,4 +1,4 @@
-FROM komodo/kdf-android:latest as build 
+FROM komodo/kdf-android:latest AS build 
 
 RUN cd /app && \ 
     rustup default nightly-2022-10-29 && \
