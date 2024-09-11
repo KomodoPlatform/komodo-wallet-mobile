@@ -162,7 +162,7 @@ RUN set -e -o xtrace \
 RUN git clone https://github.com/flutter/flutter.git ${FLUTTER_HOME}  \
     && cd ${FLUTTER_HOME}  \
     && git fetch \
-    && git checkout tags/2.8.1 \
+    && git checkout tags/${FLUTTER_VERSION} \
     && flutter config --no-analytics  \
     && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
