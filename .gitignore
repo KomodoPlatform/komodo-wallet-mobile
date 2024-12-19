@@ -98,4 +98,6 @@ build/
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 ios/Flutter/.last_build_id
 ios/libmm2.a
-.fvm
+
+# FVM Version Cache
+.fvm/
