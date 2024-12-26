@@ -1,9 +1,9 @@
 {
     "name": "flutter_docker",
     "context": "..",
-    "dockerFile": "../.docker/android-dev.dockerfile",
+    "dockerFile": "android-dev.dockerfile",
     "remoteUser": "komodo",
-    "postAttachCommand": "sh .docker/dev-setup.sh",
+    "postAttachCommand": "sh .devcontainer/dev-setup.sh",
     "runArgs": [
         "--privileged"
     ],

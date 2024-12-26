@@ -53,8 +53,8 @@ RUN mkdir -m 0755 -p /etc/apt/keyrings
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     export PATH="/root/.cargo/bin:$PATH" && \ 
-    rustup toolchain install nightly-2022-10-29 --no-self-update --profile=minimal &&\
-    rustup default nightly-2022-10-29 && \
+    rustup toolchain install nightly-2023-06-01 --no-self-update --profile=minimal && \
+    rustup default nightly-2023-06-01 && \
     rustup target add aarch64-linux-android && \
     rustup target add armv7-linux-androideabi && \
     apt install -y python3 python3-pip git curl nodejs python3-venv sudo && \

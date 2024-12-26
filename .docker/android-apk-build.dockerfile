@@ -1,7 +1,7 @@
 FROM komodo/kdf-android:latest AS build 
 
 RUN cd /app && \ 
-    rustup default nightly-2022-10-29 && \
+    rustup default nightly-2023-06-01 && \
     rustup target add aarch64-linux-android && \
     rustup target add armv7-linux-androideabi && \
     export PATH=$PATH:/android-ndk/bin && \
@@ -21,10 +21,15 @@ ENV ANDROID_AARCH64_LIB_SRC=/app/target/aarch64-linux-android/release/libmm2.a
 ENV ANDROID_ARMV7_LIB=android/app/src/main/cpp/libs/armeabi-v7a
 ENV ANDROID_ARMV7_LIB_SRC=/app/target/armv7-linux-androideabi/release/libmm2.a
 
-WORKDIR /app
-COPY . .
+USER $USER
 
-RUN curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
+WORKDIR /app
+COPY --chown=$USER:$USER . .
+
+RUN rm -f assets/coins.json && rm -f assets/coins_config.json && \
+    sudo rm -rf build/* && \ 
+    mkdir -p build && \
+    curl -o assets/coins.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/coins && \
     curl -o assets/coins_config.json https://raw.githubusercontent.com/KomodoPlatform/coins/master/utils/coins_config.json && \
     mkdir -p android/app/src/main/cpp/libs/armeabi-v7a && \
     mkdir -p android/app/src/main/cpp/libs/arm64-v8a && \
@@ -37,7 +42,5 @@ COPY --from=build --chown=$USER:$USER ${ANDROID_AARCH64_LIB_SRC} ${ANDROID_AARCH
 COPY --from=build --chown=$USER:$USER ${ANDROID_ARMV7_LIB_SRC} ${ANDROID_ARMV7_LIB}
 
 RUN flutter config --no-analytics  \
-    && flutter precache \
     && yes "y" | flutter doctor --android-licenses \
-    && flutter doctor \
-    && flutter update-packages 
+    && flutter doctor

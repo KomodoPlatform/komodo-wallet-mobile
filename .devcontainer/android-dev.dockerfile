@@ -47,14 +47,14 @@ ENV ANDROID_SDK_ROOT=$ANDROID_HOME \
     PATH=${PATH}:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/emulator
 
 # comes from https://developer.android.com/studio/#command-tools
-ENV ANDROID_SDK_TOOLS_VERSION 11076708
+ENV ANDROID_SDK_TOOLS_VERSION=11076708
 
 # https://developer.android.com/studio/releases/build-tools
-ENV ANDROID_PLATFORM_VERSION 34
-ENV ANDROID_BUILD_TOOLS_VERSION 34.0.0
+ENV ANDROID_PLATFORM_VERSION=34
+ENV ANDROID_BUILD_TOOLS_VERSION=34.0.0
 
 # https://developer.android.com/ndk/downloads
-ENV ANDROID_NDK_VERSION 26.3.11579264
+ENV ANDROID_NDK_VERSION=26.3.11579264
 
 RUN apt update && apt install -y sudo && \
     useradd -u $USER_ID -m $USER && \ 
@@ -112,8 +112,8 @@ RUN PATH="$HOME/.cargo/bin:$PATH" && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     export PATH="$HOME/.cargo/bin:$PATH" && \ 
     sudo chown -R $USER:$USER $HOME/.cargo && \
-    rustup toolchain install nightly-2022-10-29 --no-self-update --profile=minimal &&\
-    rustup default nightly-2022-10-29 && \
+    rustup toolchain install nightly-2023-06-01 --no-self-update --profile=minimal && \
+    rustup default nightly-2023-06-01 && \
     rustup target add aarch64-linux-android && \
     rustup target add armv7-linux-androideabi && \
     sudo apt install -y python3 python3-pip git curl nodejs python3-venv sudo && \
