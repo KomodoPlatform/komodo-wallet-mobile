@@ -1,12 +1,12 @@
 FROM docker.io/ubuntu:22.04
 
-LABEL Author "Onur Özkan <onur@komodoplatform.com>"
+LABEL Author="Onur Özkan <onur@komodoplatform.com>"
 ARG KDF_BRANCH=main
 
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
-    build-essential 	\
+    build-essential \
     libssl-dev \ 
     cmake \
     llvm-dev \
@@ -27,15 +27,15 @@ RUN apt-get update -y && \
     curl \
     wget \
     gnupg \
-    software-properties-common 	\
+    python-is-python3 \
+    software-properties-common \
     lsb-release \
     libudev-dev \
     zip unzip \
     binutils && \
     apt-get clean
 
-RUN ln -s /usr/bin/python3 /bin/python &&\
-    curl --output llvm.sh https://apt.llvm.org/llvm.sh && \
+RUN curl --output llvm.sh https://apt.llvm.org/llvm.sh && \
     chmod +x llvm.sh && \
     ./llvm.sh 16 && \
     rm ./llvm.sh && \
