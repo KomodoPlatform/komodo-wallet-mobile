@@ -308,7 +308,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   final List<Widget> _children = <Widget>[
     CoinsPage(),
-    DexPage(),
+    if (!appConfig.kIsWalletOnly) DexPage(),
     MarketsPage(),
     if (appConfig.isFeedEnabled) FeedPage()
   ];
@@ -544,9 +544,11 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       key: Key('main-nav-portfolio'),
                     ),
                     label: AppLocalizations.of(context).portfolio),
-                BottomNavigationBarItem(
-                    icon: const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
-                    label: AppLocalizations.of(context).dex),
+                if (!appConfig.kIsWalletOnly)
+                  BottomNavigationBarItem(
+                      icon:
+                          const Icon(Icons.swap_vert, key: Key('main-nav-dex')),
+                      label: AppLocalizations.of(context).dex),
                 BottomNavigationBarItem(
                   icon: const Icon(
                     Icons.show_chart,
