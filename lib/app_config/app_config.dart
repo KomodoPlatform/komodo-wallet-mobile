@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/feed_provider.dart';
@@ -47,6 +48,8 @@ class AppConfig {
   String get appName => 'Komodo Wallet';
   String get appCompanyLong => 'Komodo Platform';
   String get appCompanyShort => 'Komodo';
+
+  final bool kIsWalletOnly = !kDebugMode;
 
   List<String> get defaultCoins => ['KMD', 'BTC-segwit'];
   List<String> get coinsFiat => ['BTC-segwit', 'KMD'];
