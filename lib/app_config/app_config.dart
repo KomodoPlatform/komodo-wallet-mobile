@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../model/feed_provider.dart';
@@ -48,31 +49,74 @@ class AppConfig {
   String get appCompanyLong => 'Komodo Platform';
   String get appCompanyShort => 'Komodo';
 
+  final bool kIsWalletOnly = !kDebugMode;
+
   List<String> get defaultCoins => ['KMD', 'BTC-segwit'];
   List<String> get coinsFiat => ['BTC-segwit', 'KMD'];
   List<String> get walletOnlyCoins => [
+        'AAVE-FTM20',
+        'AGIX-ERC20',
+        'AGIX-PLG20',
+        'APE-FTM20',
         'ARRR-BEP20',
-        'ATOM',
+        'AVA-BEP20',
+        'BAND-FTM20',
         'BBK',
-        'CELR-ARB20',
+        'BIDR-BEP20',
+        'RBTC',
+        'BRZ-ERC20_OLD',
+        'BRZ-PLG20_OLD',
+        'BTT-BEP20',
+        'BUSD-AVX20',
+        'BUSD-MVR20',
+        'BUSD-ERC20',
+        'BUSD-BEP20',
+        'BUSD-PLG20',
+        'CHSB-ERC20',
+        'CHSB-PLG20',
+        'CRV-FTM20',
+        'DAI-FTM20',
+        'DAI-MVR20',
+        'DFX-PLG20_OLD',
+        'ETH-FTM20',
         'GALA-BEP20',
-        'KIP0002',
-        'KIP0003',
-        'KIP0004',
+        'HUSD-ERC20',
+        'HUSD-HCO20',
+        'HUSD-KRC20',
+        'HUSD-PLG20',
+        'LINK-FTM20',
+        'MC-ERC20',
+        'MC-BEP20',
         'MINU-BEP20',
+        'MM-MVR20',
         'NVC',
-        'OSMO',
+        'OCEAN-BEP20',
+        'OCEAN-ERC20',
+        'OCEAN-PLG20',
         'PAXG-ERC20',
         'PINK',
         'POT',
-        'RBTC',
         'RDD',
+        'SNX-FTM20',
+        'SUSHI-FTM20',
+        'SUSHI-MVR20',
         'SXP-BEP20',
         'SXP-ERC20',
-        'USDT-ARB20',
+        'TRX-BEP20_OLD',
+        'TUSD-BEP20_OLD',
+        'TUSD-FTM20',
+        'USDC-AVX20_OLD',
+        'USDC-FTM20',
+        'USDC-MVR20',
+        'USDT-MVR20',
+        'USDT-FTM20',
+        'USDT-AVX20_OLD',
         'USDT-ERC20',
-        'VOTE2023',
+        'WOO-FTM20',
         'XPM',
+        'YFI-FTM20',
+        'ATOM',
+        'OSMO'
       ];
 
   List<String> get protocolSuffixes => [
@@ -89,6 +133,7 @@ class AppConfig {
         'SLP',
         'OLD',
         'IBC_IRIS',
+        'IBC_NUCLEUSTEST',
         'segwit',
         'ZHTLC',
       ];
